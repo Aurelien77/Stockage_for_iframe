@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Triangles animés</title>
+
+  <!-- Autoriser iframe -->
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 80px);
+      gap: 20px;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 70px solid;
+      animation: spin 3.5s ease-in-out infinite;
+      opacity: 0.9;
+    }
+
+    /* Couleurs */
+    .c1 { border-bottom-color: #ff6b6b; animation-delay: 0s; }
+    .c2 { border-bottom-color: #feca57; animation-delay: 0.3s; }
+    .c3 { border-bottom-color: #1dd1a1; animation-delay: 0.6s; }
+    .c4 { border-bottom-color: #54a0ff; animation-delay: 0.9s; }
+    .c5 { border-bottom-color: #5f27cd; animation-delay: 1.2s; }
+    .c6 { border-bottom-color: #48dbfb; animation-delay: 1.5s; }
+
+    @keyframes spin {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="triangle c1"></div>
+    <div class="triangle c2"></div>
+    <div class="triangle c3"></div>
+    <div class="triangle c4"></div>
+    <div class="triangle c5"></div>
+    <div class="triangle c6"></div>
+
+    <div class="triangle c2"></div>
+    <div class="triangle c3"></div>
+    <div class="triangle c4"></div>
+    <div class="triangle c5"></div>
+    <div class="triangle c6"></div>
+    <div class="triangle c1"></div>
+  </div>
+</body>
+</html>
