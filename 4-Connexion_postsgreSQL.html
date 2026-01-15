@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion PostgreSQL</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.step {
+    background: #ecf0f1;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-left: 6px solid #3498db;
+    border-radius: 5px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideIn 0.8s forwards;
+}
+
+.step:nth-child(1) { animation-delay: 0.3s; }
+.step:nth-child(2) { animation-delay: 0.6s; }
+.step:nth-child(3) { animation-delay: 0.9s; }
+.step:nth-child(4) { animation-delay: 1.2s; }
+
+.step h2 {
+    margin-top: 0;
+    color: #2980b9;
+}
+
+.step p {
+    margin: 10px 0 0 0;
+    line-height: 1.6;
+}
+
+.code-block {
+    background: #dfe6e9;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    margin-top: 10px;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.button:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Animation */
+@keyframes fadeSlideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Connexion du projet à PostgreSQL</h1>
+
+<div class="step">
+    <h2>Étape 1 : Installer le driver PostgreSQL</h2>
+    <p>
+        Selon votre langage / framework, installez le driver PostgreSQL :<br>
+        <strong>Node.js :</strong> <span class="code-block">npm install pg</span><br>
+        <strong>C# (.NET) :</strong> <span class="code-block">Install-Package Npgsql</span>
+    </p>
+</div>
+
+<div class="step">
+    <h2>Étape 2 : Configurer la connexion</h2>
+    <p>
+        Créez un fichier de configuration ou modifiez votre fichier existant pour connecter votre projet :
+    </p>
+    <div class="code-block">
+// Exemple Node.js
+const { Client } = require('pg');
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'votre_base',
+    password: 'votre_mdp',
+    port: 5432,
+});
+client.connect();
+    </div>
+</div>
+
+<div class="step">
+    <h2>Étape 3 : Vérifier la connexion</h2>
+    <p>
+        Testez la connexion dans votre projet :
+    </p>
+    <div class="code-block">
+// Node.js
+client.query('SELECT NOW()', (err, res) => {
+    if(err) {
+        console.error('Erreur de connexion', err);
+    } else {
+        console.log('Connexion OK:', res.rows);
+    }
+    client.end();
+});
+    </div>
+    <button class="button" onclick="alert('Exécutez ce code dans votre projet pour vérifier la connexion')">Tester la connexion</button>
+</div>
+
+<div class="step">
+    <h2>Étape 4 : Conseils supplémentaires</h2>
+    <ul>
+        <li>Assurez-vous que le service PostgreSQL est démarré</li>
+        <li>Vérifiez le mot de passe et le port</li>
+        <li>Pour les frameworks web, utilisez des variables d’environnement pour stocker les credentials</li>
+        <li>En cas de firewall Windows, autorisez le port 5432</li>
+    </ul>
+</div>
+
+</div>
+
+</body>
+</html>

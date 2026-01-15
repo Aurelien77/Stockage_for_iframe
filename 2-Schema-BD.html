@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base de Données - DataShare</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #2c3e50;
+    padding: 40px;
+    color: #333;
+}
+
+/* CONTAINER */
+.container {
+    margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 0.8s 0.3s forwards;
+}
+
+.header h1 {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+/* SCHÉMA */
+.database-schema {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    align-items: flex-start;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+/* TABLE CYLINDRES */
+.table-cylinder {
+    position: relative;
+    width: 280px;
+    opacity: 0;
+}
+
+.table-cylinder.left {
+    animation: slideInLeft 0.8s 0.6s forwards;
+}
+
+.table-cylinder.right {
+    animation: slideInRight 0.8s 0.9s forwards;
+}
+
+.cylinder-top {
+    width: 280px;
+    height: 50px;
+    background: white;
+    border: 3px solid #333;
+    border-radius: 140px / 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.cylinder-body {
+    width: 280px;
+    background: white;
+    border-left: 3px solid #333;
+    border-right: 3px solid #333;
+    margin-top: -25px;
+}
+
+.cylinder-bottom {
+    width: 280px;
+    height: 50px;
+    background: white;
+    border: 3px solid #333;
+    border-radius: 140px / 25px;
+    position: relative;
+    margin-top: -25px;
+}
+
+/* CONTENU TABLE */
+.table-content {
+    padding: 20px;
+    border-left: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+}
+
+.table-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    background: #f0f0f0;
+    border: 2px solid #333;
+    margin-bottom: 15px;
+}
+
+.table-field {
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.table-field:last-child {
+    border-bottom: none;
+}
+
+/* CHAMPS CLÉS */
+.id-field {
+    font-weight: bold;
+    color: #3498db;
+}
+
+/* NUMÉROS */
+.number {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+/* FLÈCHE DE RELATION */
+.relation-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 3px;
+    background: #3498db;
+    opacity: 0;
+    animation: fadeIn 0.8s 1.5s forwards;
+}
+
+.relation-arrow::before {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: -6px;
+    border-left: 15px solid #3498db;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+/* ORM */
+.orm-section {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeIn 0.8s 2s forwards;
+}
+
+.orm-relation {
+    font-size: 18px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.orm-title {
+    font-size: 16px;
+    color: #555;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>DATABASE : DataShare (PostgreSQL)</h1>
+    </div>
+
+    <div class="database-schema">
+
+        <!-- TABLE USERS -->
+        <div class="table-cylinder left">
+            <div class="number">1</div>
+            <div class="cylinder-top"></div>
+            <div class="cylinder-body">
+                <div class="table-content">
+                    <div class="table-title">Table : USERS</div>
+                    <div class="table-field id-field users-id">id : int</div>
+                    <div class="table-field">email : char</div>
+                    <div class="table-field">firstname : char</div>
+                    <div class="table-field">lastname : char</div>
+                    <div class="table-field">login : char</div>
+                    <div class="table-field">picture : char</div>
+                    <div class="table-field">password : char</div>
+                    <div class="table-field">created_at : timestamp</div>
+                </div>
+            </div>
+            <div class="cylinder-bottom"></div>
+        </div>
+
+        <!-- FLÈCHE -->
+        <div class="relation-arrow"></div>
+
+        <!-- TABLE FILES -->
+        <div class="table-cylinder right">
+            <div class="number">1</div>
+            <div class="cylinder-top"></div>
+            <div class="cylinder-body">
+                <div class="table-content">
+                    <div class="table-title">Table : FILES</div>
+                    <div class="table-field id-field files-id">id_user : int</div>
+                    <div class="table-field">file_name : char</div>
+                    <div class="table-field">file_password : char</div>
+                    <div class="table-field">deleted : bool</div>
+                    <div class="table-field">creation_date : timestamp</div>
+                    <div class="table-field">end_date : timestamp</div>
+                    <div class="table-field">file_path : char</div>
+                </div>
+            </div>
+            <div class="cylinder-bottom"></div>
+        </div>
+
+    </div>
+
+    <div class="orm-section">
+        <div class="orm-relation">User 1 ———— 0..* File</div>
+        <div class="orm-title">ORM : Entity Framework Core (EF Core)</div>
+    </div>
+
+</div>
+
+<!-- SCRIPT ALIGNEMENT FLÈCHE -->
+<script>
+window.addEventListener('load', () => {
+    const usersId = document.querySelector('.users-id');
+    const filesId = document.querySelector('.files-id');
+    const arrow = document.querySelector('.relation-arrow');
+    const container = document.querySelector('.database-schema');
+
+    if (!usersId || !filesId || !arrow) return;
+
+    const usersRect = usersId.getBoundingClientRect();
+    const filesRect = filesId.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const middleY =
+        ((usersRect.top + usersRect.bottom) / 2 +
+         (filesRect.top + filesRect.bottom) / 2) / 2
+        - containerRect.top;
+
+    arrow.style.top = `${middleY}px`;
+});
+</script>
+
+</body>
+</html>
