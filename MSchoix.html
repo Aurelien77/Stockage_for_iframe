@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choix technologique du Backend – Microsoft .NET</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1300px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #0078D7;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #0078D7;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #E6F0FA;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #005A9E;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.7s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 600px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #0078D7;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Pourquoi le choix de Microsoft (.NET) pour le Backend ?</h1>
+
+<div class="intro">
+    Plusieurs technologies backend étaient possibles.  
+    Le choix de <strong>Microsoft .NET</strong> a été fait principalement pour son intégration en entreprise,  
+    tout en restant <strong>moderne, sécurisé et multi-plateforme</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Intégration naturelle dans les environnements d'entreprise</div>
+    <div class="section-content">
+        <p>.NET s’intègre parfaitement dans les infrastructures déjà utilisées par de nombreuses entreprises :</p>
+        <ul>
+            <li>Windows Server</li>
+            <li>Active Directory</li>
+            <li>Azure</li>
+            <li>SQL Server</li>
+        </ul>
+        <p>Cela permet de réduire les coûts d’intégration et de maintenance.</p>
+        <span class="badge">Choix orienté entreprise</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ .NET n’est pas limité à Windows (Multi-plateforme)</div>
+    <div class="section-content">
+        <p>Contrairement aux idées reçues, <strong>ASP.NET Core est totalement cross-platform</strong>.</p>
+        <ul>
+            <li>✔️ Fonctionne sur <strong>Windows, Linux et macOS</strong></li>
+            <li>✔️ Compatible avec <strong>Docker</strong></li>
+            <li>✔️ Déployable sur <strong>Azure, AWS ou Google Cloud</strong></li>
+            <li>✔️ Framework <strong>open-source</strong></li>
+        </ul>
+        <p>Le choix Microsoft n’enferme donc pas le projet dans un environnement propriétaire.</p>
+        <span class="badge">Souplesse & portabilité</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Sécurité intégrée et robuste</div>
+    <div class="section-content">
+        <p>.NET fournit des mécanismes de sécurité avancés :</p>
+        <ul>
+            <li>Authentification JWT</li>
+            <li>Gestion des rôles et permissions</li>
+            <li>Protection contre XSS / CSRF</li>
+            <li>Validation forte des entrées</li>
+        </ul>
+        <p>Ces fonctionnalités sont essentielles dans des contextes professionnels.</p>
+        <span class="badge">Sécurité by design</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Comparaison avec d'autres technologies backend</div>
+    <div class="section-content">
+        <p>En termes d’usage global dans les entreprises et projets professionnels :</p>
+        <ul>
+            <li><strong>ASP.NET Core (.NET)</strong> : ~14 % d’usage observé</li>
+            <li><strong>Spring Boot (Java)</strong> : ~11 %</li>
+            <li><strong>NestJS (Node.js)</strong> : ~6 %</li>
+            <li><strong>Symfony (PHP)</strong> : moins répandu que les précédents</li>
+        </ul>
+        <p>Spring Boot reste très présent dans les grandes structures Java,  
+        mais .NET est aujourd’hui l’un des frameworks backend les plus utilisés.</p>
+        <span class="badge">Technologie largement adoptée</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Performance, évolutivité et pérennité</div>
+    <div class="section-content">
+        <p>.NET permet de construire des APIs performantes et évolutives :</p>
+        <ul>
+            <li>Scalabilité horizontale</li>
+            <li>Support du cloud et micro-services</li>
+            <li>Framework maintenu activement par Microsoft</li>
+        </ul>
+        <p>C’est un choix durable pour des applications amenées à évoluer.</p>
+        <span class="badge">Vision long terme</span>
+    </div>
+</div>
+
+<div class="footer">
+    Fichier interactif conçu pour une présentation orale / visioconférence 🎤  
+    Cliquez sur chaque section pour dérouler les explications.
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>

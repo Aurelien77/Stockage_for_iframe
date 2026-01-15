@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sécurité & Authentification – JWT, Hash, Cookies</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #C0392B;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #C0392B;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #FDEDEC;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #922B21;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 900px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #C0392B;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Sécurité & Authentification Backend</h1>
+
+<div class="intro">
+    La sécurité de l’application repose sur plusieurs mécanismes complémentaires :  
+    <strong>hashage des mots de passe, JWT et cookies sécurisés</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Hashage des mots de passe</div>
+    <div class="section-content">
+        <p>Les mots de passe ne sont <strong>jamais stockés en clair</strong> en base de données.</p>
+        <ul>
+            <li>Le mot de passe est transformé via une fonction de hash</li>
+            <li>Le résultat est irréversible</li>
+            <li>Même en cas de fuite de la base, les mots de passe restent protégés</li>
+        </ul>
+        <p>Lors du login, le mot de passe saisi est hashé puis comparé au hash stocké.</p>
+        <span class="badge">Bonne pratique essentielle</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Hashage vs Chiffrement</div>
+    <div class="section-content">
+        <ul>
+            <li><strong>Hashage</strong> : transformation irréversible (mots de passe)</li>
+            <li><strong>Chiffrement</strong> : transformation réversible avec une clé</li>
+        </ul>
+        <p>Les mots de passe sont hashés, pas chiffrés, afin qu’ils ne puissent jamais être retrouvés.</p>
+        <span class="badge">Sécurité par conception</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ JSON Web Token (JWT)</div>
+    <div class="section-content">
+        <p>Le <strong>JWT</strong> est utilisé pour représenter l’identité de l’utilisateur après authentification.</p>
+        <ul>
+            <li>Token signé côté serveur</li>
+            <li>Contient l’identifiant utilisateur</li>
+            <li>Possède une date d’expiration</li>
+        </ul>
+        <p>Il évite de stocker une session côté serveur.</p>
+        <span class="badge">Authentification stateless</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Stockage du JWT dans un cookie sécurisé</div>
+    <div class="section-content">
+        <p>Le token est stocké dans un <strong>cookie HTTP sécurisé</strong>.</p>
+        <ul>
+            <li><strong>HttpOnly</strong> : inaccessible en JavaScript (protection XSS)</li>
+            <li><strong>Secure</strong> : transmis uniquement via HTTPS</li>
+            <li><strong>SameSite=Strict</strong> : protection contre CSRF</li>
+            <li>Expiration automatique</li>
+        </ul>
+        <span class="badge">Protection renforcée</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Intérêt côté backend de recevoir le cookie</div>
+    <div class="section-content">
+        <p>À chaque requête HTTP, le navigateur envoie automatiquement le cookie au backend.</p>
+        <ul>
+            <li>Pas besoin d’envoyer manuellement le token</li>
+            <li>Le backend valide le JWT via un middleware</li>
+            <li>Accès contrôlé aux routes protégées</li>
+        </ul>
+        <p>Cela simplifie la logique côté client et renforce la sécurité globale.</p>
+        <span class="badge">Backend centré sécurité</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Avantages en contexte professionnel</div>
+    <div class="section-content">
+        <ul>
+            <li>Respect des standards de sécurité web</li>
+            <li>Scalable (stateless)</li>
+            <li>Facilement maintenable</li>
+            <li>Compatible frontend web & mobile</li>
+        </ul>
+        <p>Cette architecture est largement utilisée dans les applications modernes.</p>
+        <span class="badge">Prêt pour la production</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>

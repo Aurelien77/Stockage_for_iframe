@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pourquoi Visual Studio pour ASP.NET Core & C#</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f6fb;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1300px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #5C2D91;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #5C2D91;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #EFE6F7;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4B1F78;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.7s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 700px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #5C2D91;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #bbb;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background: #D8C7EB;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Pourquoi utiliser Visual Studio pour ASP.NET Core & C#</h1>
+
+<div class="intro">
+    Pour développer une application backend en <strong>ASP.NET Core / C#</strong>,  
+    le choix de l’IDE a un impact direct sur la productivité, la qualité du code et la maintenance.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Visual Studio : un IDE pensé pour .NET</div>
+    <div class="section-content">
+        <p><strong>Visual Studio</strong> est un IDE complet, conçu spécifiquement pour l’écosystème .NET.</p>
+        <ul>
+            <li>Templates prêts à l’emploi (API, MVC, Blazor)</li>
+            <li>Gestion automatique des dépendances</li>
+            <li>Support natif d’ASP.NET Core</li>
+        </ul>
+        <p>Il permet de démarrer rapidement un projet robuste et structuré.</p>
+        <span class="badge">Intégration native</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Débogage et outils avancés</div>
+    <div class="section-content">
+        <p>Visual Studio propose des outils de débogage très avancés :</p>
+        <ul>
+            <li>Debug pas à pas</li>
+            <li>Inspection des variables</li>
+            <li>Breakpoints conditionnels</li>
+            <li>Profilage de performance</li>
+        </ul>
+        <p>Ces outils sont essentiels pour des applications backend complexes.</p>
+        <span class="badge">Gain de temps</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Productivité et qualité du code</div>
+    <div class="section-content">
+        <p>Visual Studio améliore la qualité du code grâce à :</p>
+        <ul>
+            <li>IntelliSense avancé pour C#</li>
+            <li>Refactoring automatique</li>
+            <li>Analyse statique du code</li>
+            <li>Gestion des tests unitaires intégrée</li>
+        </ul>
+        <span class="badge">Code propre & maintenable</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Comparaison : Visual Studio vs Visual Studio Code</div>
+    <div class="section-content">
+        <table>
+            <tr>
+                <th>Critère</th>
+                <th>Visual Studio</th>
+                <th>Visual Studio Code</th>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>IDE complet</td>
+                <td>Éditeur de code</td>
+            </tr>
+            <tr>
+                <td>Support .NET</td>
+                <td>Natif et complet</td>
+                <td>Via extensions</td>
+            </tr>
+            <tr>
+                <td>Débogage</td>
+                <td>Avancé intégré</td>
+                <td>Basique / extensions</td>
+            </tr>
+            <tr>
+                <td>Tests</td>
+                <td>Intégrés</td>
+                <td>Manuel</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>Plus lourd</td>
+                <td>Léger et rapide</td>
+            </tr>
+        </table>
+        <p><strong>VS Code</strong> reste excellent pour des projets légers ou multi-langages,  
+        mais Visual Studio est plus adapté aux projets ASP.NET Core complexes.</p>
+        <span class="badge">Choix contextuel</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Contexte entreprise</div>
+    <div class="section-content">
+        <p>Dans un contexte professionnel, Visual Studio apporte :</p>
+        <ul>
+            <li>Standardisation des outils</li>
+            <li>Intégration avec Azure DevOps</li>
+            <li>Support long terme</li>
+            <li>Collaboration facilitée</li>
+        </ul>
+        <p>C’est un choix cohérent avec une stack Microsoft orientée entreprise.</p>
+        <span class="badge">Vision professionnelle</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conception de la base de données avec Entity Framework Core</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f6f9;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1300px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #2E8B57;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #2E8B57;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #E8F5EE;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1F6F43;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.7s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 800px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #2E8B57;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Conception de la base de données avec Entity Framework Core</h1>
+
+<div class="intro">
+    La base de données a été conçue à l’aide de <strong>Entity Framework Core</strong>,  
+    l’ORM officiel de .NET, afin de garantir une structure claire, sécurisée et maintenable.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Pourquoi utiliser Entity Framework Core (ORM)</div>
+    <div class="section-content">
+        <p>Entity Framework Core permet de faire le lien entre le code C# et la base de données relationnelle.</p>
+        <ul>
+            <li>Abstraction de la base de données</li>
+            <li>Moins de SQL manuel</li>
+            <li>Réduction des erreurs humaines</li>
+            <li>Code plus lisible et maintenable</li>
+        </ul>
+        <span class="badge">ORM moderne</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Rôle du DbContext</div>
+    <div class="section-content">
+        <p>La classe <strong>DbContext</strong> représente le point central d’accès à la base de données.</p>
+        <ul>
+            <li>Gestion de la connexion à la base</li>
+            <li>Suivi des entités (tracking)</li>
+            <li>Transaction et cohérence des données</li>
+        </ul>
+        <p>Elle permet une séparation claire entre la logique métier et la persistance.</p>
+        <span class="badge">Architecture propre</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ DbSet : représentation des tables</div>
+    <div class="section-content">
+        <p>Le <strong>DbSet&lt;Users&gt;</strong> représente la table <em>Users</em> dans la base de données.</p>
+        <ul>
+            <li>Correspondance directe entre classe et table</li>
+            <li>Requêtes LINQ typées</li>
+            <li>Protection contre les injections SQL</li>
+        </ul>
+        <span class="badge">Sécurité & typage fort</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Configuration explicite avec OnModelCreating</div>
+    <div class="section-content">
+        <p>La méthode <strong>OnModelCreating</strong> permet de définir précisément les règles de la base.</p>
+        <ul>
+            <li>Clé primaire explicite</li>
+            <li>Index uniques sur Email et Login</li>
+            <li>Contraintes de longueur</li>
+            <li>Champs obligatoires</li>
+        </ul>
+        <p>Ces règles garantissent l’intégrité des données dès le niveau base.</p>
+        <span class="badge">Intégrité des données</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Sécurité et cohérence des données</div>
+    <div class="section-content">
+        <p>Les choix effectués renforcent la sécurité :</p>
+        <ul>
+            <li>Unicité des emails et logins</li>
+            <li>Limitation des tailles de champs</li>
+            <li>Valeur par défaut pour la date de création</li>
+        </ul>
+        <p>Ces protections évitent incohérences, doublons et abus.</p>
+        <span class="badge">Base fiable</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Avantages en contexte entreprise</div>
+    <div class="section-content">
+        <p>Cette approche est parfaitement adaptée à un environnement professionnel :</p>
+        <ul>
+            <li>Évolutivité facile (nouvelles tables, relations)</li>
+            <li>Compatibilité avec les migrations</li>
+            <li>Maintenance simplifiée</li>
+            <li>Standard reconnu dans l’écosystème .NET</li>
+        </ul>
+        <span class="badge">Prêt pour la production</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>
