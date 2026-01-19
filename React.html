@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choix Frontend – React, TypeScript & Auth Context</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #1F618D;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #1F618D;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #EBF5FB;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #154360;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 900px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #1F618D;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Architecture Frontend – React & TypeScript</h1>
+
+<div class="intro">
+    Le frontend repose sur une application moderne développée avec  
+    <strong>React.js, TypeScript et un système d’authentification centralisé</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Choix de React.js</div>
+    <div class="section-content">
+        <p>React est une bibliothèque JavaScript orientée composants.</p>
+        <ul>
+            <li>Architecture modulaire et réutilisable</li>
+            <li>Mise à jour efficace du DOM (Virtual DOM)</li>
+            <li>Large écosystème et communauté active</li>
+        </ul>
+        <p>Il permet de construire des interfaces dynamiques, maintenables et performantes.</p>
+        <span class="badge">Standard du marché</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Apport de TypeScript</div>
+    <div class="section-content">
+        <p>TypeScript apporte un typage statique au JavaScript.</p>
+        <ul>
+            <li>Détection des erreurs à la compilation</li>
+            <li>Code plus lisible et auto-documenté</li>
+            <li>Meilleure maintenabilité à long terme</li>
+        </ul>
+        <p>Il sécurise les échanges de données entre composants et avec l’API.</p>
+        <span class="badge">Code robuste</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Auth Context (Context API)</div>
+    <div class="section-content">
+        <p>L’authentification est centralisée via un <strong>AuthContext</strong>.</p>
+        <ul>
+            <li>Stockage global de l’état utilisateur</li>
+            <li>Accès simplifié aux données d’authentification</li>
+            <li>Évite le prop drilling</li>
+        </ul>
+        <p>Les composants savent à tout moment si l’utilisateur est authentifié.</p>
+        <span class="badge">État global maîtrisé</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Gestion du JWT côté frontend</div>
+    <div class="section-content">
+        <p>Le frontend ne stocke pas directement le JWT en mémoire ou localStorage.</p>
+        <ul>
+            <li>Le token est géré via un cookie sécurisé</li>
+            <li>Aucune manipulation manuelle du JWT</li>
+            <li>Réduction des risques XSS</li>
+        </ul>
+        <p>Le navigateur transmet automatiquement le cookie au backend.</p>
+        <span class="badge">Sécurité renforcée</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Routes protégées & logique d’accès</div>
+    <div class="section-content">
+        <p>L’AuthContext permet de sécuriser la navigation.</p>
+        <ul>
+            <li>Protection des routes privées</li>
+            <li>Redirection si utilisateur non authentifié</li>
+            <li>Affichage conditionnel des composants</li>
+        </ul>
+        <p>La logique d’accès est claire, centralisée et maintenable.</p>
+        <span class="badge">UX & sécurité</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Avantages globaux de cette architecture</div>
+    <div class="section-content">
+        <ul>
+            <li>Séparation claire frontend / backend</li>
+            <li>Frontend scalable et testable</li>
+            <li>Compatible SPA moderne</li>
+            <li>Aligné avec les bonnes pratiques professionnelles</li>
+        </ul>
+        <p>Cette architecture est adaptée aux applications modernes en production.</p>
+        <span class="badge">Prêt pour le réel</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>
