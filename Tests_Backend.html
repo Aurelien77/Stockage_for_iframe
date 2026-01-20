@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tests Backend – xUnit & Entity Framework</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f9f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #10b981;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #f0fdf4;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(16, 185, 129, 0.25);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #047857;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 1200px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* CODE BLOCKS */
+code {
+    background: #d1fae5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #047857;
+}
+
+/* HIGHLIGHT BOX */
+.highlight {
+    background: #ecfdf5;
+    border-left: 4px solid #10b981;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 4px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Tests Backend – xUnit & Entity Framework</h1>
+
+<div class="intro">
+    L'architecture de tests backend s'appuie sur  
+    <strong>xUnit, Entity Framework InMemory et des scénarios d'intégration complets</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Framework xUnit</div>
+    <div class="section-content">
+        <p>xUnit est le framework de tests moderne pour .NET et C#.</p>
+        <ul>
+            <li>Architecture orientée faits (<code>[Fact]</code>)</li>
+            <li>Parallélisation automatique des tests</li>
+            <li>Injection de dépendances native</li>
+            <li>Sorties de test avec <code>ITestOutputHelper</code></li>
+        </ul>
+        <p>xUnit garantit des tests rapides, isolés et reproductibles.</p>
+        <span class="badge">Standard .NET</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Base de données InMemory</div>
+    <div class="section-content">
+        <p>Entity Framework InMemory simule la base de données en mémoire.</p>
+        <ul>
+            <li>Aucune dépendance à une vraie base de données</li>
+            <li>Tests ultra-rapides (pas d'I/O disque)</li>
+            <li>Isolation complète entre les tests</li>
+            <li>Réinitialisation automatique via <code>UseInMemoryDatabase()</code></li>
+        </ul>
+        <div class="highlight">
+            <strong>Exemple :</strong> <code>CreateContext("TestDb_FullUserJourney")</code> crée une DB temporaire unique pour chaque test.
+        </div>
+        <p>Cette approche permet de tester les contrôleurs sans infrastructure externe.</p>
+        <span class="badge">Tests isolés</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Tests d'intégration complets</div>
+    <div class="section-content">
+        <p>Les tests simulent des scénarios utilisateur réels de bout en bout.</p>
+        <ul>
+            <li><strong>Parcours complet</strong> : Inscription → Connexion → Récupération profil</li>
+            <li>Validation des cookies et tokens JWT</li>
+            <li>Vérification de la persistance des données</li>
+            <li>Tests multi-étapes avec assertions intermédiaires</li>
+        </ul>
+        <div class="highlight">
+            <strong>Test phare :</strong> <code>FullUserJourney_RegisterLoginGetProfile_Success()</code>
+            <br>Valide l'ensemble du flux d'authentification en 3 étapes.
+        </div>
+        <span class="badge">End-to-End</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Tests de sécurité</div>
+    <div class="section-content">
+        <p>Des tests vérifient la robustesse du système d'authentification.</p>
+        <ul>
+            <li>Refus de connexion avec mauvais mot de passe</li>
+            <li>Validation du hachage des mots de passe</li>
+            <li>Protection contre les injections SQL</li>
+            <li>Vérification de l'unicité des emails</li>
+        </ul>
+        <div class="highlight">
+            <strong>Test clé :</strong> <code>RegisterThenLoginWithWrongPassword_ShouldFail()</code>
+            <br>S'assure que les tentatives frauduleuses sont rejetées.
+        </div>
+        <span class="badge">Sécurité</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Tests de validation</div>
+    <div class="section-content">
+        <p>Toutes les règles métier sont testées exhaustivement.</p>
+        <ul>
+            <li>Email vide ou invalide → rejeté</li>
+            <li>Login trop court (< 3 caractères) → rejeté</li>
+            <li>Password faible (sans chiffre, majuscule, ou trop court) → rejeté</li>
+            <li>Champs requis manquants → rejeté</li>
+        </ul>
+        <div class="highlight">
+            <strong>Test exhaustif :</strong> <code>Registration_AllValidationRules_AreEnforced()</code>
+            <br>Vérifie 7 règles de validation différentes en un seul test.
+        </div>
+        <span class="badge">Validation stricte</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Tests multi-utilisateurs</div>
+    <div class="section-content">
+        <p>Des scénarios testent la gestion simultanée de plusieurs utilisateurs.</p>
+        <ul>
+            <li>Création de 3+ utilisateurs avec emails différents</li>
+            <li>Vérification de l'unicité des IDs</li>
+            <li>Isolation des comptes utilisateurs</li>
+            <li>Pas de collision de données</li>
+        </ul>
+        <div class="highlight">
+            <strong>Test :</strong> <code>MultipleUsers_CanRegisterWithDifferentEmails()</code>
+            <br>Garantit que plusieurs utilisateurs peuvent coexister sans conflit.
+        </div>
+        <span class="badge">Concurrence</span>
+    </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+    <div class="section-title">7️⃣ Tests de charge</div>
+    <div class="section-content">
+        <p>Des tests de performance évaluent la capacité du système sous charge.</p>
+        <ul>
+            <li>Création de 50 utilisateurs en boucle</li>
+            <li>Mesure du temps d'exécution total</li>
+            <li>Calcul de la moyenne par opération</li>
+            <li>Assertion sur les performances (< 5 secondes attendu)</li>
+        </ul>
+        <div class="highlight">
+            <strong>Test de charge :</strong> <code>LoadTest_Create50Users_ShouldSucceed()</code>
+            <br>Vérifie que le système peut gérer un volume important rapidement.
+        </div>
+        <span class="badge">Performance</span>
+    </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section">
+    <div class="section-title">8️⃣ Mock du contexte HTTP</div>
+    <div class="section-content">
+        <p>Les tests simulent le contexte HTTP pour tester les cookies et headers.</p>
+        <ul>
+            <li>Mock de <code>DefaultHttpContext</code></li>
+            <li>Simulation de <code>ControllerContext</code></li>
+            <li>Vérification des cookies Set-Cookie</li>
+            <li>Test des headers de réponse</li>
+        </ul>
+        <p>Cette approche permet de tester l'authentification JWT sans serveur web réel.</p>
+        <span class="badge">Mock HTTP</span>
+    </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section">
+    <div class="section-title">9️⃣ Assertions et validation de résultats</div>
+    <div class="section-content">
+        <p>Les tests utilisent des assertions strictes pour valider les résultats.</p>
+        <ul>
+            <li><code>Assert.IsType&lt;CreatedAtActionResult&gt;()</code> : vérifie le type de réponse</li>
+            <li><code>Assert.Equal(expected, actual)</code> : compare les valeurs</li>
+            <li><code>Assert.NotNull()</code> : garantit la présence de données</li>
+            <li>Désérialisation JSON pour valider les réponses complexes</li>
+        </ul>
+        <p>Chaque assertion garantit que le comportement attendu est respecté.</p>
+        <span class="badge">Fiabilité</span>
+    </div>
+</div>
+
+<!-- SECTION 10 -->
+<div class="section">
+    <div class="section-title">🔟 ITestOutputHelper : Logs détaillés</div>
+    <div class="section-content">
+        <p>Les tests génèrent des logs lisibles pour faciliter le débogage.</p>
+        <ul>
+            <li>Affichage des étapes du test</li>
+            <li>Logs des données créées (IDs, emails, tokens)</li>
+            <li>Messages de validation ("Connexion réussie", etc.)</li>
+            <li>Statistiques de performance pour les tests de charge</li>
+        </ul>
+        <div class="highlight">
+            <strong>Exemple de sortie :</strong>
+            <pre style="margin: 8px 0; padding: 8px; background: white; border-radius: 4px; font-size: 12px;">
+ÉTAPE 1 : Inscription d'un nouvel utilisateur
+✓ Utilisateur créé avec succès
+  ID: 1
+  Email: john.doe@example.com
+  Login: johndoe
+
+ÉTAPE 2 : Connexion avec les identifiants
+✓ Connexion réussie
+  UserId: 1
+  Token: eyJhbGc...
+  Cookie créé: True
+            </pre>
+        </div>
+        <span class="badge">Traçabilité</span>
+    </div>
+</div>
+
+<!-- SECTION 11 -->
+<div class="section">
+    <div class="section-title">1️⃣1️⃣ Structure des fichiers de tests</div>
+    <div class="section-content">
+        <p>Les tests backend sont organisés de manière logique et maintenable.</p>
+        <ul>
+            <li><code>IntegrationTests.cs</code> : Scénarios end-to-end complets</li>
+            <li><code>FilesControllerTests.cs</code> : Tests du contrôleur de fichiers</li>
+            <li><code>UsersTest.cs</code> : Tests unitaires du modèle utilisateur</li>
+            <li><code>ServicesTests.cs</code> : Tests des services métier</li>
+            <li><code>ProgramTests.cs</code> : Tests de configuration de l'application</li>
+        </ul>
+        <p>Chaque fichier couvre un domaine fonctionnel spécifique.</p>
+        <span class="badge">Organisation claire</span>
+    </div>
+</div>
+
+<!-- SECTION 12 -->
+<div class="section">
+    <div class="section-title">1️⃣2️⃣ Avantages globaux de cette architecture</div>
+    <div class="section-content">
+        <ul>
+            <li><strong>Isolation totale</strong> : Chaque test utilise sa propre DB InMemory</li>
+            <li><strong>Rapidité</strong> : Pas de dépendances externes, tout en mémoire</li>
+            <li><strong>Couverture complète</strong> : Tests unitaires, intégration, sécurité, charge</li>
+            <li><strong>Reproductibilité</strong> : Les tests donnent toujours le même résultat</li>
+            <li><strong>Lisibilité</strong> : Logs détaillés avec ITestOutputHelper</li>
+            <li><strong>Maintenabilité</strong> : Structure claire et bien organisée</li>
+        </ul>
+        <p>Cette architecture de tests garantit la qualité, la sécurité et la fiabilité du backend en production.</p>
+        <span class="badge">Production-ready</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>

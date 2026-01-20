@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture Tests – Jest & Testing Library</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #f7f5ff;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(102, 126, 234, 0.25);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4c51bf;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 900px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* CODE BLOCKS */
+code {
+    background: #edf2f7;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #4c51bf;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Architecture Tests – Jest & Testing Library</h1>
+
+<div class="intro">
+    L'architecture de tests repose sur un écosystème moderne avec  
+    <strong>Jest, React Testing Library et une stratégie de tests complète</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ Framework de tests : Jest</div>
+    <div class="section-content">
+        <p>Jest est le framework de tests JavaScript intégré à React.</p>
+        <ul>
+            <li>Exécution rapide et parallélisée des tests</li>
+            <li>Snapshots pour détecter les régressions UI</li>
+            <li>Mocking intégré pour isoler les composants</li>
+            <li>Coverage automatique avec <code>--coverage</code></li>
+        </ul>
+        <p>Jest permet de tester unitairement et de manière fiable chaque partie de l'application.</p>
+        <span class="badge">Standard React</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ React Testing Library</div>
+    <div class="section-content">
+        <p>Testing Library privilégie les tests centrés sur l'expérience utilisateur.</p>
+        <ul>
+            <li>Interactions réalistes via <code>@testing-library/user-event</code></li>
+            <li>Sélecteurs accessibles (getByRole, getByText)</li>
+            <li>Tests du comportement plutôt que de l'implémentation</li>
+            <li>Matchers personnalisés avec <code>@testing-library/jest-dom</code></li>
+        </ul>
+        <p>Cette approche garantit des tests robustes et maintenables.</p>
+        <span class="badge">Best practices</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Scripts de tests configurés</div>
+    <div class="section-content">
+        <p>Plusieurs commandes npm facilitent l'exécution des tests.</p>
+        <ul>
+            <li><code>npm test</code> : exécution complète sans watch</li>
+            <li><code>npm run test:perf</code> : tests de performance ciblés</li>
+            <li><code>npm run test:debug</code> : débogage avec inspection</li>
+            <li><code>npm run coverage</code> : rapport de couverture de code</li>
+        </ul>
+        <p>Ces scripts permettent d'adapter les tests selon le contexte (dev, CI/CD, debug).</p>
+        <span class="badge">Flexibilité</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Mock Service Worker (MSW)</div>
+    <div class="section-content">
+        <p>MSW intercepte les requêtes réseau pour simuler l'API backend.</p>
+        <ul>
+            <li>Simulation réaliste des appels HTTP</li>
+            <li>Pas de dépendance au backend réel</li>
+            <li>Tests isolés et reproductibles</li>
+            <li>Gestion des cas d'erreur et timeouts</li>
+        </ul>
+        <p>MSW garantit des tests fiables même sans connexion au serveur.</p>
+        <span class="badge">API Mocking</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Configuration Jest & ModuleMapper</div>
+    <div class="section-content">
+        <p>La configuration Jest gère les imports non-JS (CSS, images).</p>
+        <ul>
+            <li><code>identity-obj-proxy</code> : mock des fichiers CSS/SCSS</li>
+            <li><code>fileMock.tsx</code> : mock des assets (SVG, PNG, JPG)</li>
+            <li>Évite les erreurs d'import dans les tests</li>
+            <li>Configuration centralisée dans package.json</li>
+        </ul>
+        <p>Cette configuration permet de tester les composants sans erreurs d'imports.</p>
+        <span class="badge">Configuration robuste</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Tests de performance</div>
+    <div class="section-content">
+        <p>Des tests dédiés mesurent les performances critiques.</p>
+        <ul>
+            <li>Pattern <code>**/Perf.*.test.tsx</code> pour identifier les tests perf</li>
+            <li>Mesure du temps de rendu des composants</li>
+            <li>Détection des régressions de performance</li>
+            <li>Script dédié : <code>npm run test:perf</code></li>
+        </ul>
+        <p>Ces tests assurent que l'application reste performante au fil des évolutions.</p>
+        <span class="badge">Optimisation</span>
+    </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+    <div class="section-title">7️⃣ Couverture de code (Coverage)</div>
+    <div class="section-content">
+        <p>Le rapport de couverture identifie les parties non testées.</p>
+        <ul>
+            <li>Génération automatique avec <code>npm run coverage</code></li>
+            <li>Métriques : statements, branches, functions, lines</li>
+            <li>Rapport HTML détaillé pour analyse</li>
+            <li>Aide à maintenir un taux de couverture élevé</li>
+        </ul>
+        <p>La couverture garantit la qualité et la fiabilité du code.</p>
+        <span class="badge">Qualité</span>
+    </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section">
+    <div class="section-title">8️⃣ TypeScript & typage des tests</div>
+    <div class="section-content">
+        <p>TypeScript apporte sécurité et clarté aux tests.</p>
+        <ul>
+            <li>Types Jest : <code>@types/jest</code></li>
+            <li>Autocomplétion des matchers et assertions</li>
+            <li>Détection d'erreurs à la compilation</li>
+            <li>Tests auto-documentés grâce au typage</li>
+        </ul>
+        <p>Le typage rend les tests plus robustes et maintenables.</p>
+        <span class="badge">Code sûr</span>
+    </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section">
+    <div class="section-title">9️⃣ Stratégie de tests multi-niveaux</div>
+    <div class="section-content">
+        <p>L'architecture supporte différents types de tests.</p>
+        <ul>
+            <li><strong>Tests unitaires</strong> : composants isolés</li>
+            <li><strong>Tests d'intégration</strong> : interaction entre composants</li>
+            <li><strong>Tests de performance</strong> : métriques de rendu</li>
+            <li><strong>Tests de non-régression</strong> : snapshots Jest</li>
+        </ul>
+        <p>Cette stratégie complète assure la qualité à tous les niveaux.</p>
+        <span class="badge">Stratégie complète</span>
+    </div>
+</div>
+
+<!-- SECTION 10 -->
+<div class="section">
+    <div class="section-title">🔟 Avantages globaux de cette architecture</div>
+    <div class="section-content">
+        <ul>
+            <li>Tests rapides et fiables avec Jest</li>
+            <li>Approche centrée utilisateur avec Testing Library</li>
+            <li>Indépendance backend grâce à MSW</li>
+            <li>Scripts adaptés à chaque besoin (dev, CI, debug)</li>
+            <li>Configuration TypeScript pour sécurité maximale</li>
+        </ul>
+        <p>Cette architecture de tests garantit la qualité, la stabilité et la maintenabilité de l'application en production.</p>
+        <span class="badge">Production-ready</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture CSS - Styles & Responsive Design</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* TITRE */
+h1 {
+    text-align: center;
+    background: #1F618D;
+    color: white;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 1s forwards;
+}
+
+/* INTRO */
+.intro {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* SECTIONS */
+.section {
+    border: 2px solid #1F618D;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    padding: 18px;
+    background: #EBF5FB;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #154360;
+}
+
+/* CONTENU */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.section.open .section-content {
+    max-height: 900px;
+    opacity: 1;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    background: #1F618D;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* LISTES */
+ul {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Architecture CSS – Styles & Design Responsive</h1>
+
+<div class="intro">
+    L'architecture CSS de ce projet repose sur une approche  
+    <strong>modulaire, maintenable et adaptée au responsive design</strong>.
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="section-title">1️⃣ CSS-in-JS avec React</div>
+    <div class="section-content">
+        <p>Les styles sont définis directement dans les composants React avec TypeScript.</p>
+        <ul>
+            <li>Typage strict des styles (React.CSSProperties)</li>
+            <li>Portée locale des styles évitant les conflits</li>
+            <li>Logique de styles dynamiques basée sur l'état</li>
+        </ul>
+        <p>Cette approche permet une gestion fine et contextuelle des styles selon les interactions utilisateur.</p>
+        <span class="badge">Styles typés</span>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+    <div class="section-title">2️⃣ Design responsive & mobile-first</div>
+    <div class="section-content">
+        <p>L'application s'adapte automatiquement aux différents formats d'écran.</p>
+        <ul>
+            <li>Détection de la largeur d'écran (useState, useEffect)</li>
+            <li>Styles conditionnels selon isMobile</li>
+            <li>Sidebar mobile avec overlay</li>
+        </ul>
+        <p>L'expérience utilisateur reste fluide sur mobile, tablette et desktop.</p>
+        <span class="badge">Multi-devices</span>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+    <div class="section-title">3️⃣ Système de couleurs & thématique</div>
+    <div class="section-content">
+        <p>Une palette de couleurs cohérente est appliquée à travers l'application.</p>
+        <ul>
+            <li>Dégradé principal (orange-rouge) pour la sidebar</li>
+            <li>Tons neutres pour le contenu (gris, blanc)</li>
+            <li>Couleurs d'état (erreur, expiration, succès)</li>
+        </ul>
+        <p>Le thème est centralisé et permet une cohérence visuelle globale.</p>
+        <span class="badge">Identité visuelle</span>
+    </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+    <div class="section-title">4️⃣ Transitions & micro-interactions</div>
+    <div class="section-content">
+        <p>Des animations CSS enrichissent l'expérience utilisateur.</p>
+        <ul>
+            <li>Transitions sur les survols (transform, box-shadow)</li>
+            <li>Animation de la sidebar mobile (transition left)</li>
+            <li>États visuels interactifs (hover, active)</li>
+        </ul>
+        <p>Ces effets apportent du dynamisme sans surcharger l'interface.</p>
+        <span class="badge">UX fluide</span>
+    </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+    <div class="section-title">5️⃣ Organisation modulaire des styles</div>
+    <div class="section-content">
+        <p>Chaque composant gère ses propres styles de manière isolée.</p>
+        <ul>
+            <li>Variables de style déclarées dans le composant</li>
+            <li>Réutilisation via composition de styles</li>
+            <li>Maintenabilité et lisibilité accrues</li>
+        </ul>
+        <p>Cette approche évite la pollution du scope CSS global.</p>
+        <span class="badge">Isolation CSS</span>
+    </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+    <div class="section-title">6️⃣ Gestion des états visuels</div>
+    <div class="section-content">
+        <p>Les styles s'adaptent dynamiquement selon l'état de l'application.</p>
+        <ul>
+            <li>Filtres actifs/inactifs avec styles conditionnels</li>
+            <li>Fichiers expirés avec couleurs d'alerte</li>
+            <li>États de hover gérés par useState</li>
+        </ul>
+        <p>L'interface reflète en temps réel les changements d'état.</p>
+        <span class="badge">Interactivité</span>
+    </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+    <div class="section-title">7️⃣ Icônes & affordances visuelles</div>
+    <div class="section-content">
+        <p>Des icônes emoji et des symboles enrichissent la communication visuelle.</p>
+        <ul>
+            <li>Icônes de fichiers selon l'extension (🖼️, 📄, 🎬)</li>
+            <li>Badges de sécurité (🔒 pour les fichiers protégés)</li>
+            <li>Feedback visuel immédiat sur les actions</li>
+        </ul>
+        <p>Ces éléments guident l'utilisateur de manière intuitive.</p>
+        <span class="badge">UX intuitive</span>
+    </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section">
+    <div class="section-title">8️⃣ Avantages de cette architecture CSS</div>
+    <div class="section-content">
+        <ul>
+            <li>Maintenabilité : styles au plus près du code</li>
+            <li>Performance : pas de CSS global inutilisé</li>
+            <li>Responsive : adaptation fluide mobile/desktop</li>
+            <li>Typage : erreurs de style détectées à la compilation</li>
+        </ul>
+        <p>Cette approche CSS-in-JS est moderne, scalable et adaptée aux applications React complexes.</p>
+        <span class="badge">Architecture pro</span>
+    </div>
+</div>
+
+<div class="footer">
+    Présentation interactive – Cliquez sur chaque section pour afficher les détails  
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.section').forEach(section => {
+    section.addEventListener('click', () => {
+        section.classList.toggle('open');
+    });
+});
+</script>
+
+</body>
+</html>
