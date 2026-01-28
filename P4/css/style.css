@@ -235,3 +235,38 @@ footer {
 .gray-theme footer {
     color: #cfcfcf;
 }
+/* ========================= */
+/* ===== THEME ORANGE ====== */
+/* ========================= */
+
+.orange-theme {
+    background: linear-gradient(120deg, #fb8c00, #ffa726);
+}
+
+/* Titres */
+.orange-theme .hero h1,
+.orange-theme .card h2 {
+    color: #fff3e0;
+}
+
+/* Cartes */
+.orange-theme .card {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+/* Commandes */
+.orange-theme .command-box {
+    background: #4e342e;
+    color: #ffd54f;
+}
+
+/* Légendes */
+.orange-theme .legend {
+    color: #ffe082;
+}
+
+/* Footer */
+.orange-theme footer {
+    color: #fff8e1;
+}
+

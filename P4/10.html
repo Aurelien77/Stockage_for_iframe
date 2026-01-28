@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisation de Kubernetes</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="orange-theme">
+
+<header class="hero">
+    <h1>☸️ Utilisation de Kubernetes</h1>
+    <p>Déploiement de l’application sur Minikube</p>
+</header>
+
+<section class="card fade-in">
+    <h2>1️⃣ Déploiement initial avec Minikube</h2>
+
+    <p>
+        Installer et démarrer Minikube, puis créer les secrets pour récupérer le package depuis GitLab :
+    </p>
+
+    <div class="command-box">
+minikube start<br><br>
+kubectl create secret docker-registry gitlab-registry-secret \ <br>
+&nbsp;&nbsp;--docker-server=registry.gitlab.com \ <br>
+&nbsp;&nbsp;--docker-username=VOTRE_USERNAME_GITLAB \ <br>
+&nbsp;&nbsp;--docker-password=VOTRE_PERSONAL_ACCESS_TOKEN \ <br>
+&nbsp;&nbsp;--docker-email=VOTRE_EMAIL<br><br>
+kubectl apply -f secret.yaml<br>
+kubectl apply -f deployment-app.yaml<br>
+kubectl apply -f deployment-db.yaml<br>
+kubectl apply -f service-app.yaml<br>
+kubectl apply -f service-db.yaml
+    </div>
+
+    <img src="./images/20.jpg" alt="Déploiement Kubernetes" class="image">
+    <p class="legend">✔ Déploiement initial effectué</p>
+</section>
+
+<section class="card slide-in">
+    <h2>2️⃣ Vérification des pods</h2>
+
+    <p>
+        Vérifier que tous les pods sont bien démarrés :
+    </p>
+
+    <div class="command-box">
+kubectl get pods
+    </div>
+
+    <img src="./images/21.jpg" alt="Vérification pods Kubernetes" class="image">
+    <p class="legend">✔ Pods en fonctionnement</p>
+</section>
+
+<section class="card fade-in">
+    <h2>3️⃣ Connexion au backend</h2>
+
+    <p>
+        Se connecter au backend depuis Kubernetes avec le port-forward :
+    </p>
+
+    <div class="command-box">
+kubectl port-forward service/workshop-organizer-app-service 8080:8080
+    </div>
+
+    <img src="./images/22.jpg" alt="Backend Kubernetes" class="image">
+    <p class="legend">✔ Backend accessible</p>
+</section>
+
+<section class="card slide-in">
+    <h2>4️⃣ Connexion au frontend</h2>
+
+    <p>
+        Se connecter au frontend depuis Kubernetes avec le port-forward :
+    </p>
+
+    <div class="command-box">
+kubectl port-forward svc/olympic-games-app-service 4200:80
+    </div>
+
+    <img src="./images/23.jpg" alt="Frontend Kubernetes" class="image">
+    <p class="legend">✔ Frontend accessible</p>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+</body>
+</html>
