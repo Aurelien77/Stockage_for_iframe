@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>CI/CD GitLab Backend & Frontend</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* ========================= */
+        /* THEME BLANC CREME */
+        /* ========================= */
+        .cream-theme {
+            background: #fffaf0;
+            color: #333333;
+        }
+
+        .cream-theme .hero h1 {
+            color: #a0522d;
+        }
+
+        .cream-theme .card {
+            background: rgba(255, 255, 240, 0.9);
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cream-theme .button-toggle {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            background-color: #f0e68c;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.3s;
+        }
+
+        .cream-theme .button-toggle:hover {
+            background-color: #e6e066;
+        }
+
+        .cream-theme pre.yaml-content {
+            display: none;
+            background-color: #f5f5f5;
+            border-left: 4px solid #f0e68c;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+
+        .legend {
+            color: #a0522d;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body class="cream-theme">
+
+<header class="hero">
+    <h1>CI/CD GitLab Backend & Frontend</h1>
+    <p>Déploiement automatisé avec pipelines GitLab</p>
+</header>
+
+<section class="card fade-in">
+    <button class="button-toggle" onclick="toggleContent('backend-yaml')">
+        Création du fichier CI/CD pour GitLab Backend
+    </button>
+
+    <pre id="backend-yaml" class="yaml-content">
+stages:
+  - build
+  - test
+  - package
+  - publish_backend
+
+# Image de base commune (Java + Python)
+image: eclipse-temurin:21-jdk-alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true"
+  IMAGE_NAME: $CI_REGISTRY_IMAGE/backend
+  IMAGE_TAG_SHA: $CI_COMMIT_SHORT_SHA
+  IMAGE_TAG_BRANCH: $CI_COMMIT_REF_SLUG
+
+before_script:
+  - chmod +x gradlew || true
+  - apk add --no-cache python3 py3-pip
+
+# JOBS Backend...
+(build_backend, test_backend, package_backend_docker, release_backend, publish_backend)
+    </pre>
+</section>
+
+<section class="card slide-in">
+    <button class="button-toggle" onclick="toggleContent('frontend-yaml')">
+        Création du fichier CI/CD pour GitLab Frontend
+    </button>
+
+    <pre id="frontend-yaml" class="yaml-content">
+stages:
+  - test
+  - build
+  - package
+  - publish
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_BUILDKIT: 0
+
+# Détection Frontend...
+(is_frontend, test_frontend, build_angular, release_frontend, package_frontend, publish_frontend)
+    </pre>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+<script>
+    // Fonction pour afficher/masquer le YAML
+    function toggleContent(id) {
+        const content = document.getElementById(id);
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>

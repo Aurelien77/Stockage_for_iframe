@@ -270,3 +270,39 @@ footer {
     color: #fff8e1;
 }
 
+/* ========================= */
+/* ===== THEME BLEU CLAIRE === */
+/* ========================= */
+
+.light-blue-theme {
+    background: linear-gradient(120deg, #81d4fa, #b3e5fc);
+}
+
+/* Titres */
+.light-blue-theme .hero h1,
+.light-blue-theme .card h2 {
+    color: #01579b;
+}
+
+/* Cartes */
+.light-blue-theme .card {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Commandes */
+.light-blue-theme .command-box {
+    background: #0288d1;
+    color: #e1f5fe;
+}
+
+/* Légendes */
+.light-blue-theme .legend {
+    color: #01579b;
+}
+
+/* Footer */
+.light-blue-theme footer {
+    color: #0277bd;
+}
+
+
