@@ -132,3 +132,72 @@ footer {
         transform: translateY(0);
     }
 }
+/* ========================= */
+/* ===== THEME VERT ======== */
+/* ========================= */
+
+.green-theme {
+    background: linear-gradient(120deg, #1b5e20, #2e7d32);
+}
+
+/* Titres */
+.green-theme .hero h1,
+.green-theme .card h2 {
+    color: #a5ffb0;
+}
+
+/* Cartes */
+.green-theme .card {
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Commandes */
+.green-theme .command-box {
+    background: #062f14;
+    color: #6dff9e;
+}
+
+/* Légendes */
+.green-theme .legend {
+    color: #76ff03;
+}
+
+/* Footer */
+.green-theme footer {
+    color: #c8e6c9;
+}
+/* ========================= */
+/* ===== THEME JAUNE ======= */
+/* ========================= */
+
+.yellow-theme {
+    background: linear-gradient(120deg, #f9a825, #fdd835);
+}
+
+/* Titres */
+.yellow-theme .hero h1,
+.yellow-theme .card h2 {
+    color: #fff8e1;
+}
+
+/* Cartes */
+.yellow-theme .card {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+/* Commandes */
+.yellow-theme .command-box {
+    background: #3e2f00;
+    color: #ffeb3b;
+}
+
+/* Légendes */
+.yellow-theme .legend {
+    color: #fff176;
+}
+
+/* Footer */
+.yellow-theme footer {
+    color: #fffde7;
+}
