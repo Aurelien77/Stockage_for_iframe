@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Démarrage Backend Dockerisé</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="gray-theme">
+
+<header class="hero">
+    <h1>🐳 Démarrage du Backend Dockerisé</h1>
+    <p>Exécution du backend dans un conteneur Docker et vérification des requêtes</p>
+</header>
+
+<section class="card fade-in">
+    <h2>1️⃣ Démarrage du Docker File Backend</h2>
+
+    <p>
+        Pour démarrer le backend dockerisé, exécutez les commandes suivantes :
+    </p>
+
+    <div class="command-box">
+docker build -t olympic-backend:latest .<br><br>
+docker run -p 8080:8080 \`<br>
+&nbsp;&nbsp;-e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/workshopsdb \`<br>
+&nbsp;&nbsp;-e SPRING_DATASOURCE_USERNAME=workshops_user \`<br>
+&nbsp;&nbsp;-e SPRING_DATASOURCE_PASSWORD=oc2024 \`<br>
+&nbsp;&nbsp;olympic-backend:latest
+    </div>
+
+    <img src="./images/12.jpg" alt="Démarrage Backend Docker" class="image">
+
+    <p class="legend">✔ Backend dockerisé démarré</p>
+</section>
+
+<section class="card slide-in">
+    <h2>2️⃣ Vérification des requêtes</h2>
+
+    <p>
+        Les requêtes vers le backend dockerisé peuvent maintenant être effectuées correctement.  
+        Toutes les API sont accessibles via le conteneur.
+    </p>
+
+    <img src="./images/13.jpg" alt="Tests Backend Docker" class="image">
+
+    <p class="legend">✔ Les requêtes fonctionnent sur le backend dockerisé</p>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+</body>
+</html>

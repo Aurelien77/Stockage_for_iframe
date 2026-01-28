@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Compose</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="gray-theme">
+
+<header class="hero">
+    <h1>🐳 Utilisation de Docker Compose</h1>
+    <p>Lancement simultané du backend et frontend avec Docker Compose</p>
+</header>
+
+<section class="card fade-in">
+    <h2>1️⃣ Création du fichier Docker Compose</h2>
+
+    <p>
+        Le fichier <strong>docker-compose.yml</strong> est créé pour orchestrer
+        le backend et le frontend dans des conteneurs séparés.
+    </p>
+
+    <img src="./images/16.jpg" alt="Création docker-compose" class="image">
+
+    <p class="legend">✔ Fichier docker-compose créé</p>
+</section>
+
+<section class="card slide-in">
+    <h2>2️⃣ Lancement des conteneurs</h2>
+
+    <p>
+        Pour démarrer tous les services, utilisez la commande :
+    </p>
+
+    <div class="command-box">
+        docker-compose up
+    </div>
+
+    <img src="./images/17.jpg" alt="docker-compose up" class="image">
+
+    <p class="legend">✔ Services backend et frontend démarrés</p>
+</section>
+
+<section class="card fade-in">
+    <h2>3️⃣ Vérification du backend</h2>
+
+    <p>
+        Après le démarrage, il est possible d’effectuer les requêtes vers le backend
+        via les API exposées par Docker Compose.
+    </p>
+
+    <img src="./images/18.jpg" alt="Requêtes backend docker" class="image">
+
+    <p class="legend">✔ Requêtes backend fonctionnelles</p>
+</section>
+
+<section class="card slide-in">
+    <h2>4️⃣ Vérification du frontend</h2>
+
+    <p>
+        Le frontend est également accessible via le port configuré dans Docker Compose.
+        L’application est pleinement fonctionnelle.
+    </p>
+
+    <img src="./images/19.jpg" alt="Frontend accessible" class="image">
+
+    <p class="legend">✔ Frontend accessible</p>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+</body>
+</html>

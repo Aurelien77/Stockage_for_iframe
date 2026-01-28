@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Démarrage Frontend Dockerisé</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="gray-theme">
+
+<header class="hero">
+    <h1>🐳 Démarrage du Frontend Dockerisé</h1>
+    <p>Exécution du frontend dans un conteneur Docker et affichage sur le port 80</p>
+</header>
+
+<section class="card fade-in">
+    <h2>1️⃣ Démarrage du Docker File Frontend</h2>
+
+    <p>
+        Pour démarrer le frontend dockerisé, exécutez les commandes suivantes :
+    </p>
+
+    <div class="command-box">
+docker build -t olympic-frontend:latest .<br><br>
+docker run -p 80:80 olympic-frontend:latest
+    </div>
+
+    <img src="./images/14.jpg" alt="Démarrage Frontend Docker" class="image">
+
+    <p class="legend">✔ Frontend dockerisé démarré</p>
+</section>
+
+<section class="card slide-in">
+    <h2>2️⃣ Vérification du frontend</h2>
+
+    <p>
+        Le frontend démarre correctement et s’affiche sur le port 80 du navigateur.  
+        L’application est pleinement fonctionnelle depuis le conteneur.
+    </p>
+
+    <img src="./images/15.jpg" alt="Frontend Docker affiché" class="image">
+
+    <p class="legend">✔ Frontend visible et opérationnel sur le port 80</p>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+</body>
+</html>
