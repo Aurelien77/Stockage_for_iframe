@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisation de Charts Helm</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="gray-theme">
+
+<header class="hero">
+    <h1>📊 Utilisation de Charts Helm</h1>
+    <p>Déploiement de l’application sur l’environnement Dev avec Helm</p>
+</header>
+
+<section class="card fade-in">
+    <h2>1️⃣ Déploiement avec Helm</h2>
+
+    <p>
+        Pour déployer l’application sur Minikube avec Helm, utilisez les commandes suivantes :
+    </p>
+
+    <div class="command-box">
+minikube start<br><br>
+helm upgrade --install workshop-api ./workshop-api-chart ` <br>
+&nbsp;&nbsp;-f ./workshop-api-chart/values-dev.yaml ` <br>
+&nbsp;&nbsp;--namespace dev
+    </div>
+
+    <img src="./images/24.jpg" alt="Déploiement Helm" class="image">
+    <p class="legend">✔ Chart Helm déployé</p>
+</section>
+
+<section class="card slide-in">
+    <h2>2️⃣ Vérification des endpoints</h2>
+
+    <p>
+        Vérifier les endpoints disponibles dans le namespace dev :
+    </p>
+
+    <div class="command-box">
+# Vérifier les endpoints<br>
+kubectl get endpoints
+    </div>
+
+    <img src="./images/25.jpg" alt="Vérification Endpoints" class="image">
+    <p class="legend">✔ Endpoints disponibles</p>
+</section>
+
+<section class="card fade-in">
+    <h2>3️⃣ Application dans le namespace dev</h2>
+
+    <p>
+        L’application dans le namespace <strong>dev</strong> est bien déployée et opérationnelle.
+    </p>
+
+    <img src="./images/26.jpg" alt="Application namespace dev" class="image">
+    <p class="legend">✔ Application disponible et utilisable</p>
+</section>
+
+<section class="card slide-in">
+    <h2>4️⃣ Connexion au Backend et tests CRUD</h2>
+
+    <p>
+        Pour se connecter au backend en utilisant l’environnement de dev (via le fichier <strong>values-dev.yaml</strong>) et tester les requêtes CRUD :
+    </p>
+
+    <div class="command-box">
+kubectl port-forward -n dev svc/workshop-api-workshop-api-app 8080:8080
+    </div>
+
+    <img src="./images/27.jpg" alt="Tests CRUD Backend Dev" class="image">
+    <p class="legend">✔ Connexion au backend et tests CRUD réussis</p>
+</section>
+
+<footer>
+    <p>© 2026 - Documentation Application</p>
+</footer>
+
+</body>
+</html>
