@@ -21,17 +21,17 @@ body {
 }
 
 h1 {
-  font-size: 42px;
+  font-size: 48px;
   max-width: 900px;
   margin-bottom: 20px;
   line-height: 1.4;
 }
 
 p {
-  font-size: 20px;
+  font-size: 22px;
   max-width: 900px;
   color: #d0d0d0;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   line-height: 1.6;
 }
 
@@ -39,20 +39,29 @@ p {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 40px;
   margin-bottom: 60px;
 }
+.image-gallery1 img {
+ width: 1200px; 
 
+}
+
+.image-gallery2 {
+ width: 1000px; 
+
+}
 .image-gallery img {
-  max-width: 280px;
-  border-radius: 8px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    /* largeur maximale fixe */
+   /* s’adapte aux écrans étroits */
+  border-radius: 10px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .image-gallery img:hover {
   transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 25px 60px rgba(59,130,246,0.7);
+  box-shadow: 0 30px 70px rgba(59,130,246,0.7);
 }
 
 </style>
@@ -72,8 +81,8 @@ une trace historique de chaque exécution de pipeline.
 </p>
 
 <div class="image-gallery">
-  <img src="images/artefact.png" alt="Artefact de tests 1">
-  <img src="images/artefact2.png" alt="Artefact de tests 2">
+  <img src="images/artefact.png" class="image-gallery1" alt="Artefact de tests 1">
+  <img src="images/artefact2.png" class="image-gallery2" alt="Artefact de tests 2">
   <img src="images/artefact3.png" alt="Artefact de tests 3">
 </div>
 
