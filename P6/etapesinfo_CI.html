@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Pipeline CI/CD Explorer — MicroCRM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --bg:        #040810;
+  --surface:   #080f1a;
+  --surf2:     #0d1825;
+  --surf3:     #111e30;
+  --border:    #0e1f33;
+  --border2:   #1a3050;
+  --text:      #cde4ff;
+  --muted:     #5a7fa8;
+  --muted2:    #2d4a65;
+  --accent:    #00d4ff;
+  --green:     #00ff88;
+  --yellow:    #ffd700;
+  --orange:    #ff8c42;
+  --red:       #ff3d5a;
+  --purple:    #b47fff;
+  --teal:      #00e5cc;
+  --stage-w:   90px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+/* SCANLINE overlay */
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.012) 2px, rgba(0,212,255,0.012) 4px);
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Grid BG */
+body::after {
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── TOP BAR ───────────────────────────────────── */
+.topbar {
+  position: relative;
+  z-index: 10;
+  background: rgba(8,15,26,0.95);
+  border-bottom: 1px solid var(--border2);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--green), transparent);
+  opacity: 0.4;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #00d4ff22, #00d4ff44);
+  border: 1px solid #00d4ff55;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.brand h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.brand p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(0,255,136,0.07);
+  border: 1px solid rgba(0,255,136,0.25);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 700;
+}
+.pulse-dot {
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.8);} }
+
+.run-btn {
+  background: linear-gradient(135deg, #00d4ff22, #00d4ff44);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.run-btn:hover {
+  background: rgba(0,212,255,0.2);
+  box-shadow: 0 0 20px rgba(0,212,255,0.3);
+}
+
+.clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── PIPELINE TRACK ────────────────────────────── */
+.pipeline-wrapper {
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  padding: 28px 32px 0;
+  overflow: hidden;
+}
+
+.pipeline-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.pipeline-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/* STAGE BUTTON */
+.stage-btn {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.stage-btn:hover .stage-circle { transform: scale(1.08); }
+
+.stage-circle {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--surf2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  transition: all 0.3s;
+  position: relative;
+}
+.stage-circle::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.stage-btn.active   .stage-circle { border-color: var(--accent);  background: rgba(0,212,255,0.1);  box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+.stage-btn.success  .stage-circle { border-color: var(--green);   background: rgba(0,255,136,0.08); box-shadow: 0 0 16px rgba(0,255,136,0.2); }
+.stage-btn.warning  .stage-circle { border-color: var(--orange);  background: rgba(255,140,66,0.08); }
+.stage-btn.running  .stage-circle { border-color: var(--yellow);  background: rgba(255,215,0,0.08);  animation: spin-border 1s linear infinite; }
+
+@keyframes spin-border {
+  0%   { box-shadow: 0 0 0 1px transparent, 4px 0 0 rgba(255,215,0,0.8); }
+  25%  { box-shadow: 0 4px 0 rgba(255,215,0,0.8); }
+  50%  { box-shadow: -4px 0 0 rgba(255,215,0,0.8); }
+  75%  { box-shadow: 0 -4px 0 rgba(255,215,0,0.8); }
+  100% { box-shadow: 4px 0 0 rgba(255,215,0,0.8); }
+}
+
+.stage-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.stage-btn.active  .stage-name { color: var(--accent); }
+.stage-btn.success .stage-name { color: var(--green); }
+
+.stage-status-icon {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  border: 2px solid var(--bg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stage-btn.success .stage-status-icon { opacity: 1; background: var(--green); color: #000; }
+.stage-btn.warning .stage-status-icon { opacity: 1; background: var(--orange); color: #000; }
+
+/* CONNECTOR LINE */
+.pipe-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+.pipe-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--green));
+  transition: left 0.8s ease;
+}
+.pipe-line.done::after { left: 0; }
+
+/* BRANCH INDICATOR */
+.branch-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-bottom: 20px;
+}
+.branch-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  border: 1px solid;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.branch-pill.main   { background: rgba(255,215,0,0.08); border-color: rgba(255,215,0,0.35); color: var(--yellow); }
+.branch-pill.staging{ background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.3);  color: var(--accent); }
+.branch-pill.dev    { background: rgba(0,255,136,0.07); border-color: rgba(0,255,136,0.3);  color: var(--green); }
+.branch-pill.feat   { background: rgba(90,127,168,0.1); border-color: rgba(90,127,168,0.3); color: var(--muted); }
+.branch-pill:hover  { transform: scale(1.05); }
+
+/* ── CONTENT AREA ──────────────────────────────── */
+.content-area {
+  flex: 1;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── WELCOME SCREEN ────────────────────────────── */
+.welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+  transition: opacity 0.3s;
+}
+.welcome.hidden { display: none; }
+.welcome-icon { font-size: 64px; opacity: 0.3; }
+.welcome h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 3px;
+}
+.welcome p { font-size: 14px; color: var(--muted2); max-width: 360px; line-height: 1.7; }
+.welcome-hint {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted2);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+/* ── DETAIL PANEL ──────────────────────────────── */
+.detail {
+  flex: 1;
+  display: none;
+  overflow: hidden;
+  flex-direction: column;
+}
+.detail.open { display: flex; }
+
+.detail-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 18px;
+  align-content: start;
+}
+.detail-inner::-webkit-scrollbar { width: 4px; }
+.detail-inner::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* DETAIL HEADER */
+.detail-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border2);
+  animation: slideIn 0.3s ease both;
+}
+@keyframes slideIn { from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);} }
+
+.dh-icon {
+  width: 64px; height: 64px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  flex-shrink: 0;
+}
+.dh-title { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+.dh-sub   { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 5px; }
+.dh-tags  { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.dh-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 18px;
+  animation: slideIn 0.3s ease both;
+}
+.card.full { grid-column: 1 / -1; }
+.card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* COMMANDS */
+.cmd-block {
+  background: #020508;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin-bottom: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.cmd-block:hover { border-color: var(--accent); }
+.cmd-block:last-child { margin-bottom: 0; }
+.cmd-stage-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted2);
+  margin-bottom: 6px;
+}
+.cmd-line { color: var(--text); line-height: 1.7; }
+.cmd-line .kw  { color: #4da6ff; }
+.cmd-line .arg { color: #ffc47a; }
+.cmd-line .flag{ color: #a8d8ff; }
+.cmd-line .str { color: #80ffcc; }
+.cmd-line .cmt { color: #3a5a3a; }
+.copy-hint {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-size: 10px;
+  color: var(--muted2);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.cmd-block:hover .copy-hint { opacity: 1; }
+
+/* TEST RESULTS */
+.test-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.test-item:last-child { margin-bottom: 0; }
+.test-item:hover { border-color: var(--border2); background: var(--surf3); }
+.test-badge {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tb-pass  { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.4); }
+.tb-warn  { background: rgba(255,140,66,0.15); color: var(--orange); border: 1px solid rgba(255,140,66,0.4); }
+.tb-info  { background: rgba(0,212,255,0.12); color: var(--accent); border: 1px solid rgba(0,212,255,0.35); }
+.tb-fail  { background: rgba(255,61,90,0.12);  color: var(--red); border: 1px solid rgba(255,61,90,0.35); }
+
+.test-label { flex: 1; color: var(--text); font-weight: 600; }
+.test-val   { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.val-green  { color: var(--green); }
+.val-yellow { color: var(--yellow); }
+.val-orange { color: var(--orange); }
+.val-red    { color: var(--red); }
+
+/* ARTIFACT ITEMS */
+.artifact-item {
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.artifact-item:last-child { margin-bottom: 0; }
+.artifact-item:hover { border-color: var(--accent); background: var(--surf3); }
+.artifact-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.artifact-ico  { font-size: 18px; flex-shrink: 0; }
+.artifact-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.artifact-type {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--accent);
+}
+.artifact-path {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 6px 8px;
+  background: #020508;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  word-break: break-all;
+}
+.artifact-path .hl { color: #80ffcc; }
+
+/* WHERE TO FIND */
+.location-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.location-item:hover { border-color: var(--teal); background: var(--surf3); }
+.loc-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: rgba(0,229,204,0.1);
+  border: 1px solid rgba(0,229,204,0.3);
+  color: var(--teal);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.loc-content .loc-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.loc-content .loc-path  {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.loc-content .loc-path b { color: var(--teal); }
+
+/* QUALITY METRICS */
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.metric:last-child { margin-bottom: 0; }
+.metric-label { font-size: 13px; font-weight: 600; min-width: 150px; flex-shrink: 0; }
+.metric-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surf3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+.metric-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* CVE BADGE */
+.cve-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cve-card {
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid;
+}
+.cve-card .cve-count { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; }
+.cve-card .cve-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; margin-top: 3px; letter-spacing: 1px; }
+.cve-critical { background: rgba(255,61,90,0.08);  border-color: rgba(255,61,90,0.35);  }
+.cve-critical .cve-count { color: var(--red); }
+.cve-critical .cve-label { color: rgba(255,61,90,0.7); }
+.cve-high     { background: rgba(255,140,66,0.08); border-color: rgba(255,140,66,0.35); }
+.cve-high     .cve-count { color: var(--orange); }
+.cve-high     .cve-label { color: rgba(255,140,66,0.7); }
+.cve-medium   { background: rgba(255,215,0,0.07);  border-color: rgba(255,215,0,0.3);   }
+.cve-medium   .cve-count { color: var(--yellow); }
+.cve-medium   .cve-label { color: rgba(255,215,0,0.7); }
+.cve-low      { background: rgba(0,255,136,0.06);  border-color: rgba(0,255,136,0.25);  }
+.cve-low      .cve-count { color: var(--green); }
+.cve-low      .cve-label { color: rgba(0,255,136,0.7); }
+
+/* TAG REGISTRY */
+.tag-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #020508;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+.tag-item:hover { border-color: var(--purple); }
+.tag-item .tag-ico { font-size: 16px; }
+.tag-item .tag-name { color: #d8b4fe; flex: 1; }
+.tag-item .tag-sha  { color: var(--muted2); font-size: 11px; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--surf3);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  opacity: 0; transition: all 0.3s;
+  pointer-events: none; z-index: 1000;
+}
+.toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🚀</div>
+    <div>
+      <h1>Pipeline CI/CD Explorer</h1>
+      <p>MicroCRM DevOps · GitLab CI · 7 Stages</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="status-pill"><div class="pulse-dot"></div>Pipeline actif</div>
+    <button class="run-btn" onclick="simulateRun()">▶ Simuler une exécution</button>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+</div>
+
+<!-- PIPELINE TRACK -->
+<div class="pipeline-wrapper">
+  <div class="pipeline-label">// Sélectionnez un stage pour explorer ses détails, tests et artéfacts</div>
+  <div class="pipeline-track" id="pipelineTrack"></div>
+  <div class="branch-row">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1px;margin-right:4px;">BRANCHE:</span>
+    <span class="branch-pill main"   onclick="selectBranch('main')">main</span>
+    <span class="branch-pill staging" onclick="selectBranch('staging')">staging</span>
+    <span class="branch-pill dev"    onclick="selectBranch('developpement')">developpement</span>
+    <span class="branch-pill feat"   onclick="selectBranch('feature/*')">feature/*</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);margin-left:10px;" id="branchActive">Cliquez pour voir les stages actifs</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-area">
+
+  <div class="welcome" id="welcomeScreen">
+    <div class="welcome-icon">⚡</div>
+    <h2>Sélectionnez un stage</h2>
+    <p>Cliquez sur l'un des 7 stages du pipeline pour explorer ses commandes, résultats de tests, artéfacts générés et emplacements de récupération.</p>
+    <div class="welcome-hint">↑ Cliquez sur un stage ci-dessus ↑</div>
+  </div>
+
+  <div class="detail" id="detailPanel">
+    <div class="detail-inner" id="detailInner"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STAGE DATA ────────────────────────────────────────────────────────
+const STAGES = [
+  {
+    id: 'test',
+    icon: '🧪',
+    name: 'test',
+    label: 'Tests',
+    color: '#4da6ff',
+    branches: ['main','staging','developpement','feature/*'],
+    subtitle: 'Stage 1 — Validation automatique · Déclenché sur tous les pushes',
+    tags: [
+      { text: 'JUnit 5', col: '#4da6ff' },
+      { text: 'Karma', col: '#4da6ff' },
+      { text: 'ChromeHeadless', col: '#80d4ff' },
+      { text: 'JaCoCo', col: '#00ff88' },
+    ],
+    commands: [
+      {
+        label: 'Frontend — Angular',
+        lines: [
+          '<span class="kw">cd</span> <span class="arg">front</span>',
+          '<span class="kw">npm</span> <span class="arg">ci</span>',
+          '<span class="kw">ng test</span> <span class="flag">--browsers ChromeHeadless --watch=false --code-coverage</span>',
+        ]
+      },
+      {
+        label: 'Backend — Spring Boot',
+        lines: [
+          '<span class="kw">cd</span> <span class="arg">back</span>',
+          '<span class="kw">./gradlew</span> <span class="arg">clean test jacocoTestReport</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'Tests frontend Angular', val: '87 ✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Tests backend JUnit',    val: '124 ✓', valcol: 'val-green' },
+      { badge: 'tb-info', label: 'Couverture Backend (JaCoCo)', val: '76.4 %', valcol: 'val-green' },
+      { badge: 'tb-info', label: 'Couverture Frontend (Karma)', val: '68.1 %', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Seuil qualité couverture', val: '> 60 % ✓', valcol: 'val-green' },
+    ],
+    artifacts: [
+      { icon: '📊', name: 'Rapport JaCoCo HTML', type: 'HTML Report', path: 'back/build/reports/<b>jacoco/</b>index.html' },
+      { icon: '📄', name: 'Rapport JUnit XML',   type: 'XML / Surefire', path: 'back/build/test-results/<b>test/</b>*.xml' },
+      { icon: '📊', name: 'Rapport Karma HTML',  type: 'HTML Report', path: 'front/coverage/<b>microcrm/</b>index.html' },
+    ],
+    locations: [
+      { num: '1', title: 'GitLab CI — Onglet Pipeline', path: '<b>GitLab › MicroCRM › CI/CD › Pipelines</b> → cliquer sur le pipeline → stage "test" → Download artifacts' },
+      { num: '2', title: 'Job artifacts (expire 7 jours)', path: '<b>Job "test-backend"</b> et <b>"test-frontend"</b> → bouton ⬇ Artifacts' },
+      { num: '3', title: 'API GitLab', path: 'GET /api/v4/projects/<b>:id</b>/jobs/<b>:job_id</b>/artifacts' },
+    ]
+  },
+
+  {
+    id: 'security',
+    icon: '🔐',
+    name: 'security',
+    label: 'Sécurité',
+    color: '#ff8c42',
+    branches: ['main','staging','developpement'],
+    subtitle: 'Stage 2 — Détection de secrets · Gitleaks · Bloque si secrets exposés',
+    tags: [
+      { text: 'Gitleaks', col: '#ff8c42' },
+      { text: 'Secret Detection', col: '#ff8c42' },
+      { text: 'SAST', col: '#ffb280' },
+    ],
+    commands: [
+      {
+        label: 'Gitleaks — Scan secret detection',
+        lines: [
+          '<span class="kw">gitleaks</span> <span class="arg">detect</span> <span class="flag">--source . --report-format json</span> <span class="flag">\\</span>',
+          '  <span class="flag">--report-path gitleaks-report.json</span>',
+          '  <span class="flag">--exit-code 1</span> <span class="cmt"># exit 1 si secrets trouvés</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'Scan commits history',       val: '✓ Clean',  valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Scan fichiers tracked',      val: '✓ Clean',  valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Tokens API / mots de passe', val: '0 trouvé', valcol: 'val-green' },
+      { badge: 'tb-info', label: 'Fichiers exclus (.gitignore)', val: 'vars.yml', valcol: 'val-yellow' },
+    ],
+    artifacts: [
+      { icon: '📋', name: 'gitleaks-report.json', type: 'JSON Report', path: '<b>gitleaks-report.json</b> (à la racine du job)' },
+    ],
+    locations: [
+      { num: '1', title: 'Job "secret-detection" — GitLab', path: '<b>Pipeline › stage "security" › job "secret-detection"</b> → Log console' },
+      { num: '2', title: 'Rapport JSON', path: '<b>Artifacts</b> du job → <b>gitleaks-report.json</b>' },
+      { num: '3', title: 'Alertes GitLab Security', path: '<b>GitLab › Security & Compliance › Vulnerability Report</b>' },
+    ]
+  },
+
+  {
+    id: 'sonarqube',
+    icon: '📊',
+    name: 'sonarqube',
+    label: 'SonarQube',
+    color: '#b47fff',
+    branches: ['main','staging','developpement'],
+    subtitle: 'Stage 3 — Analyse qualité statique · Quality Gate · JaCoCo',
+    tags: [
+      { text: 'SonarQube', col: '#b47fff' },
+      { text: 'Quality Gate', col: '#d8b4fe' },
+      { text: 'JaCoCo', col: '#00ff88' },
+      { text: 'allow_failure: true', col: '#ff8c42' },
+    ],
+    commands: [
+      {
+        label: 'Backend — Analyse + rapport JaCoCo',
+        lines: [
+          '<span class="kw">cd</span> <span class="arg">back</span>',
+          '<span class="kw">./gradlew</span> <span class="arg">clean test jacocoTestReport sonar</span> <span class="flag">\\</span>',
+          '  <span class="flag">-Dsonar.projectKey=microcrm</span> <span class="flag">\\</span>',
+          '  <span class="flag">-Dsonar.host.url=$SONAR_HOST_URL</span> <span class="flag">\\</span>',
+          '  <span class="flag">-Dsonar.token=$SONAR_TOKEN</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-info', label: 'Couverture tests backend', val: '76.4 %', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Bugs critiques', val: '0', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Vulnérabilités OWASP', val: '0', valcol: 'val-green' },
+      { badge: 'tb-warn', label: 'Dette technique', val: '2.5 j', valcol: 'val-yellow' },
+      { badge: 'tb-pass', label: 'Duplication code', val: '1.2 %', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Quality Gate global', val: '✓ PASSED', valcol: 'val-green' },
+    ],
+    metrics: [
+      { label: 'Couverture', val: 76, color: '#00ff88', display: '76.4 %', col: 'val-green' },
+      { label: 'Fiabilité',  val: 95, color: '#00ff88', display: 'A', col: 'val-green' },
+      { label: 'Maintenabilité', val: 88, color: '#00ff88', display: 'A', col: 'val-green' },
+      { label: 'Sécurité',  val: 100, color: '#00ff88', display: 'A', col: 'val-green' },
+    ],
+    artifacts: [
+      { icon: '🔗', name: 'Dashboard SonarQube', type: 'Web UI', path: '<b>$SONAR_HOST_URL</b>/dashboard?id=microcrm' },
+      { icon: '📊', name: 'Rapport Quality Gate', type: 'API JSON', path: '<b>$SONAR_HOST_URL</b>/api/qualitygates/project_status?projectKey=microcrm' },
+    ],
+    locations: [
+      { num: '1', title: 'Dashboard SonarQube Web', path: '<b>http://sonarqube.microcrm.local</b> → Projects → microcrm' },
+      { num: '2', title: 'GitLab — Lien direct dans le job', path: '<b>Pipeline › sonarqube › logs</b> → lien cliquable vers le dashboard' },
+      { num: '3', title: 'API REST SonarQube', path: 'GET <b>/api/measures/component?component=microcrm&metricKeys=coverage,bugs</b>' },
+    ]
+  },
+
+  {
+    id: 'package',
+    icon: '📦',
+    name: 'package',
+    label: 'Package',
+    color: '#ffd700',
+    branches: ['main','staging','developpement'],
+    subtitle: 'Stage 4 — Build & création des images Docker · 3 artifacts .tar',
+    tags: [
+      { text: 'Docker build', col: '#ffd700' },
+      { text: 'Multi-images', col: '#ffd700' },
+      { text: '.tar artifacts', col: '#ffed80' },
+    ],
+    commands: [
+      {
+        label: 'Build des 3 images Docker',
+        lines: [
+          '<span class="cmt"># Image frontend Angular</span>',
+          '<span class="kw">docker build</span> <span class="flag">-f Dockerfile.front</span> <span class="flag">-t</span> <span class="str">microcrm-front:$CI_COMMIT_SHA</span> <span class="arg">.</span>',
+          '<span class="kw">docker save</span> <span class="str">microcrm-front:$CI_COMMIT_SHA</span> <span class="flag">| gzip ></span> <span class="arg">front.tar.gz</span>',
+          '',
+          '<span class="cmt"># Image backend Spring Boot</span>',
+          '<span class="kw">docker build</span> <span class="flag">-f Dockerfile.back</span>  <span class="flag">-t</span> <span class="str">microcrm-back:$CI_COMMIT_SHA</span> <span class="arg">.</span>',
+          '<span class="kw">docker save</span> <span class="str">microcrm-back:$CI_COMMIT_SHA</span> <span class="flag">| gzip ></span> <span class="arg">back.tar.gz</span>',
+          '',
+          '<span class="cmt"># Image standalone (front+back)</span>',
+          '<span class="kw">docker build</span> <span class="flag">-t</span> <span class="str">microcrm-standalone:$CI_COMMIT_SHA</span> <span class="arg">.</span>',
+          '<span class="kw">docker save</span> <span class="str">microcrm-standalone:$CI_COMMIT_SHA</span> <span class="flag">| gzip ></span> <span class="arg">standalone.tar.gz</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'Image front construite',       val: '✓',       valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Image back construite',        val: '✓',       valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Image standalone construite',  val: '✓',       valcol: 'val-green' },
+      { badge: 'tb-info', label: 'Taille image front',           val: '~180 MB', valcol: 'val-yellow' },
+      { badge: 'tb-info', label: 'Taille image back',            val: '~320 MB', valcol: 'val-yellow' },
+      { badge: 'tb-info', label: 'Tag appliqué',                 val: ':SHA', valcol: 'val-green' },
+    ],
+    artifacts: [
+      { icon: '🗜️', name: 'front.tar.gz',      type: 'Docker Image', path: 'artifact job <b>package</b> → <b>front.tar.gz</b>' },
+      { icon: '🗜️', name: 'back.tar.gz',       type: 'Docker Image', path: 'artifact job <b>package</b> → <b>back.tar.gz</b>' },
+      { icon: '🗜️', name: 'standalone.tar.gz', type: 'Docker Image', path: 'artifact job <b>package</b> → <b>standalone.tar.gz</b>' },
+    ],
+    locations: [
+      { num: '1', title: 'GitLab Artifacts — Job "package"', path: '<b>Pipeline › package › Artifacts</b> → 3 fichiers .tar.gz téléchargeables' },
+      { num: '2', title: 'Expiration des artifacts', path: 'Les .tar expirent après <b>1 jour</b> (passé en publish pour le push registry)' },
+      { num: '3', title: 'Restauration manuelle', path: '<b>docker load < front.tar.gz</b> pour recharger localement' },
+    ]
+  },
+
+  {
+    id: 'trivy',
+    icon: '🛡️',
+    name: 'trivy',
+    label: 'Trivy',
+    color: '#ff3d5a',
+    branches: ['main','staging','developpement'],
+    subtitle: 'Stage 5 — Scan CVE AVANT publication · exit 1 si CRITICAL',
+    tags: [
+      { text: 'Trivy', col: '#ff3d5a' },
+      { text: 'CVE Scan', col: '#ff3d5a' },
+      { text: 'allow_failure: true', col: '#ff8c42' },
+      { text: 'Avant publish', col: '#00ff88' },
+    ],
+    commands: [
+      {
+        label: 'Scan Trivy sur les 3 images',
+        lines: [
+          '<span class="cmt"># Charger les images depuis les artifacts</span>',
+          '<span class="kw">docker load</span> <span class="flag"><</span> <span class="arg">front.tar.gz</span>',
+          '<span class="kw">docker load</span> <span class="flag"><</span> <span class="arg">back.tar.gz</span>',
+          '<span class="kw">docker load</span> <span class="flag"><</span> <span class="arg">standalone.tar.gz</span>',
+          '',
+          '<span class="cmt"># Scan avec rapport HTML + blocage si CRITICAL</span>',
+          '<span class="kw">trivy image</span> <span class="flag">--format template --template @html.tpl</span> <span class="flag">\\</span>',
+          '  <span class="flag">--output trivy-front.html</span> <span class="str">microcrm-front:$CI_COMMIT_SHA</span>',
+          '<span class="kw">trivy image</span> <span class="flag">--exit-code 1</span> <span class="flag">--severity CRITICAL</span> <span class="flag">\\</span>',
+          '  <span class="str">microcrm-front:$CI_COMMIT_SHA</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'CVE CRITICAL (bloquant)',  val: '0 ✓', valcol: 'val-green' },
+      { badge: 'tb-warn', label: 'CVE HIGH',                 val: '3 ⚠',  valcol: 'val-orange' },
+      { badge: 'tb-info', label: 'CVE MEDIUM',               val: '12',   valcol: 'val-yellow' },
+      { badge: 'tb-pass', label: 'CVE LOW',                  val: '28',   valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Statut pipeline',          val: '🟠 Orange', valcol: 'val-orange' },
+    ],
+    cveData: [
+      { cls: 'cve-critical', count: 0,  label: 'CRITICAL' },
+      { cls: 'cve-high',     count: 3,  label: 'HIGH' },
+      { cls: 'cve-medium',   count: 12, label: 'MEDIUM' },
+      { cls: 'cve-low',      count: 28, label: 'LOW' },
+    ],
+    artifacts: [
+      { icon: '📊', name: 'trivy-front.html',      type: 'HTML Report', path: 'artifact job <b>trivy_scan</b> → <b>trivy-front.html</b>' },
+      { icon: '📊', name: 'trivy-back.html',       type: 'HTML Report', path: 'artifact job <b>trivy_scan</b> → <b>trivy-back.html</b>' },
+      { icon: '📊', name: 'trivy-standalone.html', type: 'HTML Report', path: 'artifact job <b>trivy_scan</b> → <b>trivy-standalone.html</b>' },
+    ],
+    locations: [
+      { num: '1', title: 'Rapports HTML Trivy — GitLab Artifacts', path: '<b>Pipeline › trivy_scan › Artifacts</b> → 3 rapports HTML interactifs' },
+      { num: '2', title: 'Logique orange vs rouge', path: 'CRITICAL → <b>exit 1</b> + <b>allow_failure: true</b> = badge orange (non bloquant)' },
+      { num: '3', title: 'Base CVE Trivy', path: 'DB auto-mise à jour depuis <b>ghcr.io/aquasecurity/trivy-db</b>' },
+    ]
+  },
+
+  {
+    id: 'publish',
+    icon: '📤',
+    name: 'publish',
+    label: 'Publish',
+    color: '#00e5cc',
+    branches: ['main','staging','developpement'],
+    subtitle: 'Stage 6 — Push GitLab Container Registry · Tag :SHA + :branche',
+    tags: [
+      { text: 'GitLab Registry', col: '#00e5cc' },
+      { text: ':SHA tag', col: '#00e5cc' },
+      { text: ':branch tag', col: '#80ffee' },
+    ],
+    commands: [
+      {
+        label: 'Login + push vers le registry GitLab',
+        lines: [
+          '<span class="cmt"># Login au registry GitLab CI (auto-injecté)</span>',
+          '<span class="kw">docker login</span> <span class="flag">-u</span> <span class="str">$CI_REGISTRY_USER</span> <span class="flag">-p</span> <span class="str">$CI_REGISTRY_PASSWORD</span> <span class="arg">$CI_REGISTRY</span>',
+          '',
+          '<span class="cmt"># Charger + taguer + pusher chaque image</span>',
+          '<span class="kw">docker load</span> <span class="flag"><</span> <span class="arg">front.tar.gz</span>',
+          '<span class="kw">docker tag</span> <span class="str">microcrm-front:$CI_COMMIT_SHA</span> <span class="flag">\\</span>',
+          '  <span class="str">$CI_REGISTRY_IMAGE/front:$CI_COMMIT_SHORT_SHA</span>',
+          '<span class="kw">docker tag</span> <span class="str">microcrm-front:$CI_COMMIT_SHA</span> <span class="flag">\\</span>',
+          '  <span class="str">$CI_REGISTRY_IMAGE/front:$CI_COMMIT_BRANCH</span>',
+          '<span class="kw">docker push</span> <span class="flag">--all-tags</span> <span class="str">$CI_REGISTRY_IMAGE/front</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'Image front pushée',       val: '✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Image back pushée',        val: '✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Image standalone pushée',  val: '✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Tag :SHA appliqué',        val: 'a3f7c2d', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Tag :branch appliqué',     val: 'main', valcol: 'val-green' },
+    ],
+    registryTags: [
+      { img: 'microcrm/front', sha: 'a3f7c2d', branch: 'main' },
+      { img: 'microcrm/back',  sha: 'a3f7c2d', branch: 'main' },
+      { img: 'microcrm/standalone', sha: 'a3f7c2d', branch: 'main' },
+    ],
+    artifacts: [
+      { icon: '🐳', name: 'registry.gitlab.com/…/front', type: 'Container Image', path: '<b>registry.gitlab.com/</b>votre-groupe/microcrm/<b>front:a3f7c2d</b>' },
+      { icon: '🐳', name: 'registry.gitlab.com/…/back', type: 'Container Image', path: '<b>registry.gitlab.com/</b>votre-groupe/microcrm/<b>back:a3f7c2d</b>' },
+    ],
+    locations: [
+      { num: '1', title: 'GitLab Container Registry', path: '<b>GitLab › MicroCRM › Deploy › Container Registry</b>' },
+      { num: '2', title: 'Pull de l\'image', path: '<b>docker pull registry.gitlab.com/groupe/microcrm/front:main</b>' },
+      { num: '3', title: 'Dans Helm values-staging.yaml', path: 'image: <b>registry.gitlab.com/groupe/microcrm/standalone:main</b>' },
+    ]
+  },
+
+  {
+    id: 'release',
+    icon: '🏷️',
+    name: 'release',
+    label: 'Release',
+    color: '#00ff88',
+    branches: ['main'],
+    subtitle: 'Stage 7 — Semantic Release · SemVer automatique · CHANGELOG.md',
+    tags: [
+      { text: 'Semantic Release', col: '#00ff88' },
+      { text: 'SemVer', col: '#00ff88' },
+      { text: 'CHANGELOG', col: '#80ffcc' },
+      { text: 'main only', col: '#ffd700' },
+    ],
+    commands: [
+      {
+        label: 'Semantic Release — .releaserc.json',
+        lines: [
+          '<span class="cmt"># Semantic Release analyse les commits conventionnels</span>',
+          '<span class="kw">npx semantic-release</span>',
+          '',
+          '<span class="cmt"># Conventional Commits → version</span>',
+          '<span class="str">feat:</span>     <span class="cmt">→ bump MINOR  (1.2.0 → 1.3.0)</span>',
+          '<span class="str">fix:</span>      <span class="cmt">→ bump PATCH  (1.2.0 → 1.2.1)</span>',
+          '<span class="str">feat!:</span>    <span class="cmt">→ bump MAJOR  (1.2.0 → 2.0.0)</span>',
+          '<span class="str">docs/ci:</span>  <span class="cmt">→ pas de nouvelle version</span>',
+        ]
+      }
+    ],
+    tests: [
+      { badge: 'tb-pass', label: 'Analyse des commits', val: '12 commits', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Nouvelle version détectée', val: 'v1.4.0', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Tag Git créé', val: 'v1.4.0 ✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'CHANGELOG.md mis à jour', val: '✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'GitLab Release créée', val: '✓', valcol: 'val-green' },
+      { badge: 'tb-pass', label: 'Token GL_TOKEN utilisé', val: '✓ injecté', valcol: 'val-green' },
+    ],
+    artifacts: [
+      { icon: '📝', name: 'CHANGELOG.md', type: 'Fichier Git', path: 'racine du dépôt → <b>CHANGELOG.md</b> (auto-commit par Semantic Release)' },
+      { icon: '🏷️', name: 'Tag Git v1.4.0', type: 'Git Tag', path: '<b>GitLab › Repository › Tags</b> → v1.4.0' },
+      { icon: '📋', name: 'GitLab Release', type: 'Release Page', path: '<b>GitLab › Deploy › Releases</b> → notes de version auto-générées' },
+    ],
+    locations: [
+      { num: '1', title: 'Tags GitLab', path: '<b>GitLab › MicroCRM › Repository › Tags</b>' },
+      { num: '2', title: 'Page Releases GitLab', path: '<b>GitLab › MicroCRM › Deploy › Releases</b> → détail de chaque version' },
+      { num: '3', title: 'CHANGELOG.md dans le dépôt', path: '<b>git log --oneline</b> ou fichier <b>CHANGELOG.md</b> à la racine' },
+    ]
+  },
+];
+
+let activeStage = null;
+let simTimer = null;
+
+// ── BUILD PIPELINE ────────────────────────────────────────────────────
+function buildPipeline() {
+  const track = document.getElementById('pipelineTrack');
+  track.innerHTML = '';
+  STAGES.forEach((s, i) => {
+    // Line before
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.className = 'pipe-line';
+      line.id = `line-${i}`;
+      track.appendChild(line);
+    }
+    // Stage button
+    const btn = document.createElement('div');
+    btn.className = 'stage-btn';
+    btn.id = `stage-${s.id}`;
+    btn.innerHTML = `
+      <div class="stage-circle">
+        <div class="stage-status-icon">✓</div>
+        ${s.icon}
+      </div>
+      <div class="stage-name">${s.name}</div>
+    `;
+    btn.addEventListener('click', () => selectStage(s.id));
+    track.appendChild(btn);
+  });
+}
+
+// ── SELECT STAGE ──────────────────────────────────────────────────────
+function selectStage(id) {
+  activeStage = id;
+  // Update active state
+  STAGES.forEach(s => {
+    const btn = document.getElementById(`stage-${s.id}`);
+    btn.classList.remove('active');
+    if (s.id === id) btn.classList.add('active');
+  });
+
+  const stage = STAGES.find(s => s.id === id);
+  const inner = document.getElementById('detailInner');
+
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  const dp = document.getElementById('detailPanel');
+  dp.classList.add('open');
+
+  const tagHtml = stage.tags.map(t =>
+    `<span class="dh-tag" style="background:${t.col}18;border-color:${t.col}44;color:${t.col}">${t.text}</span>`
+  ).join('');
+
+  let html = `
+    <div class="detail-header" style="animation-delay:0s">
+      <div class="dh-icon" style="background:${stage.color}15;border:1px solid ${stage.color}40;">${stage.icon}</div>
+      <div>
+        <div class="dh-title" style="color:${stage.color}">STAGE ${STAGES.indexOf(stage)+1} — ${stage.name.toUpperCase()}</div>
+        <div class="dh-sub">${stage.subtitle}</div>
+        <div class="dh-tags">${tagHtml}</div>
+      </div>
+    </div>
+  `;
+
+  // COMMANDS
+  html += `<div class="card" style="animation-delay:0.05s">
+    <div class="card-title">⌨️ Commandes exécutées</div>
+    ${stage.commands.map(c => `
+      <div class="cmd-block" onclick="copyCmd(this)">
+        <div class="cmd-stage-label">${c.label}</div>
+        <span class="copy-hint">📋 copier</span>
+        ${c.lines.map(l => `<div class="cmd-line">${l}</div>`).join('')}
+      </div>
+    `).join('')}
+  </div>`;
+
+  // TESTS
+  html += `<div class="card" style="animation-delay:0.1s">
+    <div class="card-title">🔬 Résultats & vérifications</div>
+    ${stage.tests.map(t => `
+      <div class="test-item">
+        <div class="test-badge ${t.badge}">●</div>
+        <span class="test-label">${t.label}</span>
+        <span class="test-val ${t.valcol}">${t.val}</span>
+      </div>
+    `).join('')}
+  </div>`;
+
+  // METRICS (SonarQube)
+  if (stage.metrics) {
+    html += `<div class="card full" style="animation-delay:0.15s">
+      <div class="card-title">📈 Métriques qualité</div>
+      ${stage.metrics.map(m => `
+        <div class="metric">
+          <span class="metric-label">${m.label}</span>
+          <div class="metric-track"><div class="metric-fill" style="width:${m.val}%;background:${m.color}"></div></div>
+          <span class="metric-val ${m.col}">${m.display}</span>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  // CVE Grid (Trivy)
+  if (stage.cveData) {
+    html += `<div class="card" style="animation-delay:0.15s">
+      <div class="card-title">🕷️ Vulnérabilités CVE détectées</div>
+      <div class="cve-grid">
+        ${stage.cveData.map(c => `
+          <div class="cve-card ${c.cls}">
+            <div class="cve-count">${c.count}</div>
+            <div class="cve-label">${c.label}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }
+
+  // Registry tags (Publish)
+  if (stage.registryTags) {
+    html += `<div class="card" style="animation-delay:0.15s">
+      <div class="card-title">🐳 Images publiées au registry</div>
+      ${stage.registryTags.map(r => `
+        <div class="tag-item">
+          <span class="tag-ico">📦</span>
+          <span class="tag-name">${r.img}</span>
+          <span class="tag-sha">:${r.sha} · :${r.branch}</span>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  // ARTIFACTS
+  html += `<div class="card" style="animation-delay:0.2s">
+    <div class="card-title">💾 Artéfacts générés</div>
+    ${stage.artifacts.map(a => `
+      <div class="artifact-item">
+        <div class="artifact-head">
+          <span class="artifact-ico">${a.icon}</span>
+          <span class="artifact-name">${a.name}</span>
+          <span class="artifact-type">${a.type}</span>
+        </div>
+        <div class="artifact-path">${a.path}</div>
+      </div>
+    `).join('')}
+  </div>`;
+
+  // WHERE TO FIND
+  html += `<div class="card" style="animation-delay:0.25s">
+    <div class="card-title">📍 Où les récupérer</div>
+    ${stage.locations.map(l => `
+      <div class="location-item">
+        <div class="loc-num">${l.num}</div>
+        <div class="loc-content">
+          <div class="loc-title">${l.title}</div>
+          <div class="loc-path">${l.path}</div>
+        </div>
+      </div>
+    `).join('')}
+  </div>`;
+
+  inner.innerHTML = html;
+  inner.scrollTop = 0;
+}
+
+// ── BRANCH FILTER ─────────────────────────────────────────────────────
+function selectBranch(b) {
+  const label = {
+    'main': '⭐ main : tous les 7 stages s\'exécutent',
+    'staging': '🔵 staging : stages 1→6 (pas de Release)',
+    'developpement': '🟢 developpement : stages 1→6',
+    'feature/*': '⚙️ feature/* : stage 1 uniquement (test)',
+  }[b] || b;
+  document.getElementById('branchActive').textContent = label;
+
+  const active = {
+    'main': ['test','security','sonarqube','package','trivy','publish','release'],
+    'staging': ['test','security','sonarqube','package','trivy','publish'],
+    'developpement': ['test','security','sonarqube','package','trivy','publish'],
+    'feature/*': ['test'],
+  }[b] || [];
+
+  STAGES.forEach(s => {
+    const btn = document.getElementById(`stage-${s.id}`);
+    btn.classList.remove('success');
+    if (active.includes(s.id)) btn.classList.add('success');
+  });
+
+  showToast('📡 Branche : ' + b);
+}
+
+// ── SIMULATE RUN ──────────────────────────────────────────────────────
+function simulateRun() {
+  clearTimeout(simTimer);
+  // Reset
+  STAGES.forEach(s => {
+    const btn = document.getElementById(`stage-${s.id}`);
+    btn.classList.remove('success','warning','running','active');
+  });
+  for (let i = 1; i < STAGES.length; i++) {
+    const line = document.getElementById(`line-${i}`);
+    if (line) line.classList.remove('done');
+  }
+  showToast('▶ Simulation démarrée…');
+
+  let i = 0;
+  function runNext() {
+    if (i > 0) {
+      const prev = STAGES[i-1];
+      const prevBtn = document.getElementById(`stage-${prev.id}`);
+      prevBtn.classList.remove('running');
+      prevBtn.classList.add(prev.id === 'trivy' ? 'warning' : 'success');
+      const line = document.getElementById(`line-${i}`);
+      if (line) line.classList.add('done');
+    }
+    if (i >= STAGES.length) { showToast('✅ Pipeline terminé avec succès !'); return; }
+    const cur = STAGES[i];
+    const curBtn = document.getElementById(`stage-${cur.id}`);
+    curBtn.classList.add('running');
+    selectStage(cur.id);
+    i++;
+    simTimer = setTimeout(runNext, 1200);
+  }
+  runNext();
+}
+
+// ── COPY CMD ──────────────────────────────────────────────────────────
+function copyCmd(el) {
+  const text = el.querySelectorAll('.cmd-line');
+  const raw = Array.from(text).map(l => l.textContent).join('\n');
+  navigator.clipboard?.writeText(raw).catch(()=>{});
+  showToast('📋 Commandes copiées !');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────────────
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── INIT ──────────────────────────────────────────────────────────────
+buildPipeline();
+</script>
+</body>
+</html>
