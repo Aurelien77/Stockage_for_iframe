@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>CI Originel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#080c12;
+--surface:#0f1520;
+--border:#1f2d42;
+--text:#e8f0fe;
+--muted:#7a92b4;
+--accent:#3b82f6;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+font-family:"DM Sans";
+font-size:20px;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:90px 20px 40px;
+}
+
+.hero h1{
+font-family:"Syne";
+font-size:64px;
+margin-bottom:20px;
+}
+
+.hero p{
+max-width:800px;
+margin:auto;
+color:var(--muted);
+font-size:22px;
+}
+
+/* CI CONTAINER */
+
+.ci-wrapper{
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:120px;
+position:relative;
+height:500px;
+}
+
+/* IMAGE CENTRALE */
+
+
+/* CARDS */
+
+.card{
+width:260px;
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:14px;
+padding:20px;
+position:absolute;
+transition:0.3s;
+}
+
+.card:hover{
+border-color:var(--accent);
+transform:translateY(-6px);
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+.card h3{
+font-size:24px;
+margin-bottom:8px;
+}
+
+.card p{
+font-size:18px;
+color:var(--muted);
+}
+
+/* POSITIONS */
+
+.tests{
+left:5%;
+top:50%;
+transform:translateY(-50%);
+}
+
+.build{
+right:5%;
+top:50%;
+transform:translateY(-50%);
+}
+
+/* LIGNES */
+
+.line{
+position:absolute;
+height:2px;
+background:var(--accent);
+opacity:0.6;
+}
+
+.line-left{
+width:220px;
+left:18%;
+top:50%;
+}
+
+.line-right{
+width:220px;
+right:18%;
+top:50%;
+}
+
+/* ANIMATION */
+
+.fade{
+opacity:0;
+transform:translateY(30px);
+transition:0.8s;
+}
+
+.fade.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+padding:80px 20px;
+color:var(--muted);
+}
+
+</style>
+</head>
+
+<body>
+
+<section class="hero fade">
+
+<h1>CI Originel</h1>
+
+<p>
+Le pipeline d’intégration continue originel du projet est simple.
+Il comporte seulement deux étapes : l’exécution des tests et,
+si ceux-ci réussissent, la génération du build de l’application.
+</p>
+
+</section>
+
+
+<div class="ci-wrapper">
+
+<div class=" fade">
+<img src="./images/image1.jpg" alt="CI Originel">
+</div>
+
+<div class="card tests fade">
+<h3>Tests</h3>
+<p>
+Chaque modification du code déclenche automatiquement
+l’exécution des tests afin de vérifier que l’application
+fonctionne correctement.
+</p>
+</div>
+
+<div class="card build fade">
+<h3>Build</h3>
+<p>
+Si les tests passent avec succès,
+le système génère automatiquement
+le build de l’application.
+</p>
+</div>
+
+<div class="line line-left"></div>
+<div class="line line-right"></div>
+
+</div>
+
+<div class="footer">
+Pipeline CI simple : Tests → Build
+</div>
+
+<script>
+
+const observer = new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
+},{threshold:0.2});
+
+document.querySelectorAll(".fade").forEach(el=>{
+observer.observe(el);
+});
+
+</script>
+
+</body>
+</html>
