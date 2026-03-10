@@ -1,92 +1,595 @@
-https://aurelien77.github.io/Stockage_for_iframe/P6/premiere_page.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/seconde_page.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Ansible Deploy — MicroCRM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/radar.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/radar-info.html
+:root {
+  --bg:     #040810;
+  --surf:   #080f1a;
+  --surf2:  #0d1825;
+  --border: #1a3050;
+  --text:   #cde4ff;
+  --muted:  #5a7fa8;
+  --muted2: #2d4a65;
+  --accent: #00d4ff;
+  --green:  #00ff88;
+  --yellow: #ffd700;
+  --orange: #ff8c42;
+  --purple: #b47fff;
+  --teal:   #00e5cc;
+  --red:    #ff3d5a;
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; padding: 40px 44px;
+  position: relative;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.012) 2px,rgba(0,212,255,0.012) 4px);
+  pointer-events:none; z-index:0;
+}
+body::after {
+  content:''; position:fixed; inset:0;
+  background-image: linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px), linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);
+  background-size:40px 40px; pointer-events:none; z-index:0;
+}
+.page { position:relative; z-index:1; max-width:1060px; margin:0 auto; }
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/CI.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/architecture-microcrm.html
+/* HEADER */
+.header {
+  text-align:center; margin-bottom:44px;
+  animation: fadeDown 0.5s ease both;
+}
+.header h1 {
+  font-family:'Orbitron',monospace; font-size:20px; font-weight:900;
+  letter-spacing:3px; color:var(--orange); margin-bottom:8px;
+}
+.header p { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); letter-spacing:1px; }
 
+/* TRIGGER */
+.trigger-box {
+  background:rgba(255,140,66,0.06); border:2px solid rgba(255,140,66,0.4);
+  border-radius:16px; padding:16px 24px;
+  display:flex; align-items:center; gap:16px; justify-content:center;
+  margin-bottom:10px; position:relative;
+  animation: fadeUp 0.4s ease 0.05s both;
+}
+.trigger-box::after {
+  content:''; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%);
+  width:2px; height:10px; background:var(--muted2);
+}
+.trigger-ico { font-size:28px; }
+.trigger-cmd {
+  font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700;
+}
+.trigger-cmd .t-base { color:var(--orange); }
+.trigger-cmd .t-file { color:var(--text); }
+.trigger-note { font-size:12px; color:var(--muted); margin-top:3px; }
 
+/* FORK */
+.fork {
+  position:relative; display:flex; justify-content:center;
+  margin-bottom:10px; animation: fadeUp 0.4s ease 0.12s both;
+}
+.fork-label {
+  background:var(--surf2); border:1px solid var(--border);
+  border-radius:10px; padding:7px 20px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  color:var(--muted); letter-spacing:1px;
+}
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/etapes_CI.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/etapesinfo_CI.html
+/* PATHS CONTAINER */
+.paths {
+  display:grid; grid-template-columns:1fr 1fr; gap:24px;
+  margin-bottom:24px;
+}
 
+/* PATH */
+.path {
+  border-radius:18px; overflow:hidden; border:1px solid;
+  animation: fadeUp 0.4s ease both;
+}
+.path-dev     { border-color:rgba(0,255,136,0.25); animation-delay:0.18s; }
+.path-staging { border-color:rgba(0,212,255,0.25); animation-delay:0.24s; }
 
+.path-header {
+  padding:14px 20px; display:flex; align-items:center; gap:14px;
+}
+.path-dev     .path-header { background:rgba(0,255,136,0.06); border-bottom:1px solid rgba(0,255,136,0.15); }
+.path-staging .path-header { background:rgba(0,212,255,0.06); border-bottom:1px solid rgba(0,212,255,0.15); }
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/job-test.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/artefact.html
+.path-ico  { font-size:22px; }
+.ph-title  { font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:1.5px; }
+.path-dev     .ph-title { color:var(--green); }
+.path-staging .ph-title { color:var(--accent); }
+.ph-sub    { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); margin-top:2px; }
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/gitleak.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/sonarqube.html
+.cmd-pill {
+  margin-left:auto; background:var(--surf); border:1px solid var(--border);
+  border-radius:8px; padding:5px 12px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+}
+.path-dev     .cmd-pill { color:var(--green); border-color:rgba(0,255,136,0.3); background:rgba(0,255,136,0.06); }
+.path-staging .cmd-pill { color:var(--accent); border-color:rgba(0,212,255,0.3); background:rgba(0,212,255,0.06); }
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/package.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/trivy.html
+/* STEPS */
+.steps { padding:16px 16px 20px; background:var(--surf); display:flex; flex-direction:column; gap:0; }
 
-https://aurelien77.github.io/Stockage_for_iframe/P6/pusblish.html
-https://aurelien77.github.io/Stockage_for_iframe/P6/infra.html
+.step {
+  position:relative; display:flex; gap:14px; align-items:flex-start; padding:12px 0;
+}
+.step:not(:last-child)::after {
+  content:''; position:absolute; left:17px; top:44px; bottom:0;
+  width:2px; background:var(--border);
+}
 
+.step-num {
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  position:relative; z-index:1;
+}
+.path-dev     .step-num { background:rgba(0,255,136,0.1);  border:1px solid rgba(0,255,136,0.35);  color:var(--green); }
+.path-staging .step-num { background:rgba(0,212,255,0.1);  border:1px solid rgba(0,212,255,0.35);  color:var(--accent); }
 
+.step-ico { font-size:16px; margin-top:1px; }
+.step-content { flex:1; min-width:0; }
+.step-title { font-size:13px; font-weight:700; margin-bottom:2px; }
+.step-desc  { font-size:11.5px; color:var(--muted); line-height:1.55; }
 
+.step-code {
+  background:#020508; border:1px solid var(--border);
+  border-radius:7px; padding:7px 10px; margin-top:6px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
+  line-height:1.6;
+}
+.step-code .kw  { color:#4da6ff; }
+.step-code .str { color:#80ffcc; }
+.step-code .hl  { color:var(--yellow); }
+.step-code .cmt { color:#2a4532; }
 
+/* DIFF BADGE */
+.diff-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700;
+  padding:2px 8px; border-radius:5px; margin-top:5px;
+}
+.diff-only-staging { background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--accent); }
+.diff-only-dev     { background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3); color:var(--green); }
 
+/* RESULT BOX */
+.result-box {
+  border-radius:16px; padding:16px 20px;
+  margin-top:4px; display:flex; flex-direction:column; gap:10px;
+}
+.path-dev     .result-box { background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.15); }
+.path-staging .result-box { background:rgba(0,212,255,0.04); border:1px solid rgba(0,212,255,0.15); }
 
+.result-title {
+  font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:700;
+  text-transform:uppercase; letter-spacing:2px; color:var(--muted2); margin-bottom:4px;
+}
 
-https://aurelien77.github.io/Stockage_for_iframe/3-Installation_GUI.html
+.res-item {
+  display:flex; align-items:center; gap:9px; font-size:12px;
+}
+.res-ico { font-size:15px; flex-shrink:0; }
+.res-val { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; margin-left:auto; }
 
-https://aurelien77.github.io/Stockage_for_iframe/4-Connexion_postsgreSQL.html
+/* SHARED SECTION */
+.shared-section {
+  background:var(--surf); border:1px solid var(--border);
+  border-radius:16px; padding:20px 24px; margin-bottom:20px;
+  animation: fadeUp 0.4s ease 0.32s both;
+}
+.shared-title {
+  font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:2px; color:var(--muted2); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
 
+.shared-steps {
+  display:flex; align-items:flex-start; gap:0; flex-wrap:nowrap; overflow-x:auto;
+}
+.sh-step { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:100px; padding:0 6px; }
+.sh-bubble {
+  width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:20px; border:2px solid; cursor:pointer; transition:transform 0.2s;
+}
+.sh-bubble:hover { transform:scale(1.1); }
+.sh-label { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; text-align:center; color:var(--muted); white-space:nowrap; line-height:1.4; }
+.sh-arrow { font-size:20px; color:var(--muted2); padding:0 2px; margin-bottom:28px; flex-shrink:0; align-self:center; }
 
+/* DIFF SUMMARY */
+.diff-summary {
+  background:var(--surf); border:1px solid var(--border);
+  border-radius:16px; padding:20px 24px;
+  animation: fadeUp 0.4s ease 0.38s both;
+}
+.diff-row {
+  display:grid; grid-template-columns:160px 1fr 1fr; gap:14px;
+  align-items:center; padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.diff-row:last-child { border-bottom:none; padding-bottom:0; }
+.diff-row:first-child { padding-top:0; }
+.diff-key {
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:1px;
+}
+.diff-dev, .diff-stg {
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; border-radius:8px; padding:7px 12px;
+}
+.diff-dev { background:rgba(0,255,136,0.06); border:1px solid rgba(0,255,136,0.2); color:#80ffcc; }
+.diff-stg { background:rgba(0,212,255,0.06); border:1px solid rgba(0,212,255,0.2); color:#7dcfff; }
 
-https://aurelien77.github.io/Stockage_for_iframe/1-Schema-technique.html
-https://aurelien77.github.io/Stockage_for_iframe/2-Schema-BD.html
-https://aurelien77.github.io/Stockage_for_iframe/MSchoix.html
-https://aurelien77.github.io/Stockage_for_iframe/Visual_Studio.html
-https://aurelien77.github.io/Stockage_for_iframe/BD.html
-https://aurelien77.github.io/Stockage_for_iframe/security.html
+/* TOAST */
+.toast {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(60px);
+  background:var(--surf2); border:1px solid var(--orange); color:var(--orange);
+  padding:10px 22px; border-radius:10px;
+  font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
+  opacity:0; transition:all 0.3s; pointer-events:none; z-index:1000;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-https://aurelien77.github.io/Stockage_for_iframe/React.html
+@keyframes fadeDown { from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);} }
+</style>
+</head>
+<body>
+<div class="page">
 
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🚀 DÉPLOIEMENT INFRASTRUCTURE</h1>
+    <p>Ansible · Terraform · Helm · Kubernetes · MicroCRM</p>
+  </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/CSS.html
-https://aurelien77.github.io/Stockage_for_iframe/Tests_Front.html
-https://aurelien77.github.io/Stockage_for_iframe/Tests_Backend.html
+  <!-- TRIGGER -->
+  <div class="trigger-box" onclick="toast('Ansible lit deploy-microcrm.yml et exécute les tâches sur localhost')">
+    <span class="trigger-ico">⚡</span>
+    <div>
+      <div class="trigger-cmd">
+        <span class="t-base">ansible-playbook </span><span class="t-file">deploy-microcrm.yml</span>
+      </div>
+      <div class="trigger-note">Point d'entrée unique — exécuté depuis le poste développeur ou la CI</div>
+    </div>
+  </div>
 
+  <!-- FORK -->
+  <div class="fork" style="margin-bottom:6px;">
+    <svg width="500" height="48" style="overflow:visible;display:block;margin:0 auto;">
+      <!-- vertical down from trigger -->
+      <line x1="250" y1="0" x2="250" y2="20" stroke="#2d4a65" stroke-width="2"/>
+      <!-- horizontal bar -->
+      <line x1="90" y1="20" x2="410" y2="20" stroke="#2d4a65" stroke-width="2"/>
+      <!-- left branch -->
+      <line x1="90" y1="20" x2="90" y2="48" stroke="rgba(0,255,136,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
+      <!-- right branch -->
+      <line x1="410" y1="20" x2="410" y2="48" stroke="rgba(0,212,255,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
+    </svg>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-bottom:14px;padding:0 20px;animation:fadeUp 0.4s ease 0.14s both;">
+    <div style="background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.25);border-radius:8px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--green);">
+      Sans variable (défaut)
+    </div>
+    <div style="background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.25);border-radius:8px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--yellow);">
+      -e "env=staging"
+    </div>
+    <div style="background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.25);border-radius:8px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);">
+      Avec variable env=staging
+    </div>
+  </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/Aurevoir.html
+  <!-- TWO PATHS -->
+  <div class="paths">
 
----------------------------------------------------------------------------------
+    <!-- ── PATH DEV ── -->
+    <div class="path path-dev">
+      <div class="path-header">
+        <span class="path-ico">🟢</span>
+        <div>
+          <div class="ph-title">DÉVELOPPEMENT</div>
+          <div class="ph-sub">Image locale Minikube · values.yaml · NodePorts 30080–82</div>
+        </div>
+        <div class="cmd-pill">env=dev (défaut)</div>
+      </div>
 
+      <div class="steps">
 
+        <div class="step">
+          <div class="step-num">1</div>
+          <div style="padding-top:8px;">
+            <span class="step-ico">🐳</span>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Démarrage Docker Desktop</div>
+            <div class="step-desc">Vérifie que Docker est actif. Bloque jusqu'au démarrage complet du daemon.</div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/1.html
+        <div class="step">
+          <div class="step-num">2</div>
+          <div style="padding-top:8px;"><span class="step-ico">☸️</span></div>
+          <div class="step-content">
+            <div class="step-title">Démarrage Minikube</div>
+            <div class="step-desc">Lance le cluster local si absent. Contextualise kubectl.</div>
+            <div class="step-code"><span class="kw">minikube start</span> <span class="hl">--driver=docker</span></div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/2.html
+        <div class="step">
+          <div class="step-num">3</div>
+          <div style="padding-top:8px;"><span class="step-ico">🔨</span></div>
+          <div class="step-content">
+            <div class="step-title">Build image dans Minikube</div>
+            <div class="step-desc">Construit l'image <strong style="color:var(--text)">directement dans le daemon Minikube</strong> — pas de registry nécessaire.</div>
+            <div class="step-code">
+              <span class="kw">eval</span> $(minikube docker-env)<br>
+              <span class="kw">docker build</span> -t <span class="str">microcrm-standalone:latest</span> .
+            </div>
+            <div class="diff-badge diff-only-dev">🟢 Dev uniquement</div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/3.html
+        <div class="step">
+          <div class="step-num">4</div>
+          <div style="padding-top:8px;"><span class="step-ico">🏗️</span></div>
+          <div class="step-content">
+            <div class="step-title">Terraform — provisionnement</div>
+            <div class="step-desc">Crée le namespace, le secret PostgreSQL, le PVC et le pod postgres dans Kubernetes.</div>
+            <div class="step-code">
+              <span class="kw">terraform init</span> && <span class="kw">terraform apply</span> <span class="hl">-auto-approve</span><br>
+              <span class="cmt"># → namespace microcrm, secret pg, PVC 1Gi</span>
+            </div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/4.html
+        <div class="step">
+          <div class="step-num">5</div>
+          <div style="padding-top:8px;"><span class="step-ico">⛵</span></div>
+          <div class="step-content">
+            <div class="step-title">Helm — déploiement avec values.yaml</div>
+            <div class="step-desc">Déploie les 3 réplicas standalone avec l'image locale, sans imagePullSecrets.</div>
+            <div class="step-code">
+              <span class="kw">helm upgrade --install</span> microcrm ./helm/microcrm <span class="hl">\</span><br>
+              &nbsp;&nbsp;<span class="hl">-f values.yaml</span> <span class="cmt">← image locale, NodePorts 30080-82</span><br>
+              &nbsp;&nbsp;-n microcrm
+            </div>
+            <div class="diff-badge diff-only-dev">🟢 values.yaml — image: microcrm-standalone:latest</div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num">6</div>
+          <div style="padding-top:8px;"><span class="step-ico">🐍</span></div>
+          <div class="step-content">
+            <div class="step-title">Script Python — attente & port-forward</div>
+            <div class="step-desc">Lance start-microcrm.py : attend les pods Ready, ouvre les port-forwards et vérifie les URLs HTTP.</div>
+            <div class="step-code"><span class="kw">python3</span> scripts/start-microcrm.py</div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/5.html
-https://aurelien77.github.io/Stockage_for_iframe/P4/6.html
-https://aurelien77.github.io/Stockage_for_iframe/P4/7.html
-https://aurelien77.github.io/Stockage_for_iframe/P4/8.html
-https://aurelien77.github.io/Stockage_for_iframe/P4/9.html
-https://aurelien77.github.io/Stockage_for_iframe/P4/10.html
+        <!-- RESULT -->
+        <div class="result-box">
+          <div class="result-title">✅ Résultat</div>
+          <div class="res-item"><span class="res-ico">🌐</span> App disponible<span class="res-val" style="color:var(--green);">:8888</span></div>
+          <div class="res-item"><span class="res-ico">☸️</span> 3 réplicas microcrm<span class="res-val" style="color:var(--green);">NodePorts 30080–82</span></div>
+          <div class="res-item"><span class="res-ico">🗄️</span> PostgreSQL<span class="res-val" style="color:var(--green);">PVC monté</span></div>
+          <div class="res-item"><span class="res-ico">📊</span> Kibana ELK<span class="res-val" style="color:var(--green);">:5601</span></div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/11.html
+      </div>
+    </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/12.html
+    <!-- ── PATH STAGING ── -->
+    <div class="path path-staging">
+      <div class="path-header">
+        <span class="path-ico">🔵</span>
+        <div>
+          <div class="ph-title">STAGING</div>
+          <div class="ph-sub">Registry GitLab · values-staging.yaml · NodePorts 30083–85</div>
+        </div>
+        <div class="cmd-pill">-e "env=staging"</div>
+      </div>
 
+      <div class="steps">
 
+        <div class="step">
+          <div class="step-num">1</div>
+          <div style="padding-top:8px;"><span class="step-ico">🐳</span></div>
+          <div class="step-content">
+            <div class="step-title">Démarrage Docker Desktop</div>
+            <div class="step-desc">Même vérification daemon Docker. Identique au mode dev.</div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/13.html
+        <div class="step">
+          <div class="step-num">2</div>
+          <div style="padding-top:8px;"><span class="step-ico">☸️</span></div>
+          <div class="step-content">
+            <div class="step-title">Démarrage Minikube</div>
+            <div class="step-desc">Lance le cluster. Même comportement que dev.</div>
+            <div class="step-code"><span class="kw">minikube start</span> <span class="hl">--driver=docker</span></div>
+          </div>
+        </div>
 
-https://aurelien77.github.io/Stockage_for_iframe/P4/14.html
+        <div class="step" style="opacity:0.4;">
+          <div class="step-num" style="background:rgba(90,127,168,0.1);border-color:var(--muted2);color:var(--muted2);">—</div>
+          <div style="padding-top:8px;"><span class="step-ico">🚫</span></div>
+          <div class="step-content">
+            <div class="step-title" style="color:var(--muted);">Build image — ignoré</div>
+            <div class="step-desc">Pas de build local. L'image est tirée depuis le <strong>GitLab Registry</strong> au moment du déploiement Kubernetes.</div>
+            <div class="diff-badge" style="background:rgba(255,61,90,0.08);border:1px solid rgba(255,61,90,0.25);color:var(--red);">🔵 Non exécuté en staging</div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num">3</div>
+          <div style="padding-top:8px;"><span class="step-ico">🔑</span></div>
+          <div class="step-content">
+            <div class="step-title">Création imagePullSecret</div>
+            <div class="step-desc">Crée le secret Kubernetes pour s'authentifier au registry GitLab privé <strong style="color:var(--text)">avant</strong> le déploiement Helm.</div>
+            <div class="step-code">
+              <span class="kw">kubectl create secret</span> docker-registry <span class="str">gitlab-registry</span> <span class="hl">\</span><br>
+              &nbsp;&nbsp;--docker-server=<span class="str">registry.gitlab.com</span> <span class="hl">\</span><br>
+              &nbsp;&nbsp;--docker-username=<span class="hl">$GL_USER</span> --docker-password=<span class="hl">$GL_TOKEN</span>
+            </div>
+            <div class="diff-badge diff-only-staging">🔵 Staging uniquement</div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num">4</div>
+          <div style="padding-top:8px;"><span class="step-ico">🏗️</span></div>
+          <div class="step-content">
+            <div class="step-title">Terraform — provisionnement</div>
+            <div class="step-desc">Identique au mode dev — namespace, secret PostgreSQL, PVC, pod postgres.</div>
+            <div class="step-code">
+              <span class="kw">terraform apply</span> <span class="hl">-auto-approve</span>
+            </div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num">5</div>
+          <div style="padding-top:8px;"><span class="step-ico">⛵</span></div>
+          <div class="step-content">
+            <div class="step-title">Helm — déploiement avec values-staging.yaml</div>
+            <div class="step-desc">Kubernetes tire l'image depuis le registry GitLab via imagePullSecrets.</div>
+            <div class="step-code">
+              <span class="kw">helm upgrade --install</span> microcrm ./helm/microcrm <span class="hl">\</span><br>
+              &nbsp;&nbsp;<span class="hl">-f values-staging.yaml</span> <span class="cmt">← registry GitLab, 30083-85</span><br>
+              &nbsp;&nbsp;-n microcrm
+            </div>
+            <div class="diff-badge diff-only-staging">🔵 values-staging.yaml — image: registry.gitlab.com/…/standalone:main</div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num">6</div>
+          <div style="padding-top:8px;"><span class="step-ico">🐍</span></div>
+          <div class="step-content">
+            <div class="step-title">Script Python — attente & port-forward</div>
+            <div class="step-desc">Identique — attend que les pods soient Ready avant de déclarer le déploiement terminé.</div>
+            <div class="step-code"><span class="kw">python3</span> scripts/start-microcrm.py</div>
+          </div>
+        </div>
 
+        <!-- RESULT -->
+        <div class="result-box">
+          <div class="result-title">✅ Résultat</div>
+          <div class="res-item"><span class="res-ico">🌐</span> App disponible<span class="res-val" style="color:var(--accent);">:8888</span></div>
+          <div class="res-item"><span class="res-ico">☸️</span> 3 réplicas microcrm<span class="res-val" style="color:var(--accent);">NodePorts 30083–85</span></div>
+          <div class="res-item"><span class="res-ico">🐳</span> Image depuis registry<span class="res-val" style="color:var(--accent);">:main</span></div>
+          <div class="res-item"><span class="res-ico">🔑</span> imagePullSecret<span class="res-val" style="color:var(--accent);">configuré</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SHARED STEPS POST-HELM -->
+  <div class="shared-section">
+    <div class="shared-title">⚡ Étapes communes après Helm — exécutées dans les deux cas</div>
+    <div class="shared-steps">
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(180,127,255,0.08);border-color:rgba(180,127,255,0.35);" onclick="toast('wait_for_pods_ready() — boucle toutes les 5s jusqu\'à Ready')">⏳</div>
+        <div class="sh-label">Attente<br>pods Ready</div>
+      </div>
+      <div class="sh-arrow">›</div>
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(255,215,0,0.07);border-color:rgba(255,215,0,0.3);" onclick="toast('kill_port() libère les ports déjà occupés avant le port-forward')">🔓</div>
+        <div class="sh-label">Libération<br>des ports</div>
+      </div>
+      <div class="sh-arrow">›</div>
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(0,229,204,0.07);border-color:rgba(0,229,204,0.3);" onclick="toast('kubectl port-forward ouvre :8080 :5432 vers les pods K8s')">🔌</div>
+        <div class="sh-label">Port-forwards<br>kubectl</div>
+      </div>
+      <div class="sh-arrow">›</div>
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(0,212,255,0.07);border-color:rgba(0,212,255,0.3);" onclick="toast('wait_for_http() vérifie GET / → 200 OK avant de continuer')">🌐</div>
+        <div class="sh-label">Vérif HTTP<br>200 OK</div>
+      </div>
+      <div class="sh-arrow">›</div>
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(255,140,66,0.07);border-color:rgba(255,140,66,0.3);" onclick="toast('docker-compose up : HAProxy :8888 + ELK (Elastic, Logstash, Kibana, Filebeat)')">🐙</div>
+        <div class="sh-label">Docker Compose<br>HAProxy + ELK</div>
+      </div>
+      <div class="sh-arrow">›</div>
+      <div class="sh-step">
+        <div class="sh-bubble" style="background:rgba(0,255,136,0.07);border-color:rgba(0,255,136,0.3);" onclick="toast('webbrowser.open() ouvre automatiquement http://127.0.0.1:8888')">🚀</div>
+        <div class="sh-label">App ouverte<br>dans le navigateur</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIFF TABLE -->
+  <div class="diff-summary">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted2);">⚖️ Récapitulatif des différences</div>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <div style="background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.25);border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);">🟢 Développement</div>
+      <div style="background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.25);border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);">🔵 Staging</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">Commande</div>
+      <div class="diff-dev">ansible-playbook deploy-microcrm.yml</div>
+      <div class="diff-stg">ansible-playbook deploy-microcrm.yml -e "env=staging"</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">Source image</div>
+      <div class="diff-dev">Build local (daemon Minikube)</div>
+      <div class="diff-stg">Pull depuis registry.gitlab.com</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">Helm values</div>
+      <div class="diff-dev">values.yaml</div>
+      <div class="diff-stg">values-staging.yaml</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">NodePorts</div>
+      <div class="diff-dev">30080 · 30081 · 30082</div>
+      <div class="diff-stg">30083 · 30084 · 30085</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">imagePullSecret</div>
+      <div class="diff-dev">Non requis</div>
+      <div class="diff-stg">Créé avec GL_TOKEN</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">Tag image</div>
+      <div class="diff-dev">:latest (local)</div>
+      <div class="diff-stg">:main (ou :SHA)</div>
+    </div>
+    <div class="diff-row">
+      <div class="diff-key">Partagé</div>
+      <div class="diff-dev" style="grid-column:span 1;">Terraform · Script Python · Docker Compose · HAProxy · ELK</div>
+      <div class="diff-stg">← identique</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
