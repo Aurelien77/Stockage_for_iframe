@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 2 — Plan CI Actuel MicroCRM</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --test-color: #58a6ff;
+    --build-color: #f0b429;
+    --success-color: #3fb950;
+    --danger-color: #ef4444;
+    --text: #e6edf3;
+    --muted: #8b949e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2332 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .page-badge {
+    background: linear-gradient(135deg, #b45309, #d97706);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .header h1 { font-size: 16px; font-weight: 600; }
+  .nav-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-btn:hover { background: var(--border); color: var(--text); }
+  .nav-btn.active { background: var(--build-color); border-color: var(--build-color); color: #1a1200; }
+
+  /* ── MAIN ── */
+  .main { padding: 36px 32px; max-width: 1100px; margin: 0 auto; }
+
+  .page-title {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .page-title h2 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .page-title p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── PIPELINE TRACK ── */
+  .pipeline-track {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 36px;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  /* ── STAGE CARD ── */
+  .stage-card {
+    flex: 1;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+  }
+  .stage-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .stage-card.test-card  { border-top: 3px solid var(--test-color); }
+  .stage-card.build-card { border-top: 3px solid var(--build-color); }
+  .stage-card.active-glow.test-card  { box-shadow: 0 0 24px rgba(88,166,255,0.25); }
+  .stage-card.active-glow.build-card { box-shadow: 0 0 24px rgba(240,180,41,0.25); }
+
+  .stage-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .stage-icon { font-size: 22px; }
+  .stage-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .test-card  .stage-name { color: var(--test-color); }
+  .build-card .stage-name { color: var(--build-color); }
+  .stage-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .stage-body { padding: 16px 18px; }
+
+  /* ── SUB SECTION ── */
+  .sub-section { margin-bottom: 18px; }
+  .sub-section:last-child { margin-bottom: 0; }
+  .sub-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .sub-label.front { background: rgba(88,166,255,0.12); color: #93c5fd; }
+  .sub-label.back  { background: rgba(59,180,88,0.12);  color: #86efac; }
+  .sub-label.node  { background: rgba(240,180,41,0.12); color: #fcd34d; }
+  .sub-label.gradle{ background: rgba(59,180,88,0.12);  color: #86efac; }
+
+  /* ── COMMAND BLOCKS ── */
+  .cmd-list { display: flex; flex-direction: column; gap: 6px; }
+  .cmd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cmd::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .cmd.front::before { background: var(--test-color); }
+  .cmd.back::before  { background: var(--success-color); }
+  .cmd.build-front::before { background: var(--build-color); }
+  .cmd.build-back::before  { background: var(--success-color); }
+  .cmd:hover { background: #2d333b; transform: translateX(3px); }
+  .cmd .prompt { color: var(--muted); user-select: none; }
+  .cmd .command { color: #79c0ff; }
+  .cmd .arg { color: #ffa657; }
+  .cmd .flag { color: #a5d6ff; }
+
+  /* ── CONNECTOR ── */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    gap: 6px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+  .connector-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, rgba(59,185,80,0.3), rgba(59,185,80,0.8));
+  }
+  .connector-badge {
+    background: rgba(59,185,80,0.12);
+    border: 1px solid rgba(59,185,80,0.4);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--success-color);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .connector-arrow {
+    font-size: 20px;
+    color: var(--success-color);
+  }
+
+  /* ── LIMITATIONS ── */
+  .limitations-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease 0.35s both;
+  }
+  .limitations-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--danger-color);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .limitations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .limit-card {
+    background: rgba(239,68,68,0.05);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .limit-card:hover {
+    background: rgba(239,68,68,0.1);
+    transform: translateY(-2px);
+  }
+  .limit-icon { font-size: 20px; margin-bottom: 6px; }
+  .limit-title { font-size: 12px; font-weight: 600; color: #fca5a5; margin-bottom: 4px; }
+  .limit-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* ── WHAT'S NEXT ── */
+  .next-section {
+    background: linear-gradient(135deg, rgba(59,185,80,0.05), rgba(88,166,255,0.03));
+    border: 1px solid rgba(59,185,80,0.2);
+    border-radius: 14px;
+    padding: 20px;
+    animation: fadeUp 0.5s ease 0.45s both;
+  }
+  .next-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--success-color);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stages-new {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .stage-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .stage-pill:hover { transform: translateY(-2px) scale(1.04); }
+  .stage-pill.kept   { background: rgba(59,185,80,0.15);  border: 1px solid rgba(59,185,80,0.4);  color: #86efac; }
+  .stage-pill.added  { background: rgba(88,166,255,0.15); border: 1px solid rgba(88,166,255,0.4); color: #93c5fd; }
+  .stage-pill.added2 { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.4); color: #d8b4fe; }
+  .stage-pill.added3 { background: rgba(239,68,68,0.15);  border: 1px solid rgba(239,68,68,0.4);  color: #fca5a5; }
+  .stage-pill.added4 { background: rgba(240,180,41,0.15); border: 1px solid rgba(240,180,41,0.4); color: #fcd34d; }
+  .pill-arrow { color: var(--muted); font-size: 14px; padding: 0 2px; }
+
+  .stage-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0 20px;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── TOOLTIP ── */
+  .tooltip-wrap { position: relative; }
+  .tooltip-wrap .tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1c2128;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 50;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .tooltip-wrap:hover .tooltip { opacity: 1; }
+
+  /* ── COPY FEEDBACK ── */
+  .copied-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1c2128;
+    border: 1px solid var(--success-color);
+    color: var(--success-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .copied-toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <span class="page-badge">PAGE 2 / 2</span>
+    <h1>Plan CI Actuel — MicroCRM</h1>
+  </div>
+  <nav style="display:flex; gap:8px;">
+    <a class="nav-btn" href="page1-architecture-actuelle.html">← Architecture</a>
+    <a class="nav-btn active" href="#">⚙️ Plan CI</a>
+  </nav>
+</div>
+
+<div class="main">
+
+  <div class="page-title">
+    <h2>Pipeline CI Actuel</h2>
+    <p>// 2 stages uniquement — test → build — avant enrichissement</p>
+  </div>
+
+  <!-- PIPELINE TRACK -->
+  <div class="pipeline-track">
+
+    <!-- STAGE TEST -->
+    <div class="stage-card test-card" id="testCard">
+      <div class="stage-header">
+        <span class="stage-icon">🧪</span>
+        <div>
+          <div class="stage-name">Tests</div>
+          <div class="stage-sub">Stage 1 — déclenché à chaque push</div>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <!-- Frontend -->
+        <div class="sub-section">
+          <span class="sub-label front">🎨 Test Frontend — Angular</span>
+          <div class="cmd-list">
+            <div class="cmd front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">cd</span>
+              <span class="arg">front</span>
+              <span class="tooltip">Déplacement dans le dossier frontend</span>
+            </div>
+            <div class="cmd front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">npm</span>
+              <span class="arg">ci</span>
+              <span class="tooltip">Installation des dépendances npm (clean install)</span>
+            </div>
+            <div class="cmd front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">ng test</span>
+              <span class="flag">--browsers ChromeHeadless</span>
+              <span class="tooltip">Cypress / Angular — exécution tests en Chrome sans interface</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; padding:6px 10px; background:rgba(88,166,255,0.06); border-radius:6px; font-size:10.5px; color:var(--muted);">
+            Framework : Jasmine 5.1.0 · Karma 6.4.0 · Chrome Headless · karma-coverage
+          </div>
+        </div>
+
+        <!-- Backend -->
+        <div class="sub-section">
+          <span class="sub-label back">⚙️ Test Backend — Gradle</span>
+          <div class="cmd-list">
+            <div class="cmd back tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">cd</span>
+              <span class="arg">back</span>
+              <span class="tooltip">Déplacement dans le dossier backend</span>
+            </div>
+            <div class="cmd back tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">./gradlew</span>
+              <span class="arg">test</span>
+              <span class="tooltip">Exécution des tests JUnit via Gradle Wrapper</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; padding:6px 10px; background:rgba(59,180,88,0.06); border-radius:6px; font-size:10.5px; color:var(--muted);">
+            Framework : JUnit Platform · Spring Boot Test · gradle:jdk17
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CONNECTOR -->
+    <div class="connector">
+      <div class="connector-line"></div>
+      <div class="connector-badge">
+        <span>✅</span>
+        <span>Succès</span>
+      </div>
+      <div class="connector-arrow">→</div>
+      <div style="font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; text-align:center; padding:0 4px;">Si tous<br>les tests<br>passent</div>
+      <div class="connector-line"></div>
+    </div>
+
+    <!-- STAGE BUILD -->
+    <div class="stage-card build-card" id="buildCard">
+      <div class="stage-header">
+        <span class="stage-icon">📦</span>
+        <div>
+          <div class="stage-name">Build</div>
+          <div class="stage-sub">Stage 2 — conditionnel au succès des tests</div>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <!-- Frontend Build -->
+        <div class="sub-section">
+          <span class="sub-label node">🎨 Build Frontend — Node.js / Angular</span>
+          <div class="cmd-list">
+            <div class="cmd build-front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">cd</span>
+              <span class="arg">front</span>
+              <span class="tooltip">Dossier Angular</span>
+            </div>
+            <div class="cmd build-front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">npm</span>
+              <span class="arg">ci</span>
+              <span class="tooltip">Installation propre des dépendances</span>
+            </div>
+            <div class="cmd build-front tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">ng build</span>
+              <span class="flag">--prod</span>
+              <span class="tooltip">Build de production Angular (minification, optimisation)</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; padding:6px 10px; background:rgba(240,180,41,0.06); border-radius:6px; font-size:10.5px; color:var(--muted);">
+            Angular B · Node.js · Webpack · Terser (minification)
+          </div>
+        </div>
+
+        <!-- Backend Build -->
+        <div class="sub-section">
+          <span class="sub-label gradle">⚙️ Build Backend — Gradle</span>
+          <div class="cmd-list">
+            <div class="cmd build-back tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">cd</span>
+              <span class="arg">back</span>
+              <span class="tooltip">Dossier Spring Boot</span>
+            </div>
+            <div class="cmd build-back tooltip-wrap">
+              <span class="prompt">$</span>
+              <span class="command">./gradlew</span>
+              <span class="arg">Build</span>
+              <span class="tooltip">Compilation + package du JAR Spring Boot</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; padding:6px 10px; background:rgba(59,180,88,0.06); border-radius:6px; font-size:10.5px; color:var(--muted);">
+            Gradle Build · Java 17 · Gradle Wrapper · Spring Boot 3.2.5
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /pipeline-track -->
+
+  <!-- LIMITATIONS -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-label">⚠️ Limitations du pipeline actuel</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="limitations-section">
+    <div class="limitations-title">🔴 Ce qui manque dans ce pipeline à 2 stages</div>
+    <div class="limitations-grid">
+      <div class="limit-card">
+        <div class="limit-icon">🔍</div>
+        <div class="limit-title">Analyse qualité du code absente</div>
+        <div class="limit-desc">Aucun SonarQube, ESLint, Checkstyle ni Quality Gate. La dette technique s'accumule sans détection automatique.</div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🔐</div>
+        <div class="limit-title">Aucun scan de sécurité dans le pipeline</div>
+        <div class="limit-desc">Trivy est appliqué manuellement après pull par l'équipe Ops — trop tard pour bloquer une image vulnérable avant publication.</div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🐳</div>
+        <div class="limit-title">Pas de packaging Docker automatisé</div>
+        <div class="limit-desc">Les images Docker sont construites et publiées manuellement sur Docker Hub. Aucune image versionnée automatiquement.</div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🚀</div>
+        <div class="limit-title">Aucune livraison continue (CD)</div>
+        <div class="limit-desc">Pas de déploiement automatique vers staging ou production. Tout déploiement est déclenché manuellement par l'équipe Ops.</div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🏷️</div>
+        <div class="limit-title">Versionnage manuel</div>
+        <div class="limit-desc">Pas de Semantic Release ni de Conventional Commits. Les numéros de version sont gérés manuellement (v1.2.3 en dur).</div>
+      </div>
+      <div class="limit-card">
+        <div class="limit-icon">🔑</div>
+        <div class="limit-title">Détection de secrets absente</div>
+        <div class="limit-desc">Aucun scan Gitleaks. Des credentials pourraient être exposés accidentellement dans le code source sans détection.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT'S NEXT -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-label">🚀 Pipeline enrichi — objectif</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="next-section">
+    <div class="next-title">✅ Pipeline CI/CD cible — 7 stages automatisés</div>
+    <div class="stages-new">
+      <div class="stage-pill kept tooltip-wrap">🧪 test<span class="tooltip">Conservé — JUnit + Karma + ChromeHeadless</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill added tooltip-wrap">🔐 security<span class="tooltip">Nouveau — Gitleaks : détection de secrets</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill added2 tooltip-wrap">📊 sonarqube<span class="tooltip">Nouveau — Analyse statique Java/Angular + JaCoCo</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill kept tooltip-wrap">📦 package<span class="tooltip">Enrichi — Build + sauvegarde .tar (artifacts)</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill added3 tooltip-wrap">🛡️ trivy<span class="tooltip">Nouveau (repositionné) — Scan CVE AVANT publish</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill added4 tooltip-wrap">📤 publish<span class="tooltip">Nouveau — Push GitLab registry avec tag :SHA</span></div>
+      <span class="pill-arrow">→</span>
+      <div class="stage-pill added tooltip-wrap">🏷️ release<span class="tooltip">Nouveau — Semantic Release → tag SemVer + CHANGELOG</span></div>
+    </div>
+    <div class="stage-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950;"></div>Stage conservé / enrichi</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#58a6ff;"></div>Nouveau stage ajouté</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444;"></div>Scan sécurité (repositionné avant publish)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f0b429;"></div>Packaging et publication automatisés</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="copied-toast" id="toast">📋 Commande copiée !</div>
+
+<script>
+  // Copy command on click
+  document.querySelectorAll('.cmd').forEach(cmd => {
+    cmd.addEventListener('click', () => {
+      const text = Array.from(cmd.querySelectorAll('.command, .arg, .flag'))
+        .map(el => el.textContent).join(' ').trim();
+      navigator.clipboard?.writeText(text).catch(() => {});
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  });
+
+  // Highlight stage on hover
+  const testCard = document.getElementById('testCard');
+  const buildCard = document.getElementById('buildCard');
+  testCard.addEventListener('mouseenter',  () => testCard.classList.add('active-glow'));
+  testCard.addEventListener('mouseleave',  () => testCard.classList.remove('active-glow'));
+  buildCard.addEventListener('mouseenter', () => buildCard.classList.add('active-glow'));
+  buildCard.addEventListener('mouseleave', () => buildCard.classList.remove('active-glow'));
+</script>
+</body>
+</html>
