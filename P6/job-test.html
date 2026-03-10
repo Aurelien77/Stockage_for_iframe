@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Résultats des tests CI</title>
+
+<style>
+
+body{
+background:black;
+color:white;
+font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+text-align:center;
+}
+
+h1{
+font-size:42px;
+max-width:900px;
+margin-bottom:20px;
+line-height:1.4;
+}
+
+p{
+font-size:20px;
+max-width:900px;
+color:#d0d0d0;
+margin-bottom:40px;
+line-height:1.6;
+}
+
+img{
+max-width:90%;
+max-height:70vh;
+border-radius:8px;
+box-shadow:0 20px 50px rgba(0,0,0,0.7);
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Résultats des tests dans le pipeline CI</h1>
+
+<p>
+Le job de tests exécute automatiquement les tests de l'application dans le pipeline
+d'intégration continue. Une fois les tests terminés, les résultats sont enregistrés
+et deviennent consultables directement dans l’interface de GitLab.  
+Cela permet aux développeurs de vérifier rapidement si les modifications du code
+respectent le bon fonctionnement de l’application avant de passer à l’étape suivante
+du pipeline, comme la génération du build.
+</p>
+
+<img src="images/image4.png" alt="Résultats des tests GitLab">
+
+</body>
+</html>
