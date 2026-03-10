@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Radar DevOps IA — Présentation</title>
+<title>Radar DevOps IA — Projet OpenClassrooms</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
@@ -20,79 +20,135 @@
 --yellow:#eab308;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
 body{
 background:var(--bg);
 color:var(--text);
 font-family:"DM Sans";
-line-height:1.6;
+line-height:1.7;
+font-size:20px;
+overflow-x:hidden;
 }
 
 /* HERO */
 
 .hero{
-padding:100px 20px;
+position:relative;
+padding:140px 20px;
 text-align:center;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+
+background:
+radial-gradient(circle at 30% 40%, rgba(59,130,246,0.18), transparent 40%),
+radial-gradient(circle at 70% 60%, rgba(59,130,246,0.12), transparent 40%);
+
+animation:glowMove 10s infinite alternate ease-in-out;
+
+z-index:-1;
+}
+
+@keyframes glowMove{
+from{transform:translateY(-20px);}
+to{transform:translateY(20px);}
 }
 
 .hero h1{
 font-family:"Syne";
-font-size:52px;
+font-size:72px;
 font-weight:800;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .hero p{
-max-width:800px;
+max-width:900px;
 margin:auto;
+font-size:24px;
 color:var(--muted);
-font-size:18px;
 }
 
 .hero a{
 display:inline-block;
-margin-top:35px;
-padding:14px 30px;
+margin-top:40px;
+padding:18px 36px;
 background:linear-gradient(135deg,#3b82f6,#1d4ed8);
-border-radius:10px;
+border-radius:12px;
 text-decoration:none;
 color:white;
 font-weight:700;
-transition:0.2s;
+font-size:20px;
+transition:0.3s;
+position:relative;
+overflow:hidden;
 }
 
 .hero a:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 30px rgba(59,130,246,0.4);
+transform:translateY(-4px);
+box-shadow:0 14px 40px rgba(59,130,246,0.4);
+}
+
+.hero a::after{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent);
+transform:rotate(25deg);
+opacity:0;
+}
+
+.hero a:hover::after{
+opacity:1;
+animation:shine 1.2s;
+}
+
+@keyframes shine{
+from{transform:translateX(-100%) rotate(25deg);}
+to{transform:translateX(100%) rotate(25deg);}
 }
 
 /* SECTION */
 
 .section{
-padding:80px 20px;
+padding:110px 20px;
 max-width:1100px;
 margin:auto;
 }
 
 .section-title{
 font-family:"Syne";
-font-size:34px;
+font-size:46px;
 font-weight:800;
-margin-bottom:20px;
+margin-bottom:30px;
 }
 
 .section-desc{
 color:var(--muted);
 margin-bottom:40px;
+font-size:22px;
 }
 
 /* GRID */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:24px;
 }
 
 /* CARD */
@@ -100,24 +156,26 @@ gap:20px;
 .card{
 background:var(--surface);
 border:1px solid var(--border);
-padding:24px;
-border-radius:14px;
-transition:0.2s;
+padding:28px;
+border-radius:16px;
+transition:0.35s;
 cursor:pointer;
+transform-style:preserve-3d;
 }
 
 .card:hover{
-transform:translateY(-4px);
+transform:translateY(-10px) scale(1.02);
 border-color:var(--accent);
+box-shadow:0 25px 50px rgba(0,0,0,0.45);
 }
 
 .card h3{
-font-size:18px;
-margin-bottom:10px;
+font-size:26px;
+margin-bottom:12px;
 }
 
 .card p{
-font-size:14px;
+font-size:19px;
 color:var(--muted);
 }
 
@@ -125,31 +183,62 @@ color:var(--muted);
 
 .workflow{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:24px;
 margin-top:30px;
 }
 
 .step{
 background:var(--surf2);
-padding:20px;
-border-radius:12px;
+padding:26px;
+border-radius:14px;
 border:1px solid var(--border);
+transition:0.3s;
+}
+
+.step:hover{
+transform:translateY(-6px);
+border-color:var(--accent);
+box-shadow:0 15px 35px rgba(0,0,0,0.45);
 }
 
 .step span{
 font-family:"JetBrains Mono";
-font-size:12px;
+font-size:16px;
 color:var(--accent);
+}
+
+.step h3{
+font-size:24px;
+margin-top:6px;
+margin-bottom:6px;
+}
+
+.step p{
+font-size:19px;
+color:var(--muted);
 }
 
 /* FOOTER */
 
 .footer{
 text-align:center;
-padding:60px 20px;
+padding:80px 20px;
+font-size:18px;
 color:var(--muted);
-font-size:14px;
+}
+
+/* SCROLL ANIMATION */
+
+.fade{
+opacity:0;
+transform:translateY(40px);
+transition:all 0.8s ease;
+}
+
+.fade.visible{
+opacity:1;
+transform:translateY(0);
 }
 
 </style>
@@ -157,17 +246,16 @@ font-size:14px;
 
 <body>
 
-<!-- HERO -->
-
-<section class="hero">
+<section class="hero fade">
 
 <h1>Radar DevOps IA</h1>
 
 <p>
-Plateforme de veille technologique intelligente développée dans le cadre du
+Cette plateforme a été développée dans le cadre du
 <strong>Projet 6 OpenClassrooms</strong>.
-Elle permet à un <strong>expert DevOps</strong> d’analyser,
-comparer et surveiller les technologies utilisées dans une application.
+Elle permet à un <strong>expert DevOps</strong> de réaliser
+une veille technologique et une étude comparative
+des technologies utilisées dans une application.
 </p>
 
 <a href="https://radar-deploy.onrender.com/" target="_blank">
@@ -176,48 +264,42 @@ Accéder au Radar
 
 </section>
 
-<!-- PROJET -->
-
-<section class="section">
+<section class="section fade">
 
 <div class="section-title">
-Le projet
+Objectif du projet
 </div>
 
 <p class="section-desc">
-
-Ce radar technologique permet de réaliser une <strong>veille informatique automatisée</strong>.
-L'objectif est d'aider les équipes techniques à identifier les meilleures technologies,
-évaluer leur fiabilité et prendre des décisions d’architecture basées sur des données.
-
+Le radar technologique aide les équipes techniques
+à analyser et comparer les technologies utilisées
+dans leurs projets afin de faciliter les décisions
+d’architecture logicielle.
 </p>
 
 <div class="grid">
 
-<div class="card">
-<h3>Comparaison de technologies</h3>
+<div class="card fade">
+<h3>Analyse des technologies</h3>
 <p>
-Le radar permet d’afficher différentes technologies
-et de les comparer selon leur maturité,
-leur adoption et leur fiabilité.
+Le radar identifie les technologies utilisées
+et analyse leur maturité et leur adoption.
 </p>
 </div>
 
-<div class="card">
+<div class="card fade">
+<h3>Comparaison des outils</h3>
+<p>
+Les technologies peuvent être comparées
+afin d'identifier les solutions les plus pertinentes.
+</p>
+</div>
+
+<div class="card fade">
 <h3>Veille technologique</h3>
 <p>
-L’IA analyse en continu les nouvelles technologies
-et les ajoute au radar afin de maintenir une vision
-à jour de l’écosystème DevOps.
-</p>
-</div>
-
-<div class="card">
-<h3>Analyse de l’application</h3>
-<p>
-Le système scanne les technologies utilisées dans
-une application afin d’évaluer leur pertinence
-et recommander des alternatives.
+Le radar permet de suivre l’évolution
+des outils DevOps et technologies modernes.
 </p>
 </div>
 
@@ -225,46 +307,41 @@ et recommander des alternatives.
 
 </section>
 
-<!-- IA -->
-
-<section class="section">
+<section class="section fade">
 
 <div class="section-title">
-Rôle de l’Intelligence Artificielle
+Analyse par Intelligence Artificielle
 </div>
 
 <p class="section-desc">
-
-Une intelligence artificielle est utilisée pour analyser
-les technologies et produire des recommandations.
-Elle peut également enrichir automatiquement
-la base documentaire du radar.
-
+Une intelligence artificielle analyse les technologies
+et génère des recommandations pour améliorer
+l’architecture d’un projet.
 </p>
 
 <div class="grid">
 
-<div class="card">
-<h3>Analyse automatisée</h3>
+<div class="card fade">
+<h3>Scan des technologies</h3>
 <p>
-L’IA récupère les dernières technologies et
-analyse leurs performances et leur adoption.
+L’IA détecte automatiquement les technologies
+présentes dans l’application.
 </p>
 </div>
 
-<div class="card">
-<h3>Évaluation des outils</h3>
+<div class="card fade">
+<h3>Évaluation de fiabilité</h3>
 <p>
-Chaque technologie est évaluée selon plusieurs
-critères : maturité, fiabilité et adoption.
+Chaque technologie reçoit un score basé
+sur sa maturité et son adoption.
 </p>
 </div>
 
-<div class="card">
+<div class="card fade">
 <h3>Suggestions</h3>
 <p>
-L’IA peut proposer de nouvelles technologies
-à comparer ou à tester dans le projet.
+L’IA propose des alternatives
+ou nouvelles technologies à tester.
 </p>
 </div>
 
@@ -272,55 +349,43 @@ L’IA peut proposer de nouvelles technologies
 
 </section>
 
-<!-- WORKFLOW -->
-
-<section class="section">
+<section class="section fade">
 
 <div class="section-title">
-Fonctionnement du Radar
+Fonctionnement du radar
 </div>
 
 <div class="workflow">
 
-<div class="step">
+<div class="step fade">
 <span>01</span>
-<h3>Scan des technologies</h3>
-<p>
-Analyse des technologies présentes dans l'application.
-</p>
+<h3>Analyse du projet</h3>
+<p>Le système identifie les technologies utilisées.</p>
 </div>
 
-<div class="step">
+<div class="step fade">
 <span>02</span>
 <h3>Analyse IA</h3>
-<p>
-Évaluation de leur maturité et de leur fiabilité.
-</p>
+<p>L’IA évalue maturité, adoption et fiabilité.</p>
 </div>
 
-<div class="step">
+<div class="step fade">
 <span>03</span>
 <h3>Comparaison</h3>
-<p>
-Les technologies sont positionnées sur le radar.
-</p>
+<p>Les technologies sont positionnées sur le radar.</p>
 </div>
 
-<div class="step">
+<div class="step fade">
 <span>04</span>
 <h3>Décision technique</h3>
-<p>
-Les équipes DevOps choisissent les meilleures solutions.
-</p>
+<p>Les experts DevOps prennent les décisions.</p>
 </div>
 
 </div>
 
 </section>
 
-<!-- COLLABORATION -->
-
-<section class="section">
+<section class="section fade">
 
 <div class="section-title">
 Collaboration et documentation
@@ -328,28 +393,27 @@ Collaboration et documentation
 
 <div class="grid">
 
-<div class="card">
+<div class="card fade">
 <h3>Documents de formation</h3>
 <p>
-L’expert DevOps ou l’IA peut ajouter des documents
-de formation afin d’aider les équipes à adopter
-de nouvelles technologies.
+Des ressources pédagogiques peuvent être ajoutées
+pour former les équipes.
 </p>
 </div>
 
-<div class="card">
+<div class="card fade">
 <h3>Commentaires d’équipe</h3>
 <p>
-Les développeurs et les experts peuvent partager
-leurs retours directement sur chaque technologie.
+Les développeurs peuvent partager leurs retours
+et expériences.
 </p>
 </div>
 
-<div class="card">
+<div class="card fade">
 <h3>Décisions techniques</h3>
 <p>
-Les discussions permettent d’améliorer les choix
-technologiques et la stratégie DevOps.
+Les discussions permettent d’améliorer
+les choix technologiques.
 </p>
 </div>
 
@@ -357,14 +421,26 @@ technologiques et la stratégie DevOps.
 
 </section>
 
-<!-- FOOTER -->
-
 <div class="footer">
-
 Projet OpenClassrooms — Radar DevOps IA  
 Présentation du site : https://radar-deploy.onrender.com/
-
 </div>
+
+<script>
+
+const observer = new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
+},{threshold:0.15});
+
+document.querySelectorAll(".fade").forEach(el=>{
+observer.observe(el);
+});
+
+</script>
 
 </body>
 </html>

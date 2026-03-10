@@ -656,6 +656,17 @@ body {
   outline: none;
   transition: border-color 0.2s;
 }
+.pres { 
+text-align : center;  
+border: 1px solid white;
+background: var(--surf3); 
+color: white;
+font-family: 'Syne', sans-serif; font-size: 20px;
+}
+.pres a {   
+text-decoration : none;
+color: red;
+}
 .modal-field input:focus, .modal-field select:focus { border-color: var(--accent); }
 .modal-field select option { background: var(--surf2); }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
@@ -728,10 +739,10 @@ body {
       <div class="leg-item"><div class="leg-dot" style="background:var(--acceptable)"></div>Acceptable</div>
     </div>
   </div>
+<div class="pres"> Cette page est utilisée pour présenter l'application simplifiée, la veritable application peut etre consultée sur la page :   <a href="https://radar-deploy.onrender.com">https://radar-deploy.onrender.com</a></div>
 
   <!-- CONTENT -->
   <div class="content">
-
     <!-- RADAR -->
     <div class="radar-area" id="radarArea">
       <svg id="radarSvg" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
@@ -898,7 +909,7 @@ const RADARS = [
 // cx, cy: position on 700x700 SVG. status: excellent|bon|acceptable
 const TECHS = [
   // Qualité (top, ~0°)
-  { id:1,  name:'SonarLint',           cat:'qualite',    status:'excellent', cx:350, cy:245, score:{fiabilite:92,maturite:90,adoption:88}, summary:'Excellent plugin IDE analysant le code en temps réel. Recommandé par l\'équipe pour Java et TypeScript dans MicroCRM.', usage:true,  docs:[{n:'Doc officielle',t:'Documentation'},{n:'Tuto SonarLint IntelliJ',t:'Formation'}], comments:[{a:'Roubina',r:'dev',c:'Indispensable, détecte les bugs avant même le push !',d:'08/03/2026'},{a:'Sylvain',r:'dev',c:'Je l\'utilise en tandem avec Checkstyle, parfait.',d:'09/03/2026'}], ideas:[] },
+  { id:1,  name:'SonarLint',           cat:'qualite',    status:'excellent', cx:300, cy:245, score:{fiabilite:92,maturite:90,adoption:88}, summary:'Excellent plugin IDE analysant le code en temps réel. Recommandé par l\'équipe pour Java et TypeScript dans MicroCRM.', usage:true,  docs:[{n:'Doc officielle',t:'Documentation'},{n:'Tuto SonarLint IntelliJ',t:'Formation'}], comments:[{a:'Roubina',r:'dev',c:'Indispensable, détecte les bugs avant même le push !',d:'08/03/2026'},{a:'Sylvain',r:'dev',c:'Je l\'utilise en tandem avec Checkstyle, parfait.',d:'09/03/2026'}], ideas:[] },
   { id:2,  name:'SonarCloud',          cat:'qualite',    status:'bon',       cx:320, cy:188, score:{fiabilite:84,maturite:86,adoption:79}, summary:'Version cloud de SonarQube. Bonne intégration GitLab mais nécessite un abonnement pour les dépôts privés.', usage:false, docs:[{n:'SonarCloud Docs',t:'Documentation'}], comments:[], ideas:[{title:'Intégrer SonarCloud en staging',desc:'Ajouter SonarCloud pour les branches feature/ afin de détecter les régressions plus tôt.',author:'Temim',votes:3}] },
   { id:3,  name:'DeepSource IDE',      cat:'qualite',    status:'bon',       cx:290, cy:298, score:{fiabilite:78,maturite:72,adoption:65}, summary:'Analyse statique automatisée avec corrections suggérées. Intéressant mais moins mature que SonarQube.', usage:false, docs:[], comments:[], ideas:[] },
 
