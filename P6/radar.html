@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Radar Veille Technologique — MicroCRM DevOps</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #080c12;
+  --surface: #0f1520;
+  --surf2: #161e2e;
+  --surf3: #1e2a3d;
+  --border: #1f2d42;
+  --border2: #2a3d57;
+  --text: #e8f0fe;
+  --muted: #7a92b4;
+  --muted2: #4a6080;
+  --accent: #3b82f6;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --gray: #6b7280;
+  --red: #ef4444;
+  --purple: #a855f7;
+  --teal: #14b8a6;
+  --excellent: #22c55e;
+  --bon: #eab308;
+  --acceptable: #6b7280;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.sidebar-logo .logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.sidebar-logo h1 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; line-height: 1.3; }
+.sidebar-logo .logo-sub { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+.search-box {
+  position: relative;
+  margin-bottom: 10px;
+}
+.search-box input {
+  width: 100%;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 9px 12px 9px 34px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: var(--muted2); }
+.search-box .search-ico { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--muted2); }
+
+.filter-row { display: flex; gap: 6px; }
+.filter-btn {
+  flex: 1;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.filter-btn:hover { background: var(--surf3); color: var(--text); }
+.filter-btn.active { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.5); color: #93c5fd; }
+
+/* ROLE SWITCH */
+.role-switch {
+  margin: 10px 20px;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 3px;
+  display: flex;
+}
+.role-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--muted);
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+.role-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* NAV ITEMS */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 12px;
+}
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.nav-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted2);
+  padding: 8px 8px 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: var(--surf2); border-color: var(--border); }
+.nav-item.active {
+  background: rgba(59,130,246,0.12);
+  border-color: rgba(59,130,246,0.35);
+}
+.nav-item .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-item .nav-label { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.nav-item .nav-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--surf3);
+  color: var(--muted);
+}
+
+/* ADD TECH BUTTON (devops only) */
+.add-tech-btn {
+  margin: 0 12px 12px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  display: none;
+}
+.add-tech-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+.devops-mode .add-tech-btn { display: flex; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.topbar-left h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+}
+.topbar-left p { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ── CONTENT AREA ── */
+.content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── RADAR AREA ── */
+.radar-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+#radarSvg {
+  max-width: 100%;
+  max-height: 100%;
+  filter: drop-shadow(0 0 40px rgba(59,130,246,0.08));
+}
+
+/* Tech dot hover */
+.tech-dot {
+  cursor: pointer;
+  transition: r 0.15s;
+}
+.tech-dot:hover { filter: brightness(1.3); }
+
+.tech-label-g text { pointer-events: none; }
+
+/* ── DETAIL PANEL ── */
+.detail-panel {
+  width: 380px;
+  min-width: 380px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+.detail-panel.open { transform: translateX(0); }
+
+.dp-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.dp-close {
+  float: right;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.15s;
+  margin-left: 10px;
+}
+.dp-close:hover { color: var(--text); background: var(--surf3); }
+
+.dp-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.dp-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.dp-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid;
+}
+.badge-excellent { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.4); color: #4ade80; }
+.badge-bon       { background: rgba(234,179,8,0.12);  border-color: rgba(234,179,8,0.4);  color: #fde047; }
+.badge-acceptable{ background: rgba(107,114,128,0.15);border-color: rgba(107,114,128,0.4);color: #9ca3af; }
+.badge-cat       { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.35); color: #93c5fd; }
+.badge-ia        { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); color: #d8b4fe; }
+
+.dp-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+.dp-body::-webkit-scrollbar { width: 4px; }
+.dp-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* TABS */
+.dp-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+.dp-tab {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.dp-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.dp-tab:hover:not(.active) { color: var(--text); }
+
+/* TAB CONTENT */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* AI SCORE */
+.ai-score-section { margin-bottom: 18px; }
+.ai-score-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 10px;
+}
+.ai-score-bar { margin-bottom: 10px; }
+.ai-score-bar .bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+.ai-score-bar .bar-label .bl-name { color: var(--text); font-weight: 600; }
+.ai-score-bar .bar-label .bl-val  { color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.bar-track {
+  height: 6px;
+  background: var(--surf3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.ai-summary {
+  background: rgba(168,85,247,0.07);
+  border: 1px solid rgba(168,85,247,0.25);
+  border-left: 3px solid var(--purple);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.ai-summary strong { color: var(--text); }
+
+/* DOCS SECTION */
+.doc-item {
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.doc-item:hover { background: var(--surf3); border-color: var(--accent); }
+.doc-ico { font-size: 18px; flex-shrink: 0; }
+.doc-info .doc-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.doc-info .doc-type { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+/* ADD DOC (devops only) */
+.add-doc-btn {
+  width: 100%;
+  background: var(--surf2);
+  border: 1px dashed var(--border2);
+  border-radius: 10px;
+  padding: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 4px;
+}
+.add-doc-btn:hover { background: var(--surf3); color: var(--text); border-color: var(--accent); }
+.devops-mode .add-doc-btn { display: flex; }
+
+/* COMMENTS */
+.comment {
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease;
+}
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.comment-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.comment-author { font-size: 12px; font-weight: 700; }
+.comment-date   { font-size: 11px; color: var(--muted); margin-left: auto; font-family: 'JetBrains Mono', monospace; }
+.comment-text   { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.comment-role   {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.role-devops { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.role-dev    { background: rgba(34,197,94,0.15); color: #4ade80; }
+.role-ops    { background: rgba(234,179,8,0.15);  color: #fde047; }
+
+.comment-input-area {
+  margin-top: 12px;
+}
+.comment-input-area textarea {
+  width: 100%;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 70px;
+}
+.comment-input-area textarea:focus { border-color: var(--accent); }
+.comment-input-area textarea::placeholder { color: var(--muted2); }
+.comment-submit {
+  margin-top: 8px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  float: right;
+}
+.comment-submit:hover { background: #2563eb; }
+
+/* IDEAS */
+.idea-card {
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease;
+}
+.idea-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.idea-desc  { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+.idea-footer { display: flex; align-items: center; gap: 8px; }
+.idea-author { font-size: 11px; color: var(--muted2); font-family: 'JetBrains Mono', monospace; }
+.idea-votes {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vote-btn {
+  background: var(--surf3);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.vote-btn:hover { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); color: #4ade80; }
+.vote-btn.voted { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); color: #4ade80; }
+
+.idea-form-area textarea {
+  width: 100%;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 60px;
+  margin-bottom: 6px;
+}
+.idea-form-area textarea:focus { border-color: var(--purple); }
+.idea-form-area textarea::placeholder { color: var(--muted2); }
+.idea-submit {
+  background: rgba(168,85,247,0.15);
+  border: 1px solid rgba(168,85,247,0.4);
+  color: #d8b4fe;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  float: right;
+}
+.idea-submit:hover { background: rgba(168,85,247,0.25); }
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--surf3);
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  z-index: 1000;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 18px;
+  padding: 28px;
+  width: 420px;
+  max-width: 90vw;
+  transform: scale(0.95);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+.modal-field { margin-bottom: 14px; }
+.modal-field label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+.modal-field input, .modal-field select {
+  width: 100%;
+  background: var(--surf2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-field input:focus, .modal-field select:focus { border-color: var(--accent); }
+.modal-field select option { background: var(--surf2); }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.btn-cancel { background: var(--surf2); border: 1px solid var(--border2); color: var(--muted); border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.btn-confirm { background: var(--accent); border: none; color: white; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.btn-cancel:hover { background: var(--surf3); }
+.btn-confirm:hover { background: #2563eb; }
+
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="logo-icon">📡</div>
+      <div>
+        <h1>Veille Tech</h1>
+        <div class="logo-sub">MicroCRM DevOps · 2026</div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="searchInput" placeholder="Rechercher une technologie...">
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterStatus('all', this)">Toutes</button>
+      <button class="filter-btn" onclick="filterStatus('excellent', this)" style="color:#4ade80;">● Excellent</button>
+      <button class="filter-btn" onclick="filterStatus('bon', this)" style="color:#fde047;">● Bon</button>
+      <button class="filter-btn" onclick="filterStatus('acceptable', this)">● Acceptable</button>
+    </div>
+  </div>
+
+  <!-- ROLE SWITCH -->
+  <div class="role-switch">
+    <button class="role-btn active" id="roleUser" onclick="setRole('user')">👤 Participant</button>
+    <button class="role-btn" id="roleDevops" onclick="setRole('devops')">⚙️ Expert DevOps</button>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-section-title">Radars disponibles</div>
+    <div id="navList"></div>
+  </div>
+
+  <button class="add-tech-btn" id="addTechBtn" onclick="openAddModal()">
+    ＋ Ajouter une technologie
+  </button>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <h2 id="topbarTitle">Linters & Analyseurs Intégrés IDE — Benchmark 2026</h2>
+      <p id="topbarSub">// Analyse IA · 22 technologies · mis à jour le 10 mars 2026</p>
+    </div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--excellent)"></div>Excellent</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--bon)"></div>Bon</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--acceptable)"></div>Acceptable</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- RADAR -->
+    <div class="radar-area" id="radarArea">
+      <svg id="radarSvg" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+        <!-- Defs -->
+        <defs>
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0f1520" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#080c12" stop-opacity="0.4"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background circle -->
+        <circle cx="350" cy="350" r="290" fill="url(#bgGrad)" stroke="#1f2d42" stroke-width="1"/>
+
+        <!-- Rings -->
+        <circle id="ring-acceptable" cx="350" cy="350" r="260" fill="none" stroke="#2a3d57" stroke-width="1" stroke-dasharray="6,4"/>
+        <circle id="ring-bon"        cx="350" cy="350" r="180" fill="none" stroke="#2a3d57" stroke-width="1" stroke-dasharray="6,4"/>
+        <circle id="ring-excellent"  cx="350" cy="350" r="100" fill="none" stroke="#2a3d57" stroke-width="1"/>
+
+        <!-- Inner glow for excellent zone -->
+        <circle cx="350" cy="350" r="100" fill="rgba(34,197,94,0.03)" stroke="rgba(34,197,94,0.15)" stroke-width="1.5"/>
+
+        <!-- Axis lines (6 sectors) -->
+        <line x1="350" y1="60"  x2="350" y2="640" stroke="#1f2d42" stroke-width="1"/>
+        <line x1="98"  y1="205" x2="602" y2="495" stroke="#1f2d42" stroke-width="1"/>
+        <line x1="98"  y1="495" x2="602" y2="205" stroke="#1f2d42" stroke-width="1"/>
+
+        <!-- Ring labels -->
+        <text x="350" y="246" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#eab308" font-weight="700">BON</text>
+        <text x="350" y="166" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#22c55e" font-weight="700">EXCELLENT</text>
+        <text x="350" y="326" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7280" font-weight="700">ACCEPTABLE</text>
+
+        <!-- Sector Labels -->
+        <text x="350" y="50" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Outils Qualité Temps Réel</text>
+        <text x="618" y="175" text-anchor="start" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Linters Réel Java</text>
+        <text x="618" y="520" text-anchor="start" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Analyseurs Statiques</text>
+        <text x="350" y="672" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Formatters Intégrés</text>
+        <text x="82" y="520" text-anchor="end" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Extensions Sécurité</text>
+        <text x="82" y="175" text-anchor="end" font-family="DM Sans, sans-serif" font-size="12" fill="#93c5fd" font-weight="700">Linters TS/JS</text>
+
+        <!-- Tech dots will be injected here -->
+        <g id="techDots"></g>
+      </svg>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detailPanel">
+      <div class="dp-header">
+        <button class="dp-close" onclick="closePanel()">✕</button>
+        <div class="dp-title" id="dpTitle">Technologie</div>
+        <div class="dp-meta" id="dpMeta"></div>
+      </div>
+
+      <div class="dp-tabs" id="dpTabs">
+        <div class="dp-tab active" onclick="switchTab('analyse')">🤖 Analyse IA</div>
+        <div class="dp-tab" onclick="switchTab('docs')">📚 Documentation</div>
+        <div class="dp-tab" onclick="switchTab('comments')">💬 Commentaires</div>
+        <div class="dp-tab" onclick="switchTab('ideas')">💡 Idées</div>
+      </div>
+
+      <div class="dp-body">
+
+        <!-- TAB: ANALYSE IA -->
+        <div class="tab-content active" id="tab-analyse">
+          <div class="ai-score-section">
+            <div class="ai-score-title">📊 Scores IA</div>
+            <div id="aiScores"></div>
+          </div>
+          <div class="ai-summary" id="aiSummary"></div>
+          <div class="section-title">🔗 Utilisé dans MicroCRM</div>
+          <div id="usageBlock"></div>
+        </div>
+
+        <!-- TAB: DOCS -->
+        <div class="tab-content" id="tab-docs">
+          <div class="section-title">📖 Ressources associées</div>
+          <div id="docsList"></div>
+          <button class="add-doc-btn" onclick="addDoc()">＋ Ajouter une ressource</button>
+        </div>
+
+        <!-- TAB: COMMENTS -->
+        <div class="tab-content" id="tab-comments">
+          <div class="section-title">💬 Commentaires de l'équipe</div>
+          <div id="commentsList"></div>
+          <div style="clear:both;"></div>
+          <div class="comment-input-area" style="margin-top:14px;">
+            <textarea id="commentInput" placeholder="Partagez votre retour sur cette technologie..."></textarea>
+            <button class="comment-submit" onclick="submitComment()">Envoyer →</button>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+
+        <!-- TAB: IDEAS -->
+        <div class="tab-content" id="tab-ideas">
+          <div class="section-title">💡 Idées & suggestions</div>
+          <div id="ideasList"></div>
+          <div style="clear:both;"></div>
+          <div class="idea-form-area" style="margin-top:14px;">
+            <textarea id="ideaTitleInput" placeholder="Titre de votre idée..." style="min-height:40px;"></textarea>
+            <textarea id="ideaDescInput" placeholder="Description de la suggestion..."></textarea>
+            <button class="idea-submit" onclick="submitIdea()">Proposer →</button>
+            <div style="clear:both;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL ADD TECH (DevOps only) -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>➕ Ajouter une technologie</h3>
+    <div class="modal-field">
+      <label>Nom de la technologie</label>
+      <input type="text" id="newTechName" placeholder="ex: ESLint, SonarQube...">
+    </div>
+    <div class="modal-field">
+      <label>Catégorie</label>
+      <select id="newTechCat">
+        <option value="qualite">Outils Qualité Temps Réel</option>
+        <option value="java">Linters Réel Java</option>
+        <option value="ts">Linters TS/JS</option>
+        <option value="statique">Analyseurs Statiques</option>
+        <option value="formatter">Formatters Intégrés</option>
+        <option value="security">Extensions Sécurité</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Niveau de fiabilité IA</label>
+      <select id="newTechStatus">
+        <option value="excellent">Excellent</option>
+        <option value="bon">Bon</option>
+        <option value="acceptable">Acceptable</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Annuler</button>
+      <button class="btn-confirm" onclick="confirmAddTech()">Ajouter au radar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const RADARS = [
+  { id: 'linters', label: 'Linters & Analyseurs IDE - Benchmark 2026', count: 22, color: '#3b82f6', active: true },
+  { id: 'cicd',    label: 'Veille CI/CD 2026',                          count: 14, color: '#22c55e' },
+  { id: 'ia',      label: 'Technologies IA pour IDEs - Benchmark 2026', count: 9,  color: '#a855f7' },
+  { id: 'front',   label: 'Veille Frontend Angular - Linters & Build 2026', count: 11, color: '#f59e0b' },
+  { id: 'back',    label: 'Veille Backend Java - Linters & Build 2026', count: 10, color: '#14b8a6' },
+  { id: 'ide',     label: 'IDEs & Environnements - Benchmark 2026',     count: 8,  color: '#ef4444' },
+];
+
+// cx, cy: position on 700x700 SVG. status: excellent|bon|acceptable
+const TECHS = [
+  // Qualité (top, ~0°)
+  { id:1,  name:'SonarLint',           cat:'qualite',    status:'excellent', cx:350, cy:245, score:{fiabilite:92,maturite:90,adoption:88}, summary:'Excellent plugin IDE analysant le code en temps réel. Recommandé par l\'équipe pour Java et TypeScript dans MicroCRM.', usage:true,  docs:[{n:'Doc officielle',t:'Documentation'},{n:'Tuto SonarLint IntelliJ',t:'Formation'}], comments:[{a:'Roubina',r:'dev',c:'Indispensable, détecte les bugs avant même le push !',d:'08/03/2026'},{a:'Sylvain',r:'dev',c:'Je l\'utilise en tandem avec Checkstyle, parfait.',d:'09/03/2026'}], ideas:[] },
+  { id:2,  name:'SonarCloud',          cat:'qualite',    status:'bon',       cx:320, cy:188, score:{fiabilite:84,maturite:86,adoption:79}, summary:'Version cloud de SonarQube. Bonne intégration GitLab mais nécessite un abonnement pour les dépôts privés.', usage:false, docs:[{n:'SonarCloud Docs',t:'Documentation'}], comments:[], ideas:[{title:'Intégrer SonarCloud en staging',desc:'Ajouter SonarCloud pour les branches feature/ afin de détecter les régressions plus tôt.',author:'Temim',votes:3}] },
+  { id:3,  name:'DeepSource IDE',      cat:'qualite',    status:'bon',       cx:290, cy:298, score:{fiabilite:78,maturite:72,adoption:65}, summary:'Analyse statique automatisée avec corrections suggérées. Intéressant mais moins mature que SonarQube.', usage:false, docs:[], comments:[], ideas:[] },
+
+  // Linters Java (haut-droite, ~60°)
+  { id:4,  name:'Checkstyle-IDEA',     cat:'java',       status:'bon',       cx:490, cy:278, score:{fiabilite:82,maturite:88,adoption:81}, summary:'Plugin IntelliJ pour Checkstyle. Utilisé dans MicroCRM pour le backend Java avec la config Google Style.', usage:true,  docs:[{n:'Checkstyle Docs',t:'Documentation'},{n:'Config Google Java Style',t:'Configuration'}], comments:[{a:'Sylvain',r:'dev',c:'Intégré avec Gradle dans le pipeline CI, très pratique.',d:'07/03/2026'}], ideas:[] },
+  { id:5,  name:'SpotBugs Plugin',     cat:'java',       status:'excellent', cx:530, cy:305, score:{fiabilite:88,maturite:85,adoption:80}, summary:'Détection de bugs Java via analyse bytecode. Très fiable pour identifier les NPE et problèmes de concurrence.', usage:false, docs:[{n:'SpotBugs Docs',t:'Documentation'}], comments:[], ideas:[] },
+  { id:6,  name:'PMD',                 cat:'java',       status:'excellent', cx:520, cy:340, score:{fiabilite:85,maturite:90,adoption:82}, summary:'Analyseur statique Java mature avec nombreuses règles. Complémentaire à Checkstyle.', usage:false, docs:[], comments:[], ideas:[] },
+  { id:7,  name:'Error Prone Support', cat:'java',       status:'excellent', cx:545, cy:390, score:{fiabilite:90,maturite:83,adoption:75}, summary:'Compilateur Java augmenté par Google détectant les erreurs à la compilation. Excellent niveau de fiabilité.', usage:false, docs:[{n:'Error Prone GitHub',t:'Documentation'}], comments:[], ideas:[] },
+
+  // Linters TS/JS (haut-gauche, ~300°)
+  { id:8,  name:'ESLint Plugin',       cat:'ts',         status:'excellent', cx:410, cy:405, score:{fiabilite:93,maturite:95,adoption:97}, summary:'Standard de facto pour TypeScript/JavaScript. Utilisé dans MicroCRM Angular avec config stricte.', usage:true,  docs:[{n:'ESLint Docs',t:'Documentation'},{n:'Config Angular ESLint',t:'Configuration'}], comments:[{a:'Josefina',r:'dev',c:'Je commence à comprendre les règles, très utile !',d:'09/03/2026'}], ideas:[] },
+  { id:9,  name:'Ang. Lang. Service',  cat:'ts',         status:'excellent', cx:440, cy:380, score:{fiabilite:91,maturite:89,adoption:93}, summary:'Extension VSCode officielle Angular fournissant IntelliSense et diagnostics en temps réel dans les templates.', usage:true,  docs:[], comments:[], ideas:[] },
+  { id:10, name:'TSLint Plugin',       cat:'ts',         status:'acceptable', cx:148, cy:350, score:{fiabilite:45,maturite:30,adoption:20}, summary:'Déprécié depuis 2019 au profit d\'ESLint. À ne pas utiliser pour les nouveaux projets Angular.', usage:false, docs:[], comments:[{a:'Nico',r:'devops',c:'Déprécié — migration ESLint obligatoire si encore utilisé.',d:'06/03/2026'}], ideas:[] },
+
+  // Analyseurs Statiques (bas-droite, ~120°)
+  { id:11, name:'IntelliJ Inspections', cat:'statique',  status:'excellent', cx:530, cy:470, score:{fiabilite:92,maturite:95,adoption:90}, summary:'Inspections natives IntelliJ IDEA couvrant Java, Kotlin, XML. Très complet et sans config additionnelle.', usage:false, docs:[], comments:[], ideas:[] },
+  { id:12, name:'G. Java Format Plugin',cat:'statique',  status:'excellent', cx:480, cy:510, score:{fiabilite:87,maturite:85,adoption:78}, summary:'Plugin IntelliJ appliquant le Google Java Format. Assure la cohérence du style dans toute l\'équipe.', usage:false, docs:[], comments:[], ideas:[] },
+  { id:13, name:'Pylance',             cat:'statique',   status:'excellent', cx:440, cy:535, score:{fiabilite:88,maturite:82,adoption:85}, summary:'Extension Python VSCode par Microsoft. Pertinent pour les scripts Python du projet (start-microcrm.py).', usage:true,  docs:[], comments:[], ideas:[] },
+  { id:14, name:'Eclipse JDT',         cat:'statique',   status:'acceptable', cx:540, cy:590, score:{fiabilite:65,maturite:90,adoption:55}, summary:'Analyseur Java intégré à Eclipse. Mature mais moins adapté que IntelliJ pour notre stack.', usage:false, docs:[], comments:[], ideas:[] },
+
+  // Formatters (bas, ~180°)
+  { id:15, name:'Prettier Extension',  cat:'formatter',  status:'excellent', cx:380, cy:530, score:{fiabilite:92,maturite:94,adoption:96}, summary:'Formateur opinionated pour JS/TS/HTML/CSS. Utilisé dans MicroCRM Angular pour uniformiser le style.', usage:true,  docs:[{n:'Prettier Docs',t:'Documentation'}], comments:[{a:'Roubina',r:'dev',c:'Prettier + ESLint = combo parfait. On ne doit plus se battre sur le style.',d:'08/03/2026'}], ideas:[] },
+  { id:16, name:'Biome Extension',     cat:'formatter',  status:'excellent', cx:320, cy:515, score:{fiabilite:85,maturite:75,adoption:70}, summary:'Alternative moderne à Prettier + ESLint en un seul outil. Très rapide, à surveiller pour adoption future.', usage:false, docs:[], comments:[], ideas:[{title:'Évaluer Biome pour remplacer ESLint+Prettier',desc:'Biome est 10-100x plus rapide. Pertinent pour notre pipeline CI.',author:'Sylvain',votes:5}] },
+  { id:17, name:'EditorConfig',        cat:'formatter',  status:'acceptable', cx:235, cy:570, score:{fiabilite:70,maturite:95,adoption:88}, summary:'Standard pour uniformiser les configs d\'éditeur (indentation, fin de ligne). Basique mais utile.', usage:true,  docs:[], comments:[], ideas:[] },
+
+  // Sécurité (gauche, ~240°)
+  { id:18, name:'Snyk Security',       cat:'security',   status:'bon',       cx:248, cy:440, score:{fiabilite:84,maturite:83,adoption:78}, summary:'Scan de vulnérabilités des dépendances en temps réel dans l\'IDE. Complémentaire à Trivy dans le CI.', usage:false, docs:[{n:'Snyk Docs',t:'Documentation'}], comments:[], ideas:[{title:'Comparer Snyk vs Dependabot',desc:'Évaluer si Snyk en IDE est plus utile que Trivy en CI pour notre workflow.',author:'Maïa',votes:2}] },
+  { id:19, name:'GitHub Copilot Sec.', cat:'security',   status:'bon',       cx:210, cy:390, score:{fiabilite:76,maturite:72,adoption:65}, summary:'Extension sécurité de GitHub Copilot détectant les patterns vulnérables. Pertinent mais coûteux.', usage:false, docs:[], comments:[], ideas:[] },
+  { id:20, name:'CodeQL Extension',    cat:'security',   status:'excellent', cx:230, cy:465, score:{fiabilite:90,maturite:86,adoption:72}, summary:'Analyse sémantique profonde du code pour détecter les vulnérabilités critiques (OWASP). Très fiable.', usage:false, docs:[{n:'CodeQL Docs GitHub',t:'Documentation'}], comments:[{a:'Nico',r:'devops',c:'CodeQL est puissant mais lourd. À réserver pour les audits ponctuels.',d:'07/03/2026'}], ideas:[] },
+
+  // Code Climate (qualite, zone acceptable)
+  { id:21, name:'Code Climate Ext.',   cat:'qualite',    status:'acceptable', cx:280, cy:218, score:{fiabilite:68,maturite:72,adoption:58}, summary:'Extension Code Climate pour VSCode. Moins complet que SonarLint pour notre stack Java/Angular.', usage:false, docs:[], comments:[], ideas:[] },
+  { id:22, name:'SonarQube',           cat:'qualite',    status:'excellent', cx:375, cy:280, score:{fiabilite:95,maturite:96,adoption:93}, summary:'Référence absolue de l\'analyse qualité. Intégré dans notre pipeline CI MicroCRM. Quality Gate actif.', usage:true,  docs:[{n:'SonarQube Docs',t:'Documentation'},{n:'Quality Gate MicroCRM',t:'Configuration'},{n:'Tuto SonarQube + GitLab CI',t:'Formation'}], comments:[{a:'Nico',r:'devops',c:'Clé de voûte de notre démarche qualité. Ne pas désactiver.',d:'08/03/2026'},{a:'Roubina',r:'dev',c:'Les rapports sont très utiles en revue de code.',d:'09/03/2026'}], ideas:[] },
+];
+
+let currentTech = null;
+let currentFilter = 'all';
+let isDevops = false;
+
+// ── STATUS COLORS ──────────────────────────────────────────
+function statusColor(s) {
+  return s === 'excellent' ? '#22c55e' : s === 'bon' ? '#eab308' : '#6b7280';
+}
+function statusBadgeClass(s) {
+  return s === 'excellent' ? 'badge-excellent' : s === 'bon' ? 'badge-bon' : 'badge-acceptable';
+}
+function statusLabel(s) {
+  return s === 'excellent' ? 'Excellent' : s === 'bon' ? 'Bon' : 'Acceptable';
+}
+
+// ── BUILD NAV ──────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('navList');
+  nav.innerHTML = RADARS.map(r => `
+    <div class="nav-item ${r.active ? 'active' : ''}" onclick="selectRadar('${r.id}')">
+      <div class="nav-dot" style="background:${r.color}"></div>
+      <div class="nav-label">${r.label}</div>
+      <span class="nav-count">${r.count}</span>
+    </div>
+  `).join('');
+}
+
+function selectRadar(id) {
+  RADARS.forEach(r => r.active = r.id === id);
+  buildNav();
+  const r = RADARS.find(x => x.id === id);
+  document.getElementById('topbarTitle').textContent = r.label;
+  showToast('📡 Radar chargé : ' + r.label.split(' — ')[0]);
+}
+
+// ── BUILD RADAR DOTS ───────────────────────────────────────
+function buildRadar() {
+  const g = document.getElementById('techDots');
+  g.innerHTML = '';
+
+  const visible = TECHS.filter(t => currentFilter === 'all' || t.status === currentFilter);
+  const search  = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = search ? visible.filter(t => t.name.toLowerCase().includes(search)) : visible;
+
+  filtered.forEach(tech => {
+    const color = statusColor(tech.status);
+    const r = 8;
+
+    // Glow circle
+    const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    glow.setAttribute('cx', tech.cx); glow.setAttribute('cy', tech.cy);
+    glow.setAttribute('r', r + 6);
+    glow.setAttribute('fill', color); glow.setAttribute('opacity', '0.12');
+    g.appendChild(glow);
+
+    // Main dot
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', tech.cx); dot.setAttribute('cy', tech.cy);
+    dot.setAttribute('r', r); dot.setAttribute('fill', color);
+    dot.setAttribute('stroke', '#0a0e14'); dot.setAttribute('stroke-width', '2');
+    dot.setAttribute('class', 'tech-dot');
+    dot.style.filter = 'url(#glow)';
+    dot.addEventListener('click', () => openTech(tech.id));
+    dot.addEventListener('mouseenter', () => {
+      dot.setAttribute('r', r + 3);
+      glow.setAttribute('opacity', '0.25');
+    });
+    dot.addEventListener('mouseleave', () => {
+      dot.setAttribute('r', r);
+      glow.setAttribute('opacity', '0.12');
+    });
+    g.appendChild(dot);
+
+    // Label
+    const textG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    textG.setAttribute('class', 'tech-label-g');
+    textG.style.cursor = 'pointer';
+    textG.addEventListener('click', () => openTech(tech.id));
+
+    // Label bg
+    const lx = tech.cx + (tech.cx > 350 ? 14 : -14);
+    const anchor = tech.cx > 350 ? 'start' : 'end';
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', lx); text.setAttribute('y', tech.cy + 4);
+    text.setAttribute('text-anchor', anchor);
+    text.setAttribute('font-family', 'DM Sans, sans-serif');
+    text.setAttribute('font-size', '11.5');
+    text.setAttribute('font-weight', '600');
+    text.setAttribute('fill', '#e8f0fe');
+    text.textContent = tech.name;
+    textG.appendChild(text);
+    g.appendChild(textG);
+  });
+}
+
+// ── OPEN TECH PANEL ────────────────────────────────────────
+function openTech(id) {
+  currentTech = TECHS.find(t => t.id === id);
+  if (!currentTech) return;
+
+  document.getElementById('dpTitle').textContent = currentTech.name;
+
+  // Meta badges
+  const meta = document.getElementById('dpMeta');
+  meta.innerHTML = `
+    <span class="dp-badge ${statusBadgeClass(currentTech.status)}">● ${statusLabel(currentTech.status)}</span>
+    <span class="dp-badge badge-cat">${catLabel(currentTech.cat)}</span>
+    <span class="dp-badge badge-ia">🤖 Analysé IA</span>
+    ${currentTech.usage ? '<span class="dp-badge" style="background:rgba(20,184,166,0.12);border-color:rgba(20,184,166,0.4);color:#2dd4bf;">✓ Utilisé MicroCRM</span>' : ''}
+  `;
+
+  // AI Scores
+  const scoresDiv = document.getElementById('aiScores');
+  const sc = currentTech.score;
+  scoresDiv.innerHTML = Object.entries(sc).map(([k,v]) => {
+    const col = v >= 85 ? '#22c55e' : v >= 70 ? '#eab308' : '#ef4444';
+    return `<div class="ai-score-bar">
+      <div class="bar-label"><span class="bl-name">${scoreLabel(k)}</span><span class="bl-val">${v}/100</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${v}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Summary
+  document.getElementById('aiSummary').innerHTML = `<strong>Synthèse IA :</strong> ${currentTech.summary}`;
+
+  // Usage
+  document.getElementById('usageBlock').innerHTML = currentTech.usage
+    ? '<div style="background:rgba(20,184,166,0.08);border:1px solid rgba(20,184,166,0.25);border-radius:10px;padding:10px 14px;font-size:13px;color:#5eead4;">✅ Cette technologie est <strong>activement utilisée</strong> dans le pipeline MicroCRM.</div>'
+    : '<div style="font-size:13px;color:var(--muted2);">Non intégré dans le projet actuel.</div>';
+
+  // Docs
+  renderDocs();
+  renderComments();
+  renderIdeas();
+
+  // Switch to first tab
+  switchTab('analyse');
+
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+function catLabel(c) {
+  return {qualite:'Outils Qualité',java:'Linters Java',ts:'Linters TS/JS',statique:'Analyseurs Statiques',formatter:'Formatters',security:'Sécurité IDE'}[c] || c;
+}
+function scoreLabel(k) {
+  return {fiabilite:'Fiabilité IA',maturite:'Maturité',adoption:'Adoption équipe'}[k] || k;
+}
+
+// ── DOCS ──────────────────────────────────────────────────
+function renderDocs() {
+  const el = document.getElementById('docsList');
+  if (!currentTech.docs.length) {
+    el.innerHTML = '<div class="empty-state">Aucune ressource ajoutée.<br>L\'expert DevOps peut en ajouter.</div>';
+    return;
+  }
+  const icons = {Documentation:'📖', Formation:'🎓', Configuration:'⚙️', Article:'📝'};
+  el.innerHTML = currentTech.docs.map(d => `
+    <div class="doc-item">
+      <span class="doc-ico">${icons[d.t] || '📄'}</span>
+      <div class="doc-info">
+        <div class="doc-name">${d.n}</div>
+        <div class="doc-type">${d.t}</div>
+      </div>
+      <span style="font-size:16px;color:var(--muted2);margin-left:auto;">›</span>
+    </div>
+  `).join('');
+}
+
+function addDoc() {
+  const name = prompt('Nom de la ressource :');
+  if (!name) return;
+  const types = ['Documentation','Formation','Configuration','Article'];
+  const type = types[Math.floor(Math.random()*types.length)]; // simplification
+  currentTech.docs.push({n:name, t:'Documentation'});
+  renderDocs();
+  showToast('📚 Ressource ajoutée !');
+}
+
+// ── COMMENTS ──────────────────────────────────────────────
+const avatarColors = { devops:'#3b82f6', dev:'#22c55e', ops:'#eab308', stagiaire:'#a855f7' };
+
+function renderComments() {
+  const el = document.getElementById('commentsList');
+  if (!currentTech.comments.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:16px 0;">Aucun commentaire.<br>Soyez le premier !</div>';
+    return;
+  }
+  el.innerHTML = currentTech.comments.map(c => {
+    const initial = c.a.charAt(0).toUpperCase();
+    const col = avatarColors[c.r] || '#6b7280';
+    const roleLabels = {devops:'Expert DevOps',dev:'Développeur',ops:'Ops',stagiaire:'Stagiaire'};
+    return `<div class="comment">
+      <div class="comment-header">
+        <div class="comment-avatar" style="background:${col}22;color:${col};border:1px solid ${col}44">${initial}</div>
+        <span class="comment-author">${c.a}</span>
+        <span class="comment-role role-${c.r}">${roleLabels[c.r]||c.r}</span>
+        <span class="comment-date">${c.d}</span>
+      </div>
+      <div class="comment-text">${c.c}</div>
+    </div>`;
+  }).join('');
+}
+
+function submitComment() {
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const names = ['Vous','Roubina','Sylvain','Temim','Josefina','Nico','Maïa'];
+  const roles = isDevops ? 'devops' : ['dev','ops','stagiaire'][Math.floor(Math.random()*3)];
+  const author = isDevops ? 'Nico (DevOps)' : 'Vous';
+  const now = new Date().toLocaleDateString('fr-FR');
+  currentTech.comments.push({a: author, r: roles, c: text, d: now});
+  renderComments();
+  input.value = '';
+  showToast('💬 Commentaire ajouté !');
+}
+
+// ── IDEAS ──────────────────────────────────────────────────
+function renderIdeas() {
+  const el = document.getElementById('ideasList');
+  if (!currentTech.ideas.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:16px 0;">Aucune idée soumise.<br>Proposez la vôtre !</div>';
+    return;
+  }
+  el.innerHTML = currentTech.ideas.map((idea, idx) => `
+    <div class="idea-card">
+      <div class="idea-title">💡 ${idea.title}</div>
+      <div class="idea-desc">${idea.desc}</div>
+      <div class="idea-footer">
+        <span class="idea-author">par ${idea.author}</span>
+        <div class="idea-votes">
+          <button class="vote-btn ${idea.voted?'voted':''}" onclick="voteIdea(${idx})">
+            ${idea.voted ? '✓' : '▲'} ${idea.votes}
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function voteIdea(idx) {
+  const idea = currentTech.ideas[idx];
+  if (idea.voted) { idea.votes--; idea.voted = false; }
+  else { idea.votes++; idea.voted = true; }
+  renderIdeas();
+}
+
+function submitIdea() {
+  const title = document.getElementById('ideaTitleInput').value.trim();
+  const desc  = document.getElementById('ideaDescInput').value.trim();
+  if (!title || !desc) { showToast('⚠️ Remplissez le titre et la description'); return; }
+  const author = isDevops ? 'Nico (DevOps)' : 'Participant';
+  currentTech.ideas.unshift({title, desc, author, votes:0, voted:false});
+  renderIdeas();
+  document.getElementById('ideaTitleInput').value = '';
+  document.getElementById('ideaDescInput').value  = '';
+  showToast('💡 Idée soumise !');
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.dp-tab').forEach((t,i) => {
+    const tabs = ['analyse','docs','comments','ideas'];
+    t.classList.toggle('active', tabs[i] === id);
+  });
+  document.querySelectorAll('.tab-content').forEach(tc => {
+    tc.classList.toggle('active', tc.id === 'tab-' + id);
+  });
+}
+
+function closePanel() {
+  document.getElementById('detailPanel').classList.remove('open');
+  currentTech = null;
+}
+
+// ── FILTER ────────────────────────────────────────────────
+function filterStatus(s, btn) {
+  currentFilter = s;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildRadar();
+}
+
+document.getElementById('searchInput').addEventListener('input', buildRadar);
+
+// ── ROLE ──────────────────────────────────────────────────
+function setRole(role) {
+  isDevops = role === 'devops';
+  document.getElementById('roleUser').classList.toggle('active', !isDevops);
+  document.getElementById('roleDevops').classList.toggle('active', isDevops);
+  document.getElementById('sidebar').classList.toggle('devops-mode', isDevops);
+  showToast(isDevops ? '⚙️ Mode Expert DevOps activé' : '👤 Mode Participant activé');
+}
+
+// ── ADD MODAL ─────────────────────────────────────────────
+function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); }
+
+function confirmAddTech() {
+  const name   = document.getElementById('newTechName').value.trim();
+  const cat    = document.getElementById('newTechCat').value;
+  const status = document.getElementById('newTechStatus').value;
+  if (!name) return;
+  const id = TECHS.length + 1;
+  const cx = 200 + Math.random() * 300;
+  const cy = 200 + Math.random() * 300;
+  TECHS.push({id, name, cat, status, cx, cy, score:{fiabilite:75,maturite:70,adoption:65}, summary:'En cours d\'analyse par les IA...', usage:false, docs:[], comments:[], ideas:[]});
+  buildRadar();
+  closeAddModal();
+  showToast('✅ Technologie "' + name + '" ajoutée au radar !');
+  document.getElementById('newTechName').value = '';
+}
+
+document.getElementById('addModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('addModal')) closeAddModal();
+});
+
+// ── TOAST ──────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── INIT ──────────────────────────────────────────────────
+buildNav();
+buildRadar();
+</script>
+</body>
+</html>

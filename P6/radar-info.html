@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Radar DevOps IA — Présentation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#080c12;
+--surface:#0f1520;
+--surf2:#161e2e;
+--border:#1f2d42;
+--text:#e8f0fe;
+--muted:#7a92b4;
+--accent:#3b82f6;
+--green:#22c55e;
+--yellow:#eab308;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+background:var(--bg);
+color:var(--text);
+font-family:"DM Sans";
+line-height:1.6;
+}
+
+/* HERO */
+
+.hero{
+padding:100px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-family:"Syne";
+font-size:52px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.hero p{
+max-width:800px;
+margin:auto;
+color:var(--muted);
+font-size:18px;
+}
+
+.hero a{
+display:inline-block;
+margin-top:35px;
+padding:14px 30px;
+background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+border-radius:10px;
+text-decoration:none;
+color:white;
+font-weight:700;
+transition:0.2s;
+}
+
+.hero a:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 30px rgba(59,130,246,0.4);
+}
+
+/* SECTION */
+
+.section{
+padding:80px 20px;
+max-width:1100px;
+margin:auto;
+}
+
+.section-title{
+font-family:"Syne";
+font-size:34px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.section-desc{
+color:var(--muted);
+margin-bottom:40px;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+/* CARD */
+
+.card{
+background:var(--surface);
+border:1px solid var(--border);
+padding:24px;
+border-radius:14px;
+transition:0.2s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-4px);
+border-color:var(--accent);
+}
+
+.card h3{
+font-size:18px;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:14px;
+color:var(--muted);
+}
+
+/* WORKFLOW */
+
+.workflow{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-top:30px;
+}
+
+.step{
+background:var(--surf2);
+padding:20px;
+border-radius:12px;
+border:1px solid var(--border);
+}
+
+.step span{
+font-family:"JetBrains Mono";
+font-size:12px;
+color:var(--accent);
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+padding:60px 20px;
+color:var(--muted);
+font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Radar DevOps IA</h1>
+
+<p>
+Plateforme de veille technologique intelligente développée dans le cadre du
+<strong>Projet 6 OpenClassrooms</strong>.
+Elle permet à un <strong>expert DevOps</strong> d’analyser,
+comparer et surveiller les technologies utilisées dans une application.
+</p>
+
+<a href="https://radar-deploy.onrender.com/" target="_blank">
+Accéder au Radar
+</a>
+
+</section>
+
+<!-- PROJET -->
+
+<section class="section">
+
+<div class="section-title">
+Le projet
+</div>
+
+<p class="section-desc">
+
+Ce radar technologique permet de réaliser une <strong>veille informatique automatisée</strong>.
+L'objectif est d'aider les équipes techniques à identifier les meilleures technologies,
+évaluer leur fiabilité et prendre des décisions d’architecture basées sur des données.
+
+</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>Comparaison de technologies</h3>
+<p>
+Le radar permet d’afficher différentes technologies
+et de les comparer selon leur maturité,
+leur adoption et leur fiabilité.
+</p>
+</div>
+
+<div class="card">
+<h3>Veille technologique</h3>
+<p>
+L’IA analyse en continu les nouvelles technologies
+et les ajoute au radar afin de maintenir une vision
+à jour de l’écosystème DevOps.
+</p>
+</div>
+
+<div class="card">
+<h3>Analyse de l’application</h3>
+<p>
+Le système scanne les technologies utilisées dans
+une application afin d’évaluer leur pertinence
+et recommander des alternatives.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- IA -->
+
+<section class="section">
+
+<div class="section-title">
+Rôle de l’Intelligence Artificielle
+</div>
+
+<p class="section-desc">
+
+Une intelligence artificielle est utilisée pour analyser
+les technologies et produire des recommandations.
+Elle peut également enrichir automatiquement
+la base documentaire du radar.
+
+</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>Analyse automatisée</h3>
+<p>
+L’IA récupère les dernières technologies et
+analyse leurs performances et leur adoption.
+</p>
+</div>
+
+<div class="card">
+<h3>Évaluation des outils</h3>
+<p>
+Chaque technologie est évaluée selon plusieurs
+critères : maturité, fiabilité et adoption.
+</p>
+</div>
+
+<div class="card">
+<h3>Suggestions</h3>
+<p>
+L’IA peut proposer de nouvelles technologies
+à comparer ou à tester dans le projet.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- WORKFLOW -->
+
+<section class="section">
+
+<div class="section-title">
+Fonctionnement du Radar
+</div>
+
+<div class="workflow">
+
+<div class="step">
+<span>01</span>
+<h3>Scan des technologies</h3>
+<p>
+Analyse des technologies présentes dans l'application.
+</p>
+</div>
+
+<div class="step">
+<span>02</span>
+<h3>Analyse IA</h3>
+<p>
+Évaluation de leur maturité et de leur fiabilité.
+</p>
+</div>
+
+<div class="step">
+<span>03</span>
+<h3>Comparaison</h3>
+<p>
+Les technologies sont positionnées sur le radar.
+</p>
+</div>
+
+<div class="step">
+<span>04</span>
+<h3>Décision technique</h3>
+<p>
+Les équipes DevOps choisissent les meilleures solutions.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- COLLABORATION -->
+
+<section class="section">
+
+<div class="section-title">
+Collaboration et documentation
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Documents de formation</h3>
+<p>
+L’expert DevOps ou l’IA peut ajouter des documents
+de formation afin d’aider les équipes à adopter
+de nouvelles technologies.
+</p>
+</div>
+
+<div class="card">
+<h3>Commentaires d’équipe</h3>
+<p>
+Les développeurs et les experts peuvent partager
+leurs retours directement sur chaque technologie.
+</p>
+</div>
+
+<div class="card">
+<h3>Décisions techniques</h3>
+<p>
+Les discussions permettent d’améliorer les choix
+technologiques et la stratégie DevOps.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+Projet OpenClassrooms — Radar DevOps IA  
+Présentation du site : https://radar-deploy.onrender.com/
+
+</div>
+
+</body>
+</html>
