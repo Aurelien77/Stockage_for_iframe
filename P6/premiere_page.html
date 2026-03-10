@@ -2,23 +2,22 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page 1 — Architecture Actuelle MicroCRM</title>
+<title>Architecture Actuelle — MicroCRM DevOps</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;600;700;800&display=swap');
 
   :root {
-    --bg: #0d1117;
+    --bg:      #0a0e14;
     --surface: #13191f;
-    --surface2: #1c2430;
-    --border: #2a3445;
-    --dev-color: #3b82f6;
-    --ops-color: #22c55e;
-    --warn-color: #f59e0b;
-    --danger-color: #ef4444;
-    --text: #f0f6fc;
-    --muted: #b0bec5;
-    --accent: #58a6ff;
+    --surf2:   #1c2430;
+    --border:  #2a3445;
+    --blue:    #4da6ff;
+    --green:   #3dda6e;
+    --orange:  #f5a623;
+    --red:     #ff4d4d;
+    --yellow:  #f5c518;
+    --text:    #f0f6fc;
+    --muted:   #c0cfe0;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,711 +26,445 @@
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    background: linear-gradient(135deg, #0d1117 0%, #1a2332 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-  }
-  .header-left { display: flex; align-items: center; gap: 12px; }
-  .page-badge {
-    background: linear-gradient(135deg, #1f6feb, #388bfd);
-    color: white;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
-  .header h1 {
+    padding: 48px 52px;
     font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .header-nav {
-    display: flex;
-    gap: 8px;
-  }
-  .nav-btn {
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--muted);
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .nav-btn.active {
-    background: var(--dev-color);
-    border-color: var(--dev-color);
-    color: white;
   }
 
-  /* ── MAIN ── */
-  .main {
-    padding: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  /* ── TITLE ── */
+  .page-title { text-align: center; margin-bottom: 52px; animation: fadeDown 0.5s ease both; }
+  .page-title h1 { font-size: 52px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+  .page-title p  { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--muted); }
 
-  .page-title {
-    text-align: center;
-    margin-bottom: 36px;
-    animation: fadeDown 0.6s ease both;
-  }
-  .page-title h2 {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .page-title p {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    color: var(--muted);
-  }
+  /* ── 2 COLUMNS ── */
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; animation: fadeUp 0.5s ease 0.1s both; }
 
-  /* ── COLUMNS ── */
-  .columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 24px;
-  }
-
-  /* ── SECTION BLOCK ── */
-  .section-block {
-    border-radius: 14px;
-    border: 1px solid var(--border);
+  /* ── BLOCK CARD ── */
+  .block {
     background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 20px;
     overflow: hidden;
-    animation: fadeUp 0.5s ease both;
-    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .section-block:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-  .section-block.dev-block { border-top: 3px solid var(--dev-color); animation-delay: 0.1s; }
-  .section-block.ops-block { border-top: 3px solid var(--ops-color); animation-delay: 0.2s; }
+  .block.dev-block  { border-top: 5px solid var(--blue); }
+  .block.ops-block  { border-top: 5px solid var(--green); }
 
-  .block-header {
-    padding: 14px 18px;
+  .bhead {
+    padding: 22px 26px 18px;
+    border-bottom: 2px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid var(--border);
+    gap: 14px;
   }
-  .block-header .icon { font-size: 18px; }
-  .block-header h3 {
-    font-size: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .dev-block .block-header h3 { color: var(--dev-color); }
-  .ops-block .block-header h3 { color: var(--ops-color); }
+  .bhead-ico { font-size: 30px; }
+  .bhead h2  { font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+  .dev-block .bhead h2 { color: var(--blue); }
+  .ops-block .bhead h2 { color: var(--green); }
 
-  .block-body { padding: 16px 18px; }
+  .bbody { padding: 22px 26px; }
 
-  /* ── TECH ROW ── */
-  .tech-section { margin-bottom: 14px; }
-  .tech-section:last-child { margin-bottom: 0; }
-  .tech-label {
+  /* ── INNER 2-COL ── */
+  .inner-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* ── TECH GROUP ── */
+  .tech-group { margin-bottom: 18px; }
+  .tech-group:last-child { margin-bottom: 0; }
+  .tg-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    display: block;
   }
-  .dev-block .tech-label { color: var(--dev-color); }
-  .ops-block .tech-label { color: var(--ops-color); }
+  .dev-block .tg-label { color: var(--blue); }
+  .ops-block .tg-label { color: var(--green); }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    padding: 3px 9px;
-    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
     border: 1px solid;
-    transition: all 0.15s;
+    transition: transform 0.15s;
     cursor: default;
   }
   .tag:hover { transform: scale(1.05); }
-  .tag-blue { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.35); color: #93c5fd; }
-  .tag-green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.35); color: #86efac; }
-  .tag-orange { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); color: #fcd34d; }
-  .tag-red { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
-  .tag-gray { background: rgba(139,148,158,0.1); border-color: rgba(139,148,158,0.35); color: #8b949e; }
+  .t-blue   { background: rgba(77,166,255,0.1);  border-color: rgba(77,166,255,0.4);  color: #7ec8ff; }
+  .t-green  { background: rgba(61,218,110,0.1);  border-color: rgba(61,218,110,0.4);  color: #72f0a0; }
+  .t-orange { background: rgba(245,166,35,0.1);  border-color: rgba(245,166,35,0.4);  color: #ffd080; }
+  .t-red    { background: rgba(255,77,77,0.1);   border-color: rgba(255,77,77,0.4);   color: #ff9090; }
+  .t-gray   { background: rgba(192,207,224,0.07);border-color: rgba(192,207,224,0.2); color: #c0cfe0; }
 
-  /* ── FLOW CONNECTOR ── */
-  .flow-connector {
+  /* ── OPS FLOW ── */
+  .flow-steps { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+  .fstep {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0;
-    margin: 0 auto 24px;
-    animation: fadeUp 0.5s ease 0.3s both;
+    gap: 12px;
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 17px;
+    font-weight: 600;
   }
+  .fstep-ico { font-size: 22px; flex-shrink: 0; }
+  .fstep-text { color: var(--text); }
+  .fstep-sub  { font-size: 14px; color: var(--muted); margin-left: auto; font-family: 'JetBrains Mono', monospace; }
+  .fstep.warn  { border-color: rgba(245,166,35,0.4); }
+  .fstep.danger{ border-color: rgba(255,77,77,0.4); }
+
+  /* ── SEPARATOR ── */
+  .sep {
+    border-top: 2px solid var(--border);
+    margin: 18px 0 16px;
+  }
+
+  /* ── HYPERSQL CENTER ── */
+  .center-block { display: flex; justify-content: center; margin: 28px 0; animation: fadeUp 0.5s ease 0.25s both; }
+  .hs-box {
+    background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(245,166,35,0.05));
+    border: 2px solid rgba(245,166,35,0.4);
+    border-radius: 20px;
+    padding: 20px 36px;
+    text-align: center;
+    cursor: default;
+    transition: transform 0.2s;
+  }
+  .hs-box:hover { transform: scale(1.03); }
+  .hs-ico  { font-size: 36px; margin-bottom: 6px; }
+  .hs-name { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--orange); }
+  .hs-sub  { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .hs-imgs { margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #7ec8ff; line-height: 1.7; }
 
   /* ── EMAIL ALERT ── */
   .email-alert {
-    background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.04));
-    border: 1px solid rgba(245,158,11,0.3);
-    border-left: 4px solid var(--warn-color);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    animation: fadeUp 0.5s ease 0.35s both;
-  }
-  .email-icon {
-    font-size: 36px;
-    flex-shrink: 0;
-    animation: pulse 2s ease infinite;
-  }
-  .email-content h4 {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--warn-color);
-    margin-bottom: 4px;
-  }
-  .email-content p {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* ── FLOW DIAGRAM ── */
-  .flow-diagram {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 20px;
-    animation: fadeUp 0.5s ease 0.4s both;
-  }
-  .flow-title {
-    font-size: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ops-color);
-    font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 16px;
-  }
-  .flow-steps {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-  }
-  .flow-step {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 15px;
-    text-align: center;
-    min-width: 110px;
-    transition: all 0.2s;
-    cursor: pointer;
-    position: relative;
-  }
-  .flow-step:hover { background: var(--border); transform: translateY(-2px); }
-  .flow-step .step-icon { font-size: 18px; margin-bottom: 4px; }
-  .flow-step .step-name { font-weight: 600; font-size: 14px; color: var(--text); }
-  .flow-step .step-sub { font-size: 15px; color: var(--muted); margin-top: 2px; }
-  .flow-arrow {
-    font-size: 18px;
-    color: var(--muted);
-    padding: 0 6px;
-    flex-shrink: 0;
-  }
-  .flow-step.danger { border-color: rgba(239,68,68,0.4); }
-  .flow-step.danger .step-name { color: #fca5a5; }
-  .flow-step.warn { border-color: rgba(245,158,11,0.4); }
-
-  /* ── BOTTLENECKS ── */
-  .bottlenecks {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 20px;
-    animation: fadeUp 0.5s ease 0.5s both;
-  }
-  .bottleneck {
-    background: rgba(239,68,68,0.05);
-    border: 1px solid rgba(239,68,68,0.2);
-    border-left: 3px solid var(--danger-color);
-    border-radius: 10px;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .bottleneck:hover {
-    background: rgba(239,68,68,0.1);
-    transform: translateX(3px);
-  }
-  .bottleneck h4 {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--danger-color);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .bottleneck p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* ── SUMMARY ROW ── */
-  .summary-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 14px;
-    animation: fadeUp 0.5s ease 0.55s both;
-  }
-  .summary-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-  .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
-  .summary-card h4 {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .summary-card.good h4 { color: var(--ops-color); }
-  .summary-card.bad h4  { color: var(--danger-color); }
-  .summary-card.info h4 { color: var(--warn-color); }
-  .summary-item {
-    font-size: 14px;
-    color: var(--muted);
-    padding: 3px 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    line-height: 1.4;
-  }
-  .summary-item::before { content: '•'; flex-shrink: 0; }
-  .summary-card.good .summary-item::before { color: var(--ops-color); }
-  .summary-card.bad  .summary-item::before { color: var(--danger-color); }
-  .summary-card.info .summary-item::before { color: var(--warn-color); }
-
-  /* ── DB WARNING ── */
-  .db-warning {
-    background: rgba(239,68,68,0.06);
-    border: 1px solid rgba(239,68,68,0.25);
-    border-radius: 10px;
-    padding: 12px 18px;
-    margin-top: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    animation: fadeUp 0.5s ease 0.6s both;
-  }
-  .db-warning .warn-icon { font-size: 18px; }
-  .db-warning strong { color: var(--danger-color); }
-  .db-warning span { color: var(--muted); }
-
-  /* ── HYPERSQL CENTER ── */
-  .center-element {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-    animation: fadeUp 0.5s ease 0.28s both;
-  }
-  .hypersql-box {
-    background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05));
-    border: 2px solid rgba(245,158,11,0.35);
+    background: rgba(245,166,35,0.06);
+    border: 2px solid rgba(245,166,35,0.3);
+    border-left: 6px solid var(--orange);
     border-radius: 16px;
-    padding: 16px 28px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    animation: fadeUp 0.5s ease 0.3s both;
   }
-  .hypersql-box:hover { transform: scale(1.03); }
-  .hypersql-box .hs-icon { font-size: 36px; margin-bottom: 4px; }
-  .hypersql-box .hs-name { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--warn-color); font-size: 15px; }
-  .hypersql-box .hs-sub { font-size: 14px; color: var(--muted); margin-top: 3px; }
-  .hypersql-box .hs-images { margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #93c5fd; }
-
-  /* ── TOOLTIP ── */
-  .tooltip-wrap { position: relative; display: inline-block; }
-  .tooltip-wrap .tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1c2128;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 14px;
-    color: var(--text);
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-    z-index: 50;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
-  .tooltip-wrap:hover .tooltip { opacity: 1; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
+  .ea-ico { font-size: 36px; flex-shrink: 0; }
+  .ea-title { font-size: 20px; font-weight: 700; color: var(--orange); margin-bottom: 6px; }
+  .ea-text  { font-size: 17px; color: var(--muted); line-height: 1.6; }
 
   /* ── DIVIDER ── */
-  .divider {
+  .divider { display: flex; align-items: center; gap: 18px; margin: 36px 0 24px; }
+  .div-line  { flex: 1; height: 2px; background: var(--border); }
+  .div-label { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+
+  /* ── BOTTLENECKS ── */
+  .bt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; animation: fadeUp 0.5s ease 0.4s both; }
+  .bt-card {
+    background: rgba(255,77,77,0.05);
+    border: 1px solid rgba(255,77,77,0.25);
+    border-left: 5px solid var(--red);
+    border-radius: 14px;
+    padding: 18px 20px;
+    cursor: default;
+    transition: all 0.2s;
+  }
+  .bt-card:hover { background: rgba(255,77,77,0.1); transform: translateX(4px); }
+  .bt-title { font-size: 18px; font-weight: 700; color: #ff8080; margin-bottom: 8px; }
+  .bt-desc  { font-size: 16px; color: var(--muted); line-height: 1.65; }
+
+  /* ── SUMMARY ── */
+  .sum-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; animation: fadeUp 0.5s ease 0.45s both; }
+  .sum-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    cursor: default;
+    transition: all 0.2s;
+  }
+  .sum-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
+  .sum-card.good { border-top: 4px solid var(--green); }
+  .sum-card.bad  { border-top: 4px solid var(--red); }
+  .sum-card.info { border-top: 4px solid var(--yellow); }
+  .sum-title { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+  .sum-card.good .sum-title { color: var(--green); }
+  .sum-card.bad  .sum-title { color: var(--red); }
+  .sum-card.info .sum-title { color: var(--yellow); }
+  .sum-item { font-size: 16px; color: var(--muted); padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .sum-item::before { content: '•'; flex-shrink: 0; font-size: 18px; }
+  .sum-card.good .sum-item::before { color: var(--green); }
+  .sum-card.bad  .sum-item::before { color: var(--red); }
+  .sum-card.info .sum-item::before { color: var(--yellow); }
+
+  /* ── DB WARNING ── */
+  .db-warn {
+    background: rgba(255,77,77,0.05);
+    border: 2px solid rgba(255,77,77,0.3);
+    border-radius: 14px;
+    padding: 16px 22px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     gap: 14px;
-    margin: 20px 0;
+    font-size: 17px;
+    animation: fadeUp 0.5s ease 0.5s both;
   }
-  .divider-line { flex: 1; height: 1px; background: var(--border); }
-  .divider-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    color: var(--muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background: var(--bg);
-    padding: 0 8px;
-  }
+  .db-warn-ico { font-size: 24px; }
+  .db-warn strong { color: var(--red); }
+  .db-warn span   { color: var(--muted); }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:translateY(0); } }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <span class="page-badge">PAGE 1 / 2</span>
-    <h1>Architecture Actuelle — MicroCRM DevOps</h1>
-  </div>
-  <nav class="header-nav">
-    <a class="nav-btn active" href="#">📊 Architecture</a>
-    <a class="nav-btn" href="page2-ci-actuel.html">⚙️ Plan CI →</a>
-  </nav>
+<!-- TITLE -->
+<div class="page-title">
+  <h1>Schéma de l'Architecture Actuelle</h1>
+  <p>// État initial avant mise en place du pipeline CI/CD complet</p>
 </div>
 
-<div class="main">
+<!-- COLUMNS -->
+<div class="columns">
 
-  <div class="page-title">
-    <h2>Schéma de l'Architecture Actuelle</h2>
-    <p>// État initial avant mise en place du pipeline CI/CD complet</p>
-  </div>
+  <!-- DEV -->
+  <div class="block dev-block">
+    <div class="bhead">
+      <span class="bhead-ico">👩‍💻</span>
+      <h2>Équipe DEV — Développement Local</h2>
+    </div>
+    <div class="bbody">
+      <div class="inner-cols">
 
-  <!-- DEV + OPS COLUMNS -->
-  <div class="columns">
-
-    <!-- DEV -->
-    <div class="section-block dev-block">
-      <div class="block-header">
-        <span class="icon">👩‍💻</span>
-        <h3>Équipe DEV — Développement Local</h3>
-      </div>
-      <div class="block-body">
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <!-- FRONTEND -->
-          <div>
-            <div class="tech-section">
-              <div class="tech-label">🎨 Frontend — Angular</div>
-              <div class="tags">
-                <span class="tag tag-blue tooltip-wrap">Angular 17.3.0<span class="tooltip">Framework UI principal</span></span>
-                <span class="tag tag-blue tooltip-wrap">TypeScript 5.4.2<span class="tooltip">Compilateur TS → JS</span></span>
-                <span class="tag tag-gray">Angular CLI 17.3.7</span>
-                <span class="tag tag-gray">Webpack</span>
-                <span class="tag tag-gray">Terser</span>
-              </div>
-            </div>
-            <div class="tech-section">
-              <div class="tech-label">🧪 Tests Frontend</div>
-              <div class="tags">
-                <span class="tag tag-orange">Jasmine 5.1.0</span>
-                <span class="tag tag-orange">Karma 6.4.0</span>
-                <span class="tag tag-orange">Chrome Headless</span>
-                <span class="tag tag-orange">karma-coverage</span>
-              </div>
-            </div>
-            <div class="tech-section">
-              <div class="tech-label">📦 Qualité</div>
-              <div class="tags">
-                <span class="tag tag-red" style="text-decoration:line-through; opacity:0.6;">XXX — non défini</span>
-              </div>
+        <div>
+          <div class="tech-group">
+            <span class="tg-label">🎨 Frontend — Angular</span>
+            <div class="tags">
+              <span class="tag t-blue">Angular 17.3.0</span>
+              <span class="tag t-blue">TypeScript 5.4.2</span>
+              <span class="tag t-gray">Angular CLI 17.3.7</span>
+              <span class="tag t-gray">Webpack</span>
+              <span class="tag t-gray">Terser</span>
             </div>
           </div>
-
-          <!-- BACKEND -->
-          <div>
-            <div class="tech-section">
-              <div class="tech-label">⚙️ Backend — Spring Boot</div>
-              <div class="tags">
-                <span class="tag tag-green tooltip-wrap">Spring Boot 3.2.5<span class="tooltip">Framework Java principal</span></span>
-                <span class="tag tag-green">Spring Data JPA</span>
-                <span class="tag tag-green">Spring Data REST</span>
-                <span class="tag tag-gray">Java 17</span>
-                <span class="tag tag-gray">Gradle 8.7</span>
-                <span class="tag tag-gray">Gradle Wrapper</span>
-              </div>
+          <div class="tech-group">
+            <span class="tg-label">🧪 Tests Frontend</span>
+            <div class="tags">
+              <span class="tag t-orange">Jasmine 5.1.0</span>
+              <span class="tag t-orange">Karma 6.4.0</span>
+              <span class="tag t-orange">Chrome Headless</span>
+              <span class="tag t-orange">karma-coverage</span>
             </div>
-            <div class="tech-section">
-              <div class="tech-label">🧪 Tests Backend</div>
-              <div class="tags">
-                <span class="tag tag-orange">JUnit Platform</span>
-                <span class="tag tag-orange">Spring Boot Test</span>
-                <span class="tag tag-gray">Spring Boot Logger 4.0.0</span>
-              </div>
-            </div>
-            <div class="tech-section">
-              <div class="tech-label">🗄️ Base de données</div>
-              <div class="tags">
-                <span class="tag tag-red tooltip-wrap">HyperSQL (embarqué)<span class="tooltip">⚠️ Différent de la production !</span></span>
-                <span class="tag tag-gray">Spring Data JPA (ORM)</span>
-              </div>
+          </div>
+          <div class="tech-group">
+            <span class="tg-label">📋 Qualité</span>
+            <div class="tags">
+              <span class="tag t-red" style="text-decoration:line-through; opacity:0.6;">Non définie (XXX)</span>
             </div>
           </div>
         </div>
 
-        <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
-          <div class="tech-label">🐳 Versionnage & Déploiement (Manuel)</div>
-          <div class="tags">
-            <span class="tag tag-orange">Docker conteneurisation</span>
-            <span class="tag tag-red">Push manuel → docker.hub</span>
-            <span class="tag tag-gray">microcrm-front:v1.2.3</span>
-            <span class="tag tag-gray">microcrm-back:v1.2.3</span>
-            <span class="tag tag-gray">microcrm-standalone:v1.2.3</span>
-            <span class="tag tag-gray">OpenJDK 21 Runtime</span>
+        <div>
+          <div class="tech-group">
+            <span class="tg-label">⚙️ Backend — Spring Boot</span>
+            <div class="tags">
+              <span class="tag t-green">Spring Boot 3.2.5</span>
+              <span class="tag t-green">Spring Data JPA</span>
+              <span class="tag t-green">Spring Data REST</span>
+              <span class="tag t-gray">Java 17</span>
+              <span class="tag t-gray">Gradle 8.7</span>
+            </div>
+          </div>
+          <div class="tech-group">
+            <span class="tg-label">🧪 Tests Backend</span>
+            <div class="tags">
+              <span class="tag t-orange">JUnit Platform</span>
+              <span class="tag t-orange">Spring Boot Test</span>
+              <span class="tag t-gray">Spring Boot Logger 4.0</span>
+            </div>
+          </div>
+          <div class="tech-group">
+            <span class="tg-label">🗄️ Base de données</span>
+            <div class="tags">
+              <span class="tag t-red">HyperSQL (embarqué)</span>
+              <span class="tag t-gray">Spring Data JPA</span>
+            </div>
           </div>
         </div>
 
       </div>
-    </div>
 
-    <!-- OPS -->
-    <div class="section-block ops-block">
-      <div class="block-header">
-        <span class="icon">🖥️</span>
-        <h3>Environnement OPS / Staging</h3>
-      </div>
-      <div class="block-body">
-        <div class="tech-section">
-          <div class="tech-label">🌐 Infrastructure</div>
-          <div class="tags">
-            <span class="tag tag-green">hub.docker.com (pull)</span>
-            <span class="tag tag-green">Debian stable</span>
-            <span class="tag tag-gray">Caddy (serveur web prod)</span>
-          </div>
-        </div>
-
-        <div class="tech-section">
-          <div class="tech-label">🔍 Processus de réception</div>
-        </div>
-
-        <!-- Flow Steps -->
-        <div style="background:var(--surface2); border-radius:10px; padding:12px; margin-bottom:12px;">
-          <div class="flow-steps" style="justify-content:center;">
-            <div class="flow-step tooltip-wrap">
-              <div class="step-icon">📧</div>
-              <div class="step-name">Email reçu</div>
-              <div class="step-sub">n° de version</div>
-              <span class="tooltip">L'équipe Ops est notifiée manuellement</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step tooltip-wrap">
-              <div class="step-icon">⬇️</div>
-              <div class="step-name">docker pull</div>
-              <div class="step-sub">depuis registry</div>
-              <span class="tooltip">Pull depuis Docker Hub</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step warn tooltip-wrap">
-              <div class="step-icon">🔍</div>
-              <div class="step-name">Trivy scan</div>
-              <div class="step-sub">analyse CVE</div>
-              <span class="tooltip">⚠️ Trop tard dans le workflow !</span>
-            </div>
-          </div>
-          <div class="flow-steps" style="justify-content:center; margin-top:10px;">
-            <div class="flow-step" style="min-width:80px; padding:8px;">
-              <div class="step-name" style="color:var(--ops-color); font-size:11px;">CVE trouvée ?</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step danger tooltip-wrap" style="min-width:130px;">
-              <div class="step-icon">🚫</div>
-              <div class="step-name">NON → Déploiement manuel</div>
-              <div class="step-sub">Caddy · GitHub CI · PostgreSQL</div>
-              <span class="tooltip">Déploiement encore manuel</span>
-            </div>
-            <div class="flow-arrow" style="color:var(--danger-color);">→</div>
-            <div class="flow-step danger tooltip-wrap" style="min-width:100px;">
-              <div class="step-icon">🔄</div>
-              <div class="step-name">OUI → Blocage</div>
-              <div class="step-sub">retour Dev</div>
-              <span class="tooltip">Pipeline bloqué, équipe Dev notifiée</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tech-section">
-          <div class="tech-label">🗄️ Base de données (prod)</div>
-          <div class="tags">
-            <span class="tag tag-green">PostgreSQL Dockerisé</span>
-            <span class="tag tag-red tooltip-wrap">≠ HyperSQL (dev)<span class="tooltip">⚠️ Goulot #2 : 2 BDD différentes</span></span>
-          </div>
+      <div class="sep"></div>
+      <div class="tech-group">
+        <span class="tg-label">🐳 Versionnage & Déploiement (Manuel)</span>
+        <div class="tags">
+          <span class="tag t-orange">Docker conteneurisation</span>
+          <span class="tag t-red">Push manuel → docker.hub</span>
+          <span class="tag t-gray">microcrm-front:v1.2.3</span>
+          <span class="tag t-gray">microcrm-back:v1.2.3</span>
+          <span class="tag t-gray">microcrm-standalone:v1.2.3</span>
         </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /columns -->
+  <!-- OPS -->
+  <div class="block ops-block">
+    <div class="bhead">
+      <span class="bhead-ico">🖥️</span>
+      <h2>Environnement OPS / Staging</h2>
+    </div>
+    <div class="bbody">
 
-  <!-- CENTER - HyperSQL -->
-  <div class="center-element">
-    <div class="hypersql-box tooltip-wrap">
-      <div class="hs-icon">⚡</div>
-      <div class="hs-name">HyperSQL</div>
-      <div class="hs-sub">Base de données embarquée (développement)</div>
-      <div class="hs-images">Création de 3 images Docker ↓</div>
-      <div class="hs-images">microcrm-front:v1.2.3 · microcrm-back:v1.2.3 · microcrm-standalone:v1.2.3</div>
-      <span class="tooltip">BDD utilisée uniquement en dev — différente de la prod (PostgreSQL)</span>
+      <div class="tech-group">
+        <span class="tg-label">🌐 Infrastructure</span>
+        <div class="tags">
+          <span class="tag t-green">hub.docker.com (pull)</span>
+          <span class="tag t-green">Debian stable</span>
+          <span class="tag t-gray">Caddy (serveur web prod)</span>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+      <div class="tech-group">
+        <span class="tg-label">🔄 Processus de réception</span>
+      </div>
+
+      <div class="flow-steps">
+        <div class="fstep">
+          <span class="fstep-ico">📧</span>
+          <span class="fstep-text">Email reçu — n° de version</span>
+          <span class="fstep-sub">manuel</span>
+        </div>
+        <div class="fstep">
+          <span class="fstep-ico">⬇️</span>
+          <span class="fstep-text">docker pull depuis registry</span>
+          <span class="fstep-sub">Docker Hub</span>
+        </div>
+        <div class="fstep warn">
+          <span class="fstep-ico">🔍</span>
+          <span class="fstep-text">Trivy scan CVE</span>
+          <span class="fstep-sub">⚠️ trop tardif</span>
+        </div>
+        <div class="fstep danger">
+          <span class="fstep-ico">🚫</span>
+          <span class="fstep-text">CVE → Blocage / retour Dev</span>
+          <span class="fstep-sub">aller-retour</span>
+        </div>
+        <div class="fstep">
+          <span class="fstep-ico">🚀</span>
+          <span class="fstep-text">Déploiement Manuel (Caddy)</span>
+          <span class="fstep-sub">si OK</span>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+      <div class="tech-group">
+        <span class="tg-label">🗄️ Base de données (prod)</span>
+        <div class="tags">
+          <span class="tag t-green">PostgreSQL Dockerisé</span>
+          <span class="tag t-red">≠ HyperSQL (dev)</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- EMAIL ALERT -->
-  <div class="email-alert">
-    <span class="email-icon">📬</span>
-    <div class="email-content">
-      <h4>Communication manuelle entre DEV et OPS</h4>
-      <p>L'équipe Dev envoie un email à l'équipe Ops pour informer que la version XX est prête sur docker.hub — ou bien via vis-à-vis. Aucune automatisation dans ce processus de notification.</p>
+</div><!-- /columns -->
+
+<!-- HYPERSQL CENTER -->
+<div class="center-block">
+  <div class="hs-box">
+    <div class="hs-ico">⚡</div>
+    <div class="hs-name">HyperSQL</div>
+    <div class="hs-sub">Base de données embarquée — Développement uniquement</div>
+    <div class="hs-imgs">
+      Création de 3 images Docker<br>
+      microcrm-front:v1.2.3 · microcrm-back:v1.2.3 · microcrm-standalone:v1.2.3
     </div>
   </div>
+</div>
 
-  <!-- BOTTLENECKS -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <span class="divider-label">⚠️ Goulots d'étranglement identifiés</span>
-    <div class="divider-line"></div>
+<!-- EMAIL ALERT -->
+<div class="email-alert">
+  <span class="ea-ico">📬</span>
+  <div>
+    <div class="ea-title">Communication manuelle entre DEV et OPS</div>
+    <div class="ea-text">L'équipe Dev envoie un email à l'équipe Ops pour informer que la version XX est prête sur docker.hub — ou bien via vis-à-vis. Aucune automatisation dans ce processus de notification.</div>
   </div>
+</div>
 
-  <div class="bottlenecks">
-    <div class="bottleneck">
-      <h4>🔴 Goulot #1 — Scan Trivy trop tardif</h4>
-      <p>Le scan de sécurité Trivy est effectué <strong>après</strong> la publication de l'image sur Docker Hub et le pull par l'équipe Ops. En cas de CVE détectée, un aller-retour complet est nécessaire, causant des délais importants.</p>
-    </div>
-    <div class="bottleneck">
-      <h4>🔴 Goulot #2 — Deux bases de données</h4>
-      <p>Le développement utilise <strong>HyperSQL</strong> (embarquée) tandis que la production tourne sur <strong>PostgreSQL</strong>. Cette divergence peut générer des incompatibilités SQL et des comportements inattendus en production.</p>
-    </div>
-    <div class="bottleneck">
-      <h4>🔴 Processus #1 — Déploiement 100% manuel</h4>
-      <p>Aucune automatisation entre le push Git et le déploiement. L'équipe Ops reçoit une notification manuelle (email) et effectue le pull, le scan et le déploiement manuellement. Risque d'erreurs humaines élevé.</p>
-    </div>
-    <div class="bottleneck">
-      <h4>🔴 Processus #2 — Qualité de code non définie</h4>
-      <p>La section "Qualité de code" côté frontend est marquée <strong>XXX</strong> — aucun outil ni standard de qualité n'est en place (pas de linter, pas d'analyse statique, pas de seuil de couverture).</p>
-    </div>
+<!-- BOTTLENECKS -->
+<div class="divider">
+  <div class="div-line"></div>
+  <span class="div-label">⚠️ Goulots d'étranglement identifiés</span>
+  <div class="div-line"></div>
+</div>
+
+<div class="bt-grid">
+  <div class="bt-card">
+    <div class="bt-title">🔴 Goulot #1 — Scan Trivy trop tardif</div>
+    <div class="bt-desc">Le scan est effectué après pull par l'équipe Ops. En cas de CVE, un aller-retour complet est nécessaire, causant des délais importants.</div>
   </div>
-
-  <!-- SUMMARY -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <span class="divider-label">📋 Résumé de l'état actuel</span>
-    <div class="divider-line"></div>
+  <div class="bt-card">
+    <div class="bt-title">🔴 Goulot #2 — Deux bases de données</div>
+    <div class="bt-desc">Dev utilise HyperSQL (embarquée), la production tourne sur PostgreSQL. Cette divergence peut générer des incompatibilités SQL.</div>
   </div>
-
-  <div class="summary-row">
-    <div class="summary-card good">
-      <h4>✅ Points positifs</h4>
-      <div class="summary-item">Conteneurisation Docker en place</div>
-      <div class="summary-item">Tests automatisés frontend + backend</div>
-      <div class="summary-item">Scan sécurité Trivy existant</div>
-      <div class="summary-item">Qualité partielle (côté backend)</div>
-    </div>
-    <div class="summary-card bad">
-      <h4>❌ À améliorer</h4>
-      <div class="summary-item">Scan Trivy positionné trop tardivement</div>
-      <div class="summary-item">HyperSQL ≠ PostgreSQL (2 BDD)</div>
-      <div class="summary-item">Déploiement manuel — aucune automatisation CD</div>
-      <div class="summary-item">Qualité frontend non définie (XXX)</div>
-    </div>
-    <div class="summary-card info">
-      <h4>⚙️ Workflow actuel</h4>
-      <div class="summary-item">Équipe Dev : dev → tests → build → push Docker Hub</div>
-      <div class="summary-item">Notification par email / vis-à-vis</div>
-      <div class="summary-item">Équipe Ops : pull → Trivy → déploiement manuel</div>
-      <div class="summary-item">Rollback : manuel</div>
-    </div>
+  <div class="bt-card">
+    <div class="bt-title">🔴 Processus — Déploiement 100% manuel</div>
+    <div class="bt-desc">Aucune automatisation entre le push Git et le déploiement. L'équipe Ops effectue tout manuellement. Risque d'erreurs humaines élevé.</div>
   </div>
-
-  <!-- DB WARNING -->
-  <div class="db-warning">
-    <span class="warn-icon">⚠️</span>
-    <div>
-      <strong>Attention :</strong>
-      <span> Le développement est réalisé sur <strong style="color:#fcd34d;">HyperSQL</strong> et déployé sur <strong style="color:#86efac;">PostgreSQL</strong> — risque d'incompatibilités SQL entre les environnements.</span>
-    </div>
+  <div class="bt-card">
+    <div class="bt-title">🔴 Qualité de code non définie</div>
+    <div class="bt-desc">La section "Qualité de code" côté frontend est marquée XXX. Aucun outil ni standard de qualité n'est en place.</div>
   </div>
+</div>
 
-</div><!-- /main -->
+<!-- SUMMARY -->
+<div class="divider">
+  <div class="div-line"></div>
+  <span class="div-label">📋 Résumé de l'état originel</span>
+  <div class="div-line"></div>
+</div>
 
-<script>
-  // Click on bottlenecks to highlight
-  document.querySelectorAll('.bottleneck').forEach(el => {
-    el.addEventListener('click', () => {
-      el.style.background = 'rgba(239,68,68,0.15)';
-      el.style.borderLeftColor = '#ff6b6b';
-      setTimeout(() => {
-        el.style.background = '';
-        el.style.borderLeftColor = '';
-      }, 1200);
-    });
-  });
-</script>
+<div class="sum-grid">
+  <div class="sum-card good">
+    <div class="sum-title">✅ Points positifs</div>
+    <div class="sum-item">Conteneurisation Docker en place</div>
+    <div class="sum-item">Tests automatisés frontend + backend</div>
+    <div class="sum-item">Scan sécurité Trivy existant</div>
+    <div class="sum-item">Qualité partielle côté backend</div>
+  </div>
+  <div class="sum-card bad">
+    <div class="sum-title">❌ À améliorer</div>
+    <div class="sum-item">Scan Trivy positionné trop tardivement</div>
+    <div class="sum-item">HyperSQL ≠ PostgreSQL (2 BDD)</div>
+    <div class="sum-item">Déploiement 100% manuel, pas de CD</div>
+    <div class="sum-item">Qualité frontend non définie (XXX)</div>
+  </div>
+  <div class="sum-card info">
+    <div class="sum-title">⚙️ Workflow actuel</div>
+    <div class="sum-item">Dev : dev → tests → build → push Docker Hub</div>
+    <div class="sum-item">Notification par email / vis-à-vis</div>
+    <div class="sum-item">Ops : pull → Trivy → déploiement manuel</div>
+    <div class="sum-item">Rollback : 100% manuel</div>
+  </div>
+</div>
+
+<!-- DB WARNING -->
+<div class="db-warn">
+  <span class="db-warn-ico">⚠️</span>
+  <div>
+    <strong>Attention :</strong>
+    <span> Le développement est réalisé sur <strong style="color:#fdd84a;">HyperSQL</strong> et déployé sur <strong style="color:#72f0a0;">PostgreSQL</strong> — risque d'incompatibilités SQL entre les environnements.</span>
+  </div>
+</div>
+
 </body>
 </html>
