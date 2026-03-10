@@ -2,65 +2,487 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Infrastructure as Code</title>
-
+<title>Packages Docker — MicroCRM</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
+
+:root {
+  --bg:     #040810;
+  --surf:   #080f1a;
+  --surf2:  #0d1825;
+  --surf3:  #111e30;
+  --border: #1a3050;
+  --text:   #cde4ff;
+  --muted:  #5a7fa8;
+  --muted2: #2d4a65;
+  --accent: #00d4ff;
+  --green:  #00ff88;
+  --yellow: #ffd700;
+  --orange: #ff8c42;
+  --purple: #b47fff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: black;
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 50px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  padding: 48px 52px;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.012) 2px, rgba(0,212,255,0.012) 4px);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
 }
 
-h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
+.page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
 
-p {
-  font-size: 22px;
-  max-width: 900px;
-  color: #d0d0d0;
-  margin-bottom: 50px;
-  line-height: 1.6;
+/* ── HEADER ── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 44px;
+  animation: fadeDown 0.5s ease both;
 }
-
-img {
-  width: 800px;
-  max-width: 90vw;
+.header-left { display: flex; align-items: center; gap: 18px; }
+.header-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05));
+  border: 1px solid rgba(0,212,255,0.4);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.header-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px; font-weight: 900;
+  letter-spacing: 2px; color: var(--accent);
+}
+.header-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--muted); margin-top: 5px; letter-spacing: 1px;
+}
+.stage-badge {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.3);
   border-radius: 10px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 8px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  display: flex; align-items: center; gap: 8px;
+}
+.stage-badge .dot {
+  width: 7px; height: 7px;
+  background: var(--green); border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* ── 3 CARDS ── */
+.cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 32px;
 }
 
-img:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 30px 70px rgba(59,130,246,0.7);
+.pkg-card {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.4s ease both;
 }
+.pkg-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.6);
+}
+.pkg-card:nth-child(1) { animation-delay: 0.05s; border-top: 3px solid var(--green); }
+.pkg-card:nth-child(2) { animation-delay: 0.12s; border-top: 3px solid var(--accent); }
+.pkg-card:nth-child(3) { animation-delay: 0.19s; border-top: 3px solid var(--yellow); }
+
+.pkg-card:nth-child(1):hover { box-shadow: 0 16px 50px rgba(0,255,136,0.12); }
+.pkg-card:nth-child(2):hover { box-shadow: 0 16px 50px rgba(0,212,255,0.12); }
+.pkg-card:nth-child(3):hover { box-shadow: 0 16px 50px rgba(255,215,0,0.12); }
+
+.pkg-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 14px;
+}
+.pkg-icon { font-size: 28px; }
+.pkg-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+}
+.pkg-card:nth-child(1) .pkg-name { color: var(--green); }
+.pkg-card:nth-child(2) .pkg-name { color: var(--accent); }
+.pkg-card:nth-child(3) .pkg-name { color: var(--yellow); }
+.pkg-check {
+  margin-left: auto;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.4);
+  color: var(--green);
+}
+
+.pkg-body { padding: 16px 20px; }
+
+.pkg-desc {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.65; margin-bottom: 14px;
+}
+
+/* TECH PILLS */
+.tech-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tpill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 6px; border: 1px solid;
+}
+
+/* INFO ROWS */
+.info-rows { display: flex; flex-direction: column; gap: 7px; }
+.info-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.info-row .ir-ico { font-size: 14px; flex-shrink: 0; }
+.info-row .ir-label { color: var(--muted); min-width: 70px; flex-shrink: 0; }
+.info-row .ir-val {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+  margin-left: auto;
+}
+
+/* ── COMMON SECTION ── */
+.common-section {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease 0.25s both;
+}
+.section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* PIPELINE FLOW */
+.flow {
+  display: flex; align-items: center; gap: 0;
+  flex-wrap: nowrap; overflow-x: auto;
+}
+.flow-step {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.flow-bubble {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; border: 2px solid; transition: all 0.2s;
+}
+.flow-bubble:hover { transform: scale(1.1); }
+.flow-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700; text-align: center;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+  white-space: nowrap;
+}
+.flow-arrow {
+  font-size: 16px; color: var(--muted2); padding: 0 6px;
+  flex-shrink: 0; margin-bottom: 22px;
+}
+
+/* ARTIFACT TABLE */
+.artifact-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+}
+.art-item {
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; cursor: pointer;
+  transition: border-color 0.15s;
+}
+.art-item:hover { border-color: var(--accent); }
+.art-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.art-size { color: var(--muted); margin-bottom: 6px; }
+.art-path { color: var(--muted2); font-size: 10px; line-height: 1.6; }
+.art-path b { color: var(--teal, #00e5cc); }
+
+/* DETAIL FACT */
+.fact-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.fact {
+  background: var(--surf2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.fact-ico { font-size: 20px; flex-shrink: 0; }
+.fact-text .ft-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.fact-text .ft-desc  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--surf3); border: 1px solid var(--green); color: var(--green);
+  padding: 10px 22px; border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 1000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@keyframes fadeDown { from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
 </style>
 </head>
 <body>
+<div class="page">
 
-<h1>Infrastructure as Code (IaC)</h1>
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">📦</div>
+      <div>
+        <div class="header-title">Stage Package</div>
+        <div class="header-sub">MicroCRM · GitLab CI · Stage 4/7 · Docker Build</div>
+      </div>
+    </div>
+    <div class="stage-badge"><div class="dot"></div>3 packages construits · ✓ Succès</div>
+  </div>
 
-<p>
-L’<strong>Infrastructure as Code</strong> permet de gérer et provisionner
-l’infrastructure informatique à l’aide de scripts et de fichiers de configuration.  
-Cette approche garantit la <strong>répétabilité</strong>, la <strong>cohérence</strong> 
-et l’<strong>automatisation</strong> des environnements de déploiement.  
-Les équipes DevOps peuvent ainsi créer, modifier et supprimer des ressources 
-de manière sécurisée et contrôlée, tout en versionnant l’infrastructure
-comme n’importe quel code.
-</p>
+  <!-- 3 CARDS -->
+  <div class="cards-row">
 
-<img src="images/iac.png" alt="Infrastructure as Code">
+    <!-- BACK -->
+    <div class="pkg-card" onclick="toast('Spring Boot JAR · Port 8080 · 320 MB')">
+      <div class="pkg-header">
+        <span class="pkg-icon">⚙️</span>
+        <div>
+          <div class="pkg-name">package-back</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;">Spring Boot 3.2.5</div>
+        </div>
+        <div class="pkg-check">✓</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-desc">Image backend Java contenant le <strong style="color:var(--text)">JAR Spring Boot</strong> compilé par Gradle. Expose l'API REST sur le port 8080.</div>
+        <div class="tech-pills">
+          <span class="tpill" style="background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.3);color:#72f0a0;">Java 17</span>
+          <span class="tpill" style="background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.3);color:#72f0a0;">Spring Boot</span>
+          <span class="tpill" style="background:rgba(90,127,168,0.1);border-color:rgba(90,127,168,0.3);color:var(--muted);">JPA / REST</span>
+          <span class="tpill" style="background:rgba(90,127,168,0.1);border-color:rgba(90,127,168,0.3);color:var(--muted);">PostgreSQL</span>
+        </div>
+        <div class="info-rows">
+          <div class="info-row"><span class="ir-ico">📏</span><span class="ir-label">Taille</span><span class="ir-val" style="color:var(--yellow);">~320 MB</span></div>
+          <div class="info-row"><span class="ir-ico">🔌</span><span class="ir-label">Port</span><span class="ir-val" style="color:var(--green);">8080</span></div>
+          <div class="info-row"><span class="ir-ico">🏷️</span><span class="ir-label">Tag</span><span class="ir-val" style="color:var(--accent);">:SHA · :branch</span></div>
+          <div class="info-row"><span class="ir-ico">📦</span><span class="ir-label">Base</span><span class="ir-val" style="color:var(--muted);">eclipse-temurin:17</span></div>
+        </div>
+      </div>
+    </div>
 
+    <!-- FRONT -->
+    <div class="pkg-card" onclick="toast('Angular 17 · Nginx · Dist buildé en --prod')">
+      <div class="pkg-header">
+        <span class="pkg-icon">🎨</span>
+        <div>
+          <div class="pkg-name">package-front</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;">Angular 17 · Nginx</div>
+        </div>
+        <div class="pkg-check">✓</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-desc">Image frontend Angular buildée en mode <strong style="color:var(--text)">production</strong> (--prod). Les fichiers statiques sont servis par Nginx.</div>
+        <div class="tech-pills">
+          <span class="tpill" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:#7ec8ff;">Angular 17</span>
+          <span class="tpill" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:#7ec8ff;">TypeScript</span>
+          <span class="tpill" style="background:rgba(90,127,168,0.1);border-color:rgba(90,127,168,0.3);color:var(--muted);">Webpack</span>
+          <span class="tpill" style="background:rgba(90,127,168,0.1);border-color:rgba(90,127,168,0.3);color:var(--muted);">Nginx</span>
+        </div>
+        <div class="info-rows">
+          <div class="info-row"><span class="ir-ico">📏</span><span class="ir-label">Taille</span><span class="ir-val" style="color:var(--green);">~180 MB</span></div>
+          <div class="info-row"><span class="ir-ico">🔌</span><span class="ir-label">Port</span><span class="ir-val" style="color:var(--green);">80</span></div>
+          <div class="info-row"><span class="ir-ico">🏷️</span><span class="ir-label">Tag</span><span class="ir-val" style="color:var(--accent);">:SHA · :branch</span></div>
+          <div class="info-row"><span class="ir-ico">📦</span><span class="ir-label">Base</span><span class="ir-val" style="color:var(--muted);">nginx:alpine</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDALONE -->
+    <div class="pkg-card" onclick="toast('Image tout-en-un : front + back dans un seul conteneur')">
+      <div class="pkg-header">
+        <span class="pkg-icon">🧩</span>
+        <div>
+          <div class="pkg-name">package-standalone</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;">Front + Back · Tout-en-un</div>
+        </div>
+        <div class="pkg-check">✓</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-desc">Image <strong style="color:var(--text)">tout-en-un</strong> combinant frontend et backend. Idéal pour les démos rapides et l'environnement de développement local.</div>
+        <div class="tech-pills">
+          <span class="tpill" style="background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.3);color:#fdd84a;">Spring Boot</span>
+          <span class="tpill" style="background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.3);color:#fdd84a;">Angular</span>
+          <span class="tpill" style="background:rgba(90,127,168,0.1);border-color:rgba(90,127,168,0.3);color:var(--muted);">Supervisord</span>
+          <span class="tpill" style="background:rgba(255,140,66,0.08);border-color:rgba(255,140,66,0.3);color:#ffb280;">Dev / Démo</span>
+        </div>
+        <div class="info-rows">
+          <div class="info-row"><span class="ir-ico">📏</span><span class="ir-label">Taille</span><span class="ir-val" style="color:var(--orange);">~480 MB</span></div>
+          <div class="info-row"><span class="ir-ico">🔌</span><span class="ir-label">Ports</span><span class="ir-val" style="color:var(--green);">8080 + 80</span></div>
+          <div class="info-row"><span class="ir-ico">🏷️</span><span class="ir-label">Tag</span><span class="ir-val" style="color:var(--accent);">:SHA · :branch</span></div>
+          <div class="info-row"><span class="ir-ico">📦</span><span class="ir-label">Base</span><span class="ir-val" style="color:var(--muted);">debian:slim</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PIPELINE FLOW -->
+  <div class="common-section">
+    <div class="section-title">⚡ Séquence de construction — dans le job CI</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);">🔨</div>
+        <div class="flow-label">gradle<br>build</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);">📐</div>
+        <div class="flow-label">ng build<br>--prod</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.3);">🐳</div>
+        <div class="flow-label">docker<br>build ×3</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.3);">💾</div>
+        <div class="flow-label">docker<br>save</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(180,127,255,0.08);border-color:rgba(180,127,255,0.3);">🗜️</div>
+        <div class="flow-label">gzip<br>.tar.gz</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(0,229,204,0.08);border-color:rgba(0,229,204,0.3);">📤</div>
+        <div class="flow-label">artifacts<br>GitLab</div>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-step">
+        <div class="flow-bubble" style="background:rgba(255,61,90,0.08);border-color:rgba(255,61,90,0.3);">🛡️</div>
+        <div class="flow-label">trivy<br>scan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTIFACTS -->
+  <div class="common-section" style="animation-delay:0.3s">
+    <div class="section-title">💾 Artéfacts générés — récupérables dans GitLab CI</div>
+    <div class="artifact-grid">
+      <div class="art-item" onclick="copyPath('artifacts/back.tar.gz')">
+        <div class="art-name">⚙️ back.tar.gz</div>
+        <div class="art-size">~320 MB compressé</div>
+        <div class="art-path">Job <b>package-back</b> → Artifacts<br>expire: 1 jour</div>
+      </div>
+      <div class="art-item" onclick="copyPath('artifacts/front.tar.gz')">
+        <div class="art-name">🎨 front.tar.gz</div>
+        <div class="art-size">~180 MB compressé</div>
+        <div class="art-path">Job <b>package-front</b> → Artifacts<br>expire: 1 jour</div>
+      </div>
+      <div class="art-item" onclick="copyPath('artifacts/standalone.tar.gz')">
+        <div class="art-name">🧩 standalone.tar.gz</div>
+        <div class="art-size">~480 MB compressé</div>
+        <div class="art-path">Job <b>package-standalone</b> → Artifacts<br>expire: 1 jour</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--surf2);border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);">
+      <span style="color:var(--muted2);">$</span> <span style="color:#7ec8ff;">docker</span> <span style="color:#ffc47a;">load</span> &lt; back.tar.gz &nbsp;
+      <span style="color:var(--muted2);"># restaurer l'image localement</span>
+    </div>
+  </div>
+
+  <!-- INTERESTING FACTS -->
+  <div class="common-section" style="animation-delay:0.35s">
+    <div class="section-title">💡 Points intéressants à noter</div>
+    <div class="fact-grid">
+      <div class="fact">
+        <span class="fact-ico">🏷️</span>
+        <div class="fact-text">
+          <div class="ft-title">Double tag SHA + branche</div>
+          <div class="ft-desc">Chaque image reçoit <strong style="color:var(--text)">deux tags</strong> : le SHA court du commit (<code style="color:var(--accent);font-family:'JetBrains Mono',monospace;">:a3f7c2d</code>) pour la traçabilité exacte, et le nom de branche (<code style="color:var(--green);font-family:'JetBrains Mono',monospace;">:main</code>) pour le déploiement Helm.</div>
+        </div>
+      </div>
+      <div class="fact">
+        <span class="fact-ico">🛡️</span>
+        <div class="fact-text">
+          <div class="ft-title">Trivy scan AVANT le publish</div>
+          <div class="ft-desc">Les <code style="color:var(--orange);font-family:'JetBrains Mono',monospace;">.tar.gz</code> sont scannés au stage suivant <strong style="color:var(--text)">avant</strong> tout push au registry. Une CVE CRITICAL rend le badge orange mais ne bloque pas.</div>
+        </div>
+      </div>
+      <div class="fact">
+        <span class="fact-ico">⚡</span>
+        <div class="fact-text">
+          <div class="ft-title">Standalone pour Minikube local</div>
+          <div class="ft-desc">En environnement <strong style="color:var(--text)">développement</strong>, c'est l'image standalone qui est déployée en 3 réplicas dans Kubernetes via Helm, évitant la complexité multi-conteneurs.</div>
+        </div>
+      </div>
+      <div class="fact">
+        <span class="fact-ico">📉</span>
+        <div class="fact-text">
+          <div class="ft-title">Expiration 1 jour</div>
+          <div class="ft-desc">Les artifacts <code style="color:var(--yellow);font-family:'JetBrains Mono',monospace;">.tar.gz</code> expirent après <strong style="color:var(--text)">24h</strong> dans GitLab. Ils servent uniquement de relais vers le stage publish — les images permanentes vivent dans le registry.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function copyPath(path) {
+  navigator.clipboard?.writeText(path).catch(()=>{});
+  toast('📋 Chemin copié : ' + path);
+}
+</script>
 </body>
 </html>
